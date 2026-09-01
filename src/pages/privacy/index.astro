@@ -1,0 +1,214 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Privacy Policy — GPS-Go';
+const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root Android location simulator by Yaner Apps.';
+---
+
+<Layout title={title} description={description} currentPath="/privacy/">
+  <div class="prose">
+    <div class="prose-header">
+      <h1>Privacy Policy</h1>
+      <p class="lede">GPS-Go for Android (<code>com.yanerapps.gpsgo</code>)</p>
+      <div class="meta">
+        <span>Effective: 31 Aug 2026</span>
+        <span>&middot;</span>
+        <span>Updated: 31 Aug 2026</span>
+        <span>&middot;</span>
+        <a class="lang-switch" href="/privacy/zh/">中文版本</a>
+      </div>
+    </div>
+
+    <p>
+      This policy explains what GPS-Go does with your data. GPS-Go is developed by Yaner Apps
+      ("we", "us"). It applies to the GPS-Go Android application and to this website.
+    </p>
+
+    <div class="card">
+      <p><strong>In short:</strong> GPS-Go has no user accounts and no servers of our own. Your simulated
+      locations, history, saved places, tags, and routes stay on your device. Three third parties receive
+      data when you use specific features: Google Maps and Google Places (map display and place search),
+      Geoapify (place search), and Google AdMob (advertising). We never sell your personal information.</p>
+    </div>
+
+    <h2>1. Data that stays on your device</h2>
+    <p>
+      The following is stored locally in the app's private storage and is never transmitted to us &mdash; we
+      operate no server and have no way to read it:
+    </p>
+    <ul>
+      <li>Simulated coordinates, custom names, favourites, and location history</li>
+      <li>Tags, saved routes, and records of routes you have run</li>
+      <li>Your local search history</li>
+      <li>App settings and preferences (units, theme, joystick style, and so on)</li>
+    </ul>
+    <p>
+      You can delete this data inside the app at any time. Uninstalling GPS-Go removes all of it.
+    </p>
+
+    <h2>2. Your device's real location</h2>
+    <p>
+      GPS-Go requests location permission so it can show where you actually are on the map (the "Locate"
+      button) and so it can register itself as a mock location provider. Your real location is used on the
+      device only. We do not transmit it, store it on any server, or share it with anyone. Coordinates may
+      be sent to Google or Geoapify only as part of a map or search request you initiate &mdash; see section 3.
+    </p>
+
+    <h2>3. Data sent to third parties</h2>
+    <p>
+      GPS-Go transmits data off your device only in the situations below. Each is tied to a feature you
+      actively use.
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Recipient</th>
+            <th>What is sent</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google Maps Platform</td>
+            <td>Map viewport coordinates and zoom level</td>
+            <td>To render the map</td>
+          </tr>
+          <tr>
+            <td>Google Places</td>
+            <td>Your search text and, for biasing results, an approximate location</td>
+            <td>To return place suggestions and their coordinates</td>
+          </tr>
+          <tr>
+            <td>Geoapify (OpenStreetMap data)</td>
+            <td>Your search text and, for biasing results, an approximate location</td>
+            <td>To return place suggestions and their coordinates</td>
+          </tr>
+          <tr>
+            <td>Google AdMob and the Google User Messaging Platform</td>
+            <td>Your advertising ID (AAID), device and app information sent with an ad request, and your consent choices</td>
+            <td>To request and display rewarded video ads, and to record your consent</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Place searches are routed to Geoapify where possible and fall back to Google Places. Both providers
+      receive only the text you type and, at most, an approximate location &mdash; never your location history.
+    </p>
+    <p>
+      When a search result comes from Google Places, its coordinates are removed from your local search
+      history 30 days after the search, as required by Google's terms. Results from Geoapify and
+      coordinates you enter yourself are kept until you delete them.
+    </p>
+
+    <h2>4. Advertising</h2>
+    <p>
+      GPS-Go shows rewarded video ads supplied by Google AdMob. A rewarded ad is never forced on you: it
+      only plays after you tap a button that offers extra daily usage in exchange for watching one. There
+      are no banner or interstitial ads in the current version, and no ads are ever shown in the floating
+      joystick or in the ongoing notification.
+    </p>
+    <p>
+      We use Google AdMob only. We do not use any other ad network, mediation layer, or analytics or
+      crash-reporting SDK. We never send your location history, saved places, or routes to any advertising
+      service, and we never attach location data to an ad request as a custom parameter.
+    </p>
+
+    <h3>Consent (EEA, UK, and Switzerland)</h3>
+    <p>
+      If you are in the European Economic Area, the United Kingdom, or Switzerland, GPS-Go asks for your
+      consent before ads are requested, using Google's certified User Messaging Platform. You can review or
+      change your choice at any time in the app under <strong>Settings &rarr; About &rarr; Privacy Options</strong>.
+      If you decline, the app remains fully usable and the ad-gated actions are granted without an ad.
+    </p>
+
+    <h3>US state privacy laws</h3>
+    <p>
+      We do not sell your personal information, and we do not share it for cross-context behavioural
+      advertising in exchange for money. Residents of US states with applicable privacy laws are shown a
+      notice with an opt-out choice, delivered through the same Privacy Options screen.
+    </p>
+
+    <h3>Controlling the advertising ID</h3>
+    <p>
+      Android lets you reset or delete your advertising ID at any time under
+      <strong>Settings &rarr; Privacy &rarr; Ads</strong> (the exact path varies by device). Deleting it stops
+      personalised advertising system-wide.
+    </p>
+    <p>
+      Google's handling of ad data is governed by the
+      <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google Privacy Policy</a>; see also
+      <a href="https://support.google.com/admob/answer/6128543" rel="noopener" target="_blank">how Google uses data in AdMob</a>.
+      Geoapify's handling is governed by the
+      <a href="https://www.geoapify.com/privacy-policy/" rel="noopener" target="_blank">Geoapify Privacy Policy</a>.
+    </p>
+
+    <h2>5. Backup export files</h2>
+    <p>
+      GPS-Go can export your data as a file to a location you choose. That file contains your location
+      history, saved places, tags, and routes in plain form. It is created only when you ask for it, it is
+      not uploaded anywhere, and once it leaves the app it is yours to protect. Be careful where you store
+      or send it.
+    </p>
+    <p>
+      Android's own cloud backup may include app data if you have enabled it on your device. That backup is
+      managed by Google under your Google account, not by us.
+    </p>
+
+    <h2>6. What we do not do</h2>
+    <ul>
+      <li>No user accounts, sign-in, or profiles</li>
+      <li>No servers operated by us, and therefore no copy of your data held by us</li>
+      <li>No analytics or crash-reporting SDKs</li>
+      <li>No sale of personal information</li>
+      <li>No tracking of other people &mdash; GPS-Go simulates only your own device's location</li>
+    </ul>
+
+    <h2>7. Children</h2>
+    <p>
+      GPS-Go is intended for adults. It is not directed to children, and we do not knowingly collect data
+      from children. Its Google Play target audience is set to adults only.
+    </p>
+
+    <h2>8. Data retention and deletion</h2>
+    <p>
+      Because your data lives on your device, you control its lifetime. The app deletes history older than
+      the retention window you configure, and every record can be deleted individually or in bulk from
+      within the app. Uninstalling removes everything. There is nothing for us to delete on our side, since
+      we hold nothing.
+    </p>
+    <p>
+      Data held by Google or Geoapify as a result of the requests described in section 3 is subject to
+      their own retention practices and their own policies, linked above.
+    </p>
+
+    <h2>9. Security</h2>
+    <p>
+      All network requests made by the app use HTTPS. Local data is kept in the app's private storage,
+      which other apps cannot read on a non-rooted device.
+    </p>
+
+    <h2>10. Your rights</h2>
+    <p>
+      Depending on where you live, you may have rights to access, correct, delete, or port your personal
+      data, or to object to certain processing. Since GPS-Go stores your data only on your device, you can
+      exercise these rights directly in the app. For anything related to advertising data held by Google,
+      use the Privacy Options screen in the app and Google's own controls. If you need help, write to
+      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a> and we will respond within 30 days.
+    </p>
+
+    <h2>11. Changes to this policy</h2>
+    <p>
+      If this policy changes, the updated version is published on this page with a new "last updated" date.
+      Material changes affecting how data is shared will also be noted in the app's release notes.
+    </p>
+
+    <h2>12. Contact</h2>
+    <p>
+      Yaner Apps &mdash; <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+    </p>
+  </div>
+</Layout>

@@ -1,0 +1,193 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const title = '隐私政策 — GPS-Go';
+const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps 出品的免 root 安卓虚拟定位工具。';
+---
+
+<Layout title={title} description={description} currentPath="/privacy/zh/" lang="zh-CN">
+  <div class="prose">
+    <div class="prose-header">
+      <h1>隐私政策</h1>
+      <p class="lede">GPS-Go 安卓应用（<code>com.yanerapps.gpsgo</code>）</p>
+      <div class="meta">
+        <span>生效日期：2026 年 8 月 31 日</span>
+        <span>&middot;</span>
+        <span>更新日期：2026 年 8 月 31 日</span>
+        <span>&middot;</span>
+        <a class="lang-switch" href="/privacy/">English</a>
+      </div>
+    </div>
+
+    <p>
+      本政策说明 GPS-Go 如何处理你的数据。GPS-Go 由 Yaner Apps（下称「我们」）开发，本政策适用于
+      GPS-Go 安卓应用及本网站。中英文版本如有歧义，以
+      <a href="/privacy/">英文版本</a>为准。
+    </p>
+
+    <div class="card">
+      <p><strong>一句话概括：</strong>GPS-Go 没有账号体系，我们也没有自己的服务器。你模拟过的位置、历史记录、
+      收藏地点、标签和路线都保存在你的设备上。只有在你使用特定功能时，数据才会发往三方：Google 地图与
+      Google Places（地图显示与地点搜索）、Geoapify（地点搜索）、Google AdMob（广告）。我们不出售你的个人信息。</p>
+    </div>
+
+    <h2>1. 只存在你设备上的数据</h2>
+    <p>以下内容保存在应用私有存储中，从不上传给我们——我们没有服务器，也无从读取：</p>
+    <ul>
+      <li>模拟过的坐标、自定义名称、收藏地点、位置历史</li>
+      <li>标签、保存的路线、路线运行记录</li>
+      <li>本地搜索历史</li>
+      <li>应用设置与偏好（单位、主题、摇杆样式等）</li>
+    </ul>
+    <p>你可以随时在应用内删除这些数据。卸载 GPS-Go 会一并清除全部内容。</p>
+
+    <h2>2. 设备的真实位置</h2>
+    <p>
+      GPS-Go 申请定位权限，用于在地图上显示你的真实位置（「定位」按钮），以及将自身注册为模拟位置提供者。
+      真实位置仅在设备本地使用：我们不传输、不在任何服务器上留存、也不提供给任何人。只有在你主动发起地图或
+      搜索请求时，坐标才可能随该请求发往 Google 或 Geoapify——见第 3 节。
+    </p>
+
+    <h2>3. 会发往第三方的数据</h2>
+    <p>只有下列情形，GPS-Go 才会把数据发出设备，每一项都对应你主动使用的功能。</p>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>接收方</th>
+            <th>发送内容</th>
+            <th>用途</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google Maps Platform</td>
+            <td>地图视口坐标与缩放级别</td>
+            <td>渲染地图</td>
+          </tr>
+          <tr>
+            <td>Google Places</td>
+            <td>你输入的搜索文本，以及用于结果偏置的大致位置</td>
+            <td>返回地点建议及其坐标</td>
+          </tr>
+          <tr>
+            <td>Geoapify（基于 OpenStreetMap 数据）</td>
+            <td>你输入的搜索文本，以及用于结果偏置的大致位置</td>
+            <td>返回地点建议及其坐标</td>
+          </tr>
+          <tr>
+            <td>Google AdMob 与 Google User Messaging Platform</td>
+            <td>广告 ID（AAID）、随广告请求发送的设备与应用信息、你的同意选择</td>
+            <td>请求并展示激励视频广告、记录同意状态</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      地点搜索优先走 Geoapify，必要时回落到 Google Places。两家收到的都只有你输入的文本，以及至多一个大致
+      位置，绝不包含你的位置历史。
+    </p>
+    <p>
+      当搜索结果来自 Google Places 时，按 Google 条款要求，其坐标会在搜索 30 天后从你的本地搜索历史中移除；
+      来自 Geoapify 的结果以及你自己输入的坐标则保留到你主动删除为止。
+    </p>
+
+    <h2>4. 广告</h2>
+    <p>
+      GPS-Go 展示由 Google AdMob 提供的激励视频广告。激励广告绝不会强制播放：只有当你主动点击「观看广告以获得
+      今日额度」这类按钮时才会播放。当前版本没有横幅广告和插屏广告；悬浮摇杆窗口内与常驻通知栏内永远不会出现
+      任何广告。
+    </p>
+    <p>
+      我们只接入 Google AdMob，没有其他广告网络、没有聚合层，也没有任何统计分析或崩溃上报 SDK。我们绝不会把你的
+      位置历史、收藏地点或路线发送给任何广告服务，也绝不把位置数据作为自定义参数附加到广告请求上。
+    </p>
+
+    <h3>同意（欧洲经济区、英国与瑞士）</h3>
+    <p>
+      若你位于欧洲经济区、英国或瑞士，GPS-Go 会在请求广告之前，通过 Google 认证的 User Messaging Platform
+      征求你的同意。你可以随时在应用内的<strong>「设置 &rarr; 关于 &rarr; 隐私选项」</strong>中查看或更改选择。
+      即使你拒绝，应用仍可完整使用，原本需要看广告解锁的操作会直接放行。
+    </p>
+
+    <h3>美国各州隐私法</h3>
+    <p>
+      我们不出售你的个人信息，也不会为换取金钱而共享你的个人信息用于跨场景行为广告。适用州的居民会看到
+      相应告知与选择退出入口，入口同样在「隐私选项」页面。
+    </p>
+
+    <h3>控制广告 ID</h3>
+    <p>
+      安卓系统允许你随时重置或删除广告 ID，路径通常是<strong>「设置 &rarr; 隐私 &rarr; 广告」</strong>（各机型略有差异）。
+      删除后，系统级的个性化广告即停止。
+    </p>
+    <p>
+      Google 对广告数据的处理适用
+      <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google 隐私权政策</a>，另见
+      <a href="https://support.google.com/admob/answer/6128543" rel="noopener" target="_blank">AdMob 如何使用数据</a>；
+      Geoapify 的处理适用
+      <a href="https://www.geoapify.com/privacy-policy/" rel="noopener" target="_blank">Geoapify 隐私政策</a>。
+    </p>
+
+    <h2>5. 备份导出文件</h2>
+    <p>
+      GPS-Go 可以把你的数据导出为文件，保存到你指定的位置。该文件以明文形式包含位置历史、收藏地点、标签与
+      路线。它只在你主动要求时生成，不会上传到任何地方；一旦离开应用，保管责任就在你自己。请谨慎选择存放与
+      发送的去处。
+    </p>
+    <p>
+      如果你在设备上启用了安卓自带的云备份，应用数据可能被纳入该备份。那份备份由 Google 在你的 Google 账号下
+      管理，不由我们管理。
+    </p>
+
+    <h2>6. 我们不做的事</h2>
+    <ul>
+      <li>没有账号、登录或用户画像</li>
+      <li>没有我们运营的服务器，因此我们手上不存在你的数据副本</li>
+      <li>没有统计分析或崩溃上报 SDK</li>
+      <li>不出售个人信息</li>
+      <li>不追踪他人——GPS-Go 只模拟你自己设备的位置</li>
+    </ul>
+
+    <h2>7. 未成年人</h2>
+    <p>
+      GPS-Go 面向成年人。本应用不面向儿童，我们也不会在知情的情况下收集儿童数据。其 Google Play 目标受众
+      仅设定为成年人。
+    </p>
+
+    <h2>8. 数据留存与删除</h2>
+    <p>
+      由于数据都在你的设备上，其生命周期由你掌控。应用会按你设定的留存窗口自动清理过期历史，每条记录也都可以
+      在应用内单独或批量删除，卸载即全部清除。我们这边没有任何东西需要删除，因为我们本就不持有。
+    </p>
+    <p>
+      因第 3 节所述请求而由 Google 或 Geoapify 持有的数据，适用它们各自的留存做法与政策（链接见上）。
+    </p>
+
+    <h2>9. 安全</h2>
+    <p>
+      应用发起的所有网络请求均使用 HTTPS。本地数据存放在应用私有存储中，未 root 的设备上其他应用无法读取。
+    </p>
+
+    <h2>10. 你的权利</h2>
+    <p>
+      取决于你所在地区，你可能享有访问、更正、删除、转移个人数据或反对特定处理的权利。由于 GPS-Go 只在你的设备上
+      存储数据，这些权利可直接在应用内行使。涉及 Google 持有的广告数据，请使用应用内的「隐私选项」页面以及
+      Google 自身的控制项。需要协助请写信至
+      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>，我们会在 30 天内回复。
+    </p>
+
+    <h2>11. 政策变更</h2>
+    <p>
+      本政策如有变更，更新版本会发布在本页面并标注新的「最近更新」日期。涉及数据共享方式的实质性变更，也会在
+      应用的版本更新说明中提示。
+    </p>
+
+    <h2>12. 联系方式</h2>
+    <p>
+      Yaner Apps — <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+    </p>
+  </div>
+</Layout>

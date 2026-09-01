@@ -1,0 +1,25 @@
+{
+  "name": "yanerapps",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "og": "node scripts/og.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/instrument-sans": "^5.2.5",
+    "@fontsource-variable/newsreader": "^5.2.5",
+    "astro": "^5.13.0"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  },
+  "allowScripts": {
+    "esbuild@0.27.7": true,
+    "esbuild@0.25.12": true,
+    "sharp@0.34.5": true
+  }
+}

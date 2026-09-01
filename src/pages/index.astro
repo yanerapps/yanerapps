@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Yaner Apps — We make quality apps.';
+const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.';
+---
+
+<Layout title={title} description={description} currentPath="/">
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="reveal">
+      We make <br />
+      quality apps
+    </h1>
+    <div class="hero-bottom reveal">
+      <p>An independent software studio.</p>
+      <div class="hero-tag">[Est. 2026]</div>
+    </div>
+  </section>
+
+  <!-- Section 01: Manifesto -->
+  <section class="gallery-section" aria-label="Manifesto">
+    <div class="gallery-label reveal">01 / Manifesto</div>
+    <div class="gallery-content">
+      <div class="manifesto-origin reveal">
+        <span class="cjk" lang="zh">燕儿</span> (Yaner) means &ldquo;little swallow.&rdquo;
+      </div>
+      <div class="manifesto-body">
+        <p class="reveal">
+          A swallow builds its nest one beakful of earth at a time &mdash;
+          patiently, deliberately, and exactly where it means to live. We build
+          software the same way.
+        </p>
+        <p class="reveal">
+          Zero dark patterns. Zero synthetic urgency. Small and focused is our strength: each tool cared for until it deserves to exist.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 02: Featured Product -->
+  <section class="gallery-section" aria-label="Featured Product">
+    <div class="gallery-label reveal">02 / Apps</div>
+    <div class="gallery-content">
+      <div class="product-heading reveal">GPS-Go</div>
+      <div class="product-role reveal">A no-root location simulator</div>
+      <p class="product-desc reveal">
+        Pick a point on the map, mock device coordinates, and control movement with a floating joystick overlay.
+      </p>
+      <ul class="gallery-features reveal">
+        <li>Teleport to any coordinate, saved place, or route with speed controls</li>
+        <li>Floating joystick with rocker and D-pad controls</li>
+        <li>Completely private &mdash; all data stays on your device</li>
+      </ul>
+      <div class="reveal">
+        <span class="status-pill">In preparation for release</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 03: Contact -->
+  <section class="gallery-section" aria-label="Contact">
+    <div class="gallery-label reveal">03 / Contact</div>
+    <div class="gallery-content">
+      <div class="reveal">
+        <a href="mailto:yanerapps@gmail.com" class="contact-action">
+          yanerapps@gmail.com
+        </a>
+        <p class="contact-sub">
+          Questions, feedback, and support inquiries. The
+          <a href="/support/">support page</a> lists what to include.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

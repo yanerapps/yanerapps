@@ -1,0 +1,2 @@
+# app-ads.txt for Yaner Apps — see https://support.google.com/admob/answer/9363762
+google.com, pub-3705716608949860, DIRECT, f08c47fec0942fa0

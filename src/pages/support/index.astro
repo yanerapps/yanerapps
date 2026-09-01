@@ -1,0 +1,67 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Support — GPS-Go';
+const description = 'Support and contact for GPS-Go by Yaner Apps.';
+---
+
+<Layout title={title} description={description} currentPath="/support/">
+  <div class="prose">
+    <div class="prose-header">
+      <h1>Support</h1>
+      <p class="lede">Questions, bug reports, and privacy requests for GPS-Go.</p>
+    </div>
+
+    <h2>Contact</h2>
+    <p>
+      Email <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. To help us reproduce a
+      problem, please include:
+    </p>
+    <ul>
+      <li>Your device model and Android version</li>
+      <li>The app version (Settings &rarr; About)</li>
+      <li>What you did, what you expected, and what happened instead</li>
+    </ul>
+
+    <h2>Common questions</h2>
+
+    <h3>The app says it is not the selected mock location app</h3>
+    <p>
+      Android requires you to pick a mock location app in Developer options. Open
+      <strong>Settings &rarr; System &rarr; Developer options &rarr; Select mock location app</strong> and choose GPS-Go.
+      The in-app setup checklist walks you through this and the other permissions.
+    </p>
+
+    <h3>Some apps still show my real location</h3>
+    <p>
+      Apps that verify location integrity, or that read location through their own means, can detect or
+      ignore a mocked position. GPS-Go feeds the standard Android location providers; it cannot guarantee
+      that every third-party app will accept the simulated position.
+    </p>
+
+    <h3>The floating joystick does not appear</h3>
+    <p>
+      The joystick needs the "Display over other apps" permission. Grant it from the in-app setup checklist
+      or from <strong>Settings &rarr; Apps &rarr; GPS-Go &rarr; Display over other apps</strong>.
+    </p>
+
+    <h3>How do I change my ad consent choice?</h3>
+    <p>
+      In the app, go to <strong>Settings &rarr; About &rarr; Privacy Options</strong>. This entry appears where
+      consent applies. See the <a href="/privacy/">privacy policy</a> for details.
+    </p>
+
+    <h3>How do I delete my data?</h3>
+    <p>
+      All data is stored on your device and can be deleted in the app. Uninstalling GPS-Go removes
+      everything.
+    </p>
+
+    <h2>Responsible use</h2>
+    <p>
+      GPS-Go simulates the location of your own device, for testing, development, and privacy purposes. Do
+      not use it to deceive other people or to violate the terms of any service you use. You are
+      responsible for how you use it.
+    </p>
+  </div>
+</Layout>

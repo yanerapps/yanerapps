@@ -1,0 +1,11 @@
+# Build & cache
+dist/
+.astro/
+node_modules/
+scripts/fonts/
+.claude/
+
+# Environment & OS
+.DS_Store
+*.local
+.npm

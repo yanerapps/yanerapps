@@ -1,0 +1,110 @@
+---
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/newsreader';
+import '@fontsource-variable/newsreader/wght-italic.css';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  currentPath?: string;
+  lang?: string;
+}
+
+const {
+  title = 'Yaner Apps — We make quality apps.',
+  description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.',
+  currentPath = '/',
+  lang = 'en',
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://yanerapps.com').href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0b0c" />
+
+    <!-- Open Graph / Social Meta -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content="https://yanerapps.com/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site">
+      <div class="wrap">
+        <a class="brand-container" href="/" aria-label="Yaner Apps home">
+          <span class="brand-name">Yaner Apps</span>
+        </a>
+        <nav class="site-nav" aria-label="Site navigation">
+          <a href="/privacy/" aria-current={currentPath.startsWith('/privacy') ? 'page' : undefined}>Privacy</a>
+          <a href="/support/" aria-current={currentPath.startsWith('/support') ? 'page' : undefined}>Support</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap" id="main">
+      <slot />
+    </main>
+
+    <footer class="site">
+      <div class="wrap">
+        <span>Made with love &middot; &copy; 2026 Yaner Apps</span>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/privacy/">Privacy Policy</a>
+          <a href="/support/">Support</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scroll Reveal Enhancement -->
+    <script is:inline>
+      (function () {
+        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var items = document.querySelectorAll('.reveal');
+        if (reduced || !('IntersectionObserver' in window)) {
+          items.forEach(function (el) {
+            el.classList.add('is-visible');
+          });
+          return;
+        }
+        var seen = 0;
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              var el = entry.target;
+              el.style.transitionDelay = Math.min(seen++ % 4, 3) * 60 + 'ms';
+              el.classList.add('is-visible');
+              io.unobserve(el);
+            });
+          },
+          { rootMargin: '999% 0px -6% 0px', threshold: 0.05 }
+        );
+        items.forEach(function (el) {
+          io.observe(el);
+        });
+      })();
+    </script>
+  </body>
+</html>
