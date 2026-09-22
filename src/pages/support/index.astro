@@ -10,6 +10,9 @@ const description = 'Support and contact for GPS-Go by Yaner Apps.';
     <div class="prose-header">
       <h1>Support</h1>
       <p class="lede">Questions, bug reports, and privacy requests for GPS-Go.</p>
+      <div class="meta">
+        <a class="lang-switch" href="/support/zh/">中文版本</a>
+      </div>
     </div>
 
     <h2>Contact</h2>
@@ -29,7 +32,15 @@ const description = 'Support and contact for GPS-Go by Yaner Apps.';
     <p>
       Android requires you to pick a mock location app in Developer options. Open
       <strong>Settings &rarr; System &rarr; Developer options &rarr; Select mock location app</strong> and choose GPS-Go.
+      If Developer options is not visible, go to <strong>Settings &rarr; About phone</strong> and tap <strong>Build number</strong> 7 times to unlock it.
       The in-app setup checklist walks you through this and the other permissions.
+    </p>
+
+    <h3>Simulation stops when the screen is off or app is in background</h3>
+    <p>
+      Android's power management may terminate background services to save battery. Go to
+      <strong>Settings &rarr; Apps &rarr; GPS-Go &rarr; Battery</strong> (or <strong>App battery usage</strong>) and select <strong>Unrestricted</strong>.
+      You can also open this setting from the in-app setup checklist.
     </p>
 
     <h3>Some apps still show my real location</h3>

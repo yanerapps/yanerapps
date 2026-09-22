@@ -1,0 +1,71 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const title = '技术支持 — GPS-Go';
+const description = 'GPS-Go（Yaner Apps 出品）技术支持、常见问题与联系方式。';
+---
+
+<Layout title={title} description={description} currentPath="/support/zh/" lang="zh-CN">
+  <div class="prose">
+    <div class="prose-header">
+      <h1>技术支持</h1>
+      <p class="lede">GPS-Go 的问题反馈、故障排查与隐私请求。</p>
+      <div class="meta">
+        <a class="lang-switch" href="/support/">English</a>
+      </div>
+    </div>
+
+    <h2>联系我们</h2>
+    <p>
+      请发送邮件至 <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>。为协助我们更快定位问题，请在邮件中包含：
+    </p>
+    <ul>
+      <li>设备型号与安卓系统版本</li>
+      <li>应用版本号（可在「设置 &rarr; 关于」中查看）</li>
+      <li>具体操作步骤、预期效果与实际现象</li>
+    </ul>
+
+    <h2>常见问题</h2>
+
+    <h3>应用提示未选择模拟位置应用</h3>
+    <p>
+      安卓系统要求在开发者选项中指定模拟位置提供者。请前往
+      <strong>「系统设置 &rarr; 系统 &rarr; 开发者选项 &rarr; 选择模拟位置信息应用」</strong>并选择 GPS-Go。
+      如果系统设置中未显示「开发者选项」，请前往<strong>「设置 &rarr; 关于手机」</strong>，连续点击<strong>「版本号」</strong>7 次即可解锁。
+      应用内的权限设置引导也会协助你完成此项配置。
+    </p>
+
+    <h3>锁屏或切换到后台后，模拟定位中断</h3>
+    <p>
+      安卓系统的电池管理策略可能会在后台停止服务以节省电量。请前往
+      <strong>「系统设置 &rarr; 应用 &rarr; GPS-Go &rarr; 电池」</strong>（或<strong>「应用耗电详情」</strong>），将电池策略设置为<strong>「不受限制」</strong>（Unrestricted）。
+      你也可以在应用内的权限设置向导中直接点击跳转配置。
+    </p>
+
+    <h3>部分应用依然显示我的真实位置</h3>
+    <p>
+      部分具有强校验机制或通过自有基站/Wi-Fi 探测位置的应用，可能会检测或忽略系统模拟定位。GPS-Go 为安卓系统标准的位置提供者提供坐标，无法保证所有第三方应用均无条件采信模拟位置。
+    </p>
+
+    <h3>悬浮窗摇杆没有出现</h3>
+    <p>
+      悬浮摇杆需要「显示在其他应用上层」（悬浮窗）权限。你可以在应用内的权限设置向导中授权，或前往
+      <strong>「系统设置 &rarr; 应用 &rarr; GPS-Go &rarr; 显示在其他应用的上层」</strong>开启。
+    </p>
+
+    <h3>如何修改广告同意选择？</h3>
+    <p>
+      在应用内前往<strong>「设置 &rarr; 关于 &rarr; 隐私选项」</strong>即可查看或重新修改你的广告同意状态（仅在适用该法规的地区显示）。详情见<a href="/privacy/zh/">隐私政策</a>。
+    </p>
+
+    <h3>如何彻底删除我的数据？</h3>
+    <p>
+      GPS-Go 的所有数据均保存在你的设备本地，你可以在应用内随时清空历史或收藏。卸载 GPS-Go 会完全清除所有私有数据。
+    </p>
+
+    <h2>合理使用提示</h2>
+    <p>
+      GPS-Go 仅用于为你自己的设备模拟位置，适用于软件测试、开发调试及个人隐私保护用途。请勿将本工具用于欺诈、作弊或违反任何第三方服务条款的用途。使用者须自行承担使用行为的全部责任。
+    </p>
+  </div>
+</Layout>
