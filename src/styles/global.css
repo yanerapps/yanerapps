@@ -1,20 +1,22 @@
 /* ---------------------------------------------------------------
    Yaner Apps — Quiet Modernist Gallery Design System
-   Style: 沉静画廊 (Quiet Modernist Gallery & Swiss Typography)
-   Palette: Stark Obsidian, Crisp Chalk White, Mineral Slate
+   Warm paper & ink, one vermilion accent (seal red), mono labels.
+   Theme: follows the system; [data-theme] on <html> overrides it.
    --------------------------------------------------------------- */
 
 :root {
-  --bg: #ffffff;
-  --surface: #f8f8f9;
-  --card: #f2f3f5;
-  --text-main: #0c0d0e;
-  --text-sub: #666973;
-  --text-faint: #91949f;
-  --border-main: #0c0d0e;
-  --border-hairline: rgba(12, 13, 14, 0.1);
-  --border-subtle: rgba(12, 13, 14, 0.05);
-  --glass: rgba(255, 255, 255, 0.92);
+  color-scheme: light;
+  --bg: #f4f1ea;
+  --surface: #ece8df;
+  --card: #e6e1d6;
+  --text-main: #15140f;
+  --text-sub: #5f5b52;
+  --text-faint: #8c877c;
+  --border-main: #15140f;
+  --border-hairline: rgba(21, 20, 15, 0.12);
+  --border-subtle: rgba(21, 20, 15, 0.06);
+  --glass: rgba(244, 241, 234, 0.9);
+  --accent: #c23b22;
 
   --font-sans: 'Instrument Sans Variable', 'Instrument Sans', -apple-system,
     BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -27,19 +29,38 @@
   --shell: 48rem;
 }
 
+/* Dark tokens appear twice: once for "system is dark and no override",
+   once for an explicit override. Keep the two blocks identical. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0a0b0c;
-    --surface: #121316;
-    --card: #181a1e;
-    --text-main: #f5f6f8;
-    --text-sub: #8e919a;
-    --text-faint: #5e616b;
-    --border-main: #f5f6f8;
-    --border-hairline: rgba(245, 246, 248, 0.12);
-    --border-subtle: rgba(245, 246, 248, 0.06);
-    --glass: rgba(10, 11, 12, 0.92);
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0e0d0b;
+    --surface: #161512;
+    --card: #1d1c18;
+    --text-main: #ede8de;
+    --text-sub: #9a958a;
+    --text-faint: #6a665d;
+    --border-main: #ede8de;
+    --border-hairline: rgba(237, 232, 222, 0.12);
+    --border-subtle: rgba(237, 232, 222, 0.06);
+    --glass: rgba(14, 13, 11, 0.9);
+    --accent: #e8664a;
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0e0d0b;
+  --surface: #161512;
+  --card: #1d1c18;
+  --text-main: #ede8de;
+  --text-sub: #9a958a;
+  --text-faint: #6a665d;
+  --border-main: #ede8de;
+  --border-hairline: rgba(237, 232, 222, 0.12);
+  --border-subtle: rgba(237, 232, 222, 0.06);
+  --glass: rgba(14, 13, 11, 0.9);
+  --accent: #e8664a;
 }
 
 *, *::before, *::after {
@@ -68,7 +89,7 @@ body {
 }
 
 ::selection {
-  background: var(--text-main);
+  background: var(--accent);
   color: var(--bg);
 }
 
@@ -172,6 +193,10 @@ nav.site-nav a {
   header.site .wrap {
     gap: 1rem;
   }
+  .brand-name,
+  nav.site-nav a {
+    font-stretch: 82%;
+  }
   .brand-name {
     letter-spacing: 0.1em;
   }
@@ -223,12 +248,17 @@ main.wrap {
 }
 
 .hero h1 {
-  font-size: clamp(3.2rem, 9.5vw, 6.2rem);
-  font-weight: 750;
-  letter-spacing: -0.045em;
-  line-height: 0.96;
+  font-size: clamp(3.6rem, 12vw, 7.2rem);
+  font-weight: 700;
+  font-stretch: 78%;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
   text-transform: uppercase;
   margin-bottom: 2rem;
+}
+
+.hero h1 .accent {
+  color: var(--accent);
 }
 
 .hero-bottom {
@@ -253,8 +283,9 @@ main.wrap {
 }
 
 .hero-tag {
+  font-family: var(--font-mono);
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-sub);
@@ -279,12 +310,27 @@ main.wrap {
 }
 
 .gallery-label {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-main);
   padding-top: 0.2rem;
+}
+
+.gallery-label .num {
+  color: var(--accent);
+}
+
+.gallery-label::after {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 1.75rem;
+  height: 1px;
+  margin-left: 0.6rem;
+  background: var(--accent);
 }
 
 .gallery-content {
@@ -366,8 +412,9 @@ main.wrap {
 
 .status-pill {
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-sub);
@@ -431,6 +478,7 @@ main.wrap {
 }
 
 .prose .meta {
+  font-family: var(--font-mono);
   color: var(--text-faint);
   font-size: 0.82rem;
   display: flex;
@@ -452,6 +500,28 @@ nav.site-nav a.lang-switch {
   color: var(--text-main);
   background: var(--surface);
   transition: all 0.15s ease;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--border-hairline);
+  background: none;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--text-main);
+  border-color: var(--text-main);
+}
+
+html:not(.js) .theme-toggle {
+  display: none;
 }
 
 nav.site-nav a.lang-switch:hover {

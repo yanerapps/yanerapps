@@ -1,5 +1,5 @@
 ---
-import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/instrument-sans/wdth.css';
 import '@fontsource-variable/newsreader';
 import '@fontsource-variable/newsreader/wght-italic.css';
 import '../styles/global.css';
@@ -43,8 +43,8 @@ const zhUrl = new URL(zhPath, site).href;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff" />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0b0c" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f1ea" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0d0b" />
 
     <!-- Open Graph / Social Meta -->
     <meta property="og:type" content="website" />
@@ -58,7 +58,14 @@ const zhUrl = new URL(zhPath, site).href;
     <link rel="alternate" hreflang="x-default" href={enUrl} />
 
     <script is:inline>
-      document.documentElement.classList.add('js');
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        try {
+          var t = localStorage.getItem('theme');
+          if (t) d.dataset.theme = t;
+        } catch (e) {}
+      })();
     </script>
   </head>
 
@@ -74,8 +81,14 @@ const zhUrl = new URL(zhPath, site).href;
           <a href={privacy} aria-current={currentPath.startsWith('/privacy') ? 'page' : undefined}>{zh ? '隐私' : 'Privacy'}</a>
           <a href={support} aria-current={currentPath.startsWith('/support') ? 'page' : undefined}>{zh ? '支持' : 'Support'}</a>
           {zh
-            ? <a class="lang-switch" href={enPath} hreflang="en" lang="en">English</a>
-            : <a class="lang-switch" href={zhPath} hreflang="zh-CN" lang="zh-CN">中文</a>}
+            ? <a class="lang-switch" href={enPath} hreflang="en" lang="en" aria-label="English">EN</a>
+            : <a class="lang-switch" href={zhPath} hreflang="zh-CN" lang="zh-CN" aria-label="中文">ZH</a>}
+          <button class="theme-toggle" type="button" aria-label={zh ? '切换深浅色' : 'Toggle dark mode'}>
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+              <path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor" />
+            </svg>
+          </button>
         </nav>
       </div>
     </header>
@@ -94,6 +107,21 @@ const zhUrl = new URL(zhPath, site).href;
         </div>
       </div>
     </footer>
+
+    <!-- Theme toggle: an explicit choice is stored; picking the system theme clears it -->
+    <script is:inline>
+      document.querySelector('.theme-toggle').addEventListener('click', function () {
+        var d = document.documentElement;
+        var sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        var next = (d.dataset.theme || sys) === 'dark' ? 'light' : 'dark';
+        try {
+          if (next === sys) localStorage.removeItem('theme');
+          else localStorage.setItem('theme', next);
+        } catch (e) {}
+        if (next === sys) delete d.dataset.theme;
+        else d.dataset.theme = next;
+      });
+    </script>
 
     <!-- Scroll Reveal Enhancement -->
     <script is:inline>
