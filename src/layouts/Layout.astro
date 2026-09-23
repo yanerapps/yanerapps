@@ -24,6 +24,13 @@ const zh = lang.startsWith('zh');
 const home = zh ? '/zh/' : '/';
 const privacy = zh ? '/privacy/zh/' : '/privacy/';
 const support = zh ? '/support/zh/' : '/support/';
+
+// Every page has a counterpart: /x/ <-> /x/zh/
+const enPath = zh ? currentPath.replace(/zh\/$/, '') : currentPath;
+const zhPath = enPath + 'zh/';
+const site = Astro.site || 'https://yanerapps.com';
+const enUrl = new URL(enPath, site).href;
+const zhUrl = new URL(zhPath, site).href;
 ---
 
 <!doctype html>
@@ -46,7 +53,9 @@ const support = zh ? '/support/zh/' : '/support/';
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content="https://yanerapps.com/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <slot name="head" />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
 
     <script is:inline>
       document.documentElement.classList.add('js');
@@ -64,6 +73,9 @@ const support = zh ? '/support/zh/' : '/support/';
         <nav class="site-nav" aria-label={zh ? '站点导航' : 'Site navigation'}>
           <a href={privacy} aria-current={currentPath.startsWith('/privacy') ? 'page' : undefined}>{zh ? '隐私' : 'Privacy'}</a>
           <a href={support} aria-current={currentPath.startsWith('/support') ? 'page' : undefined}>{zh ? '支持' : 'Support'}</a>
+          {zh
+            ? <a class="lang-switch" href={enPath} hreflang="en" lang="en">English</a>
+            : <a class="lang-switch" href={zhPath} hreflang="zh-CN" lang="zh-CN">中文</a>}
         </nav>
       </div>
     </header>

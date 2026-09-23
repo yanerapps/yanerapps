@@ -163,6 +163,27 @@ nav.site-nav a {
   transition: color 0.15s ease;
 }
 
+.brand-name,
+nav.site-nav a {
+  white-space: nowrap;
+}
+
+@media (max-width: 479px) {
+  header.site .wrap {
+    gap: 1rem;
+  }
+  .brand-name {
+    letter-spacing: 0.1em;
+  }
+  nav.site-nav {
+    gap: 0.75rem;
+  }
+  nav.site-nav a,
+  nav.site-nav a.lang-switch {
+    letter-spacing: 0.02em;
+  }
+}
+
 nav.site-nav a:hover,
 nav.site-nav a[aria-current="page"] {
   color: var(--text-main);
@@ -418,7 +439,7 @@ main.wrap {
   flex-wrap: wrap;
 }
 
-.lang-switch {
+nav.site-nav a.lang-switch {
   display: inline-flex;
   align-items: center;
   padding: 0.15rem 0.65rem;
@@ -433,11 +454,7 @@ main.wrap {
   transition: all 0.15s ease;
 }
 
-.hero-tag .lang-switch {
-  margin-left: 0.6rem;
-}
-
-.lang-switch:hover {
+nav.site-nav a.lang-switch:hover {
   background: var(--text-main);
   color: var(--bg);
   border-color: var(--text-main);
