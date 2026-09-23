@@ -19,6 +19,11 @@ const {
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://yanerapps.com').href;
+
+const zh = lang.startsWith('zh');
+const home = zh ? '/zh/' : '/';
+const privacy = zh ? '/privacy/zh/' : '/privacy/';
+const support = zh ? '/support/zh/' : '/support/';
 ---
 
 <!doctype html>
@@ -41,6 +46,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://yanerapp
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content="https://yanerapps.com/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <slot name="head" />
 
     <script is:inline>
       document.documentElement.classList.add('js');
@@ -48,16 +54,16 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://yanerapp
   </head>
 
   <body>
-    <a class="skip" href="#main">Skip to content</a>
+    <a class="skip" href="#main">{zh ? '跳到正文' : 'Skip to content'}</a>
 
     <header class="site">
       <div class="wrap">
-        <a class="brand-container" href="/" aria-label="Yaner Apps home">
+        <a class="brand-container" href={home} aria-label={zh ? 'Yaner Apps 首页' : 'Yaner Apps home'}>
           <span class="brand-name">Yaner Apps</span>
         </a>
-        <nav class="site-nav" aria-label="Site navigation">
-          <a href="/privacy/" aria-current={currentPath.startsWith('/privacy') ? 'page' : undefined}>Privacy</a>
-          <a href="/support/" aria-current={currentPath.startsWith('/support') ? 'page' : undefined}>Support</a>
+        <nav class="site-nav" aria-label={zh ? '站点导航' : 'Site navigation'}>
+          <a href={privacy} aria-current={currentPath.startsWith('/privacy') ? 'page' : undefined}>{zh ? '隐私' : 'Privacy'}</a>
+          <a href={support} aria-current={currentPath.startsWith('/support') ? 'page' : undefined}>{zh ? '支持' : 'Support'}</a>
         </nav>
       </div>
     </header>
@@ -68,11 +74,11 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://yanerapp
 
     <footer class="site">
       <div class="wrap">
-        <span>Made with love &middot; &copy; 2026 Yaner Apps</span>
+        <span>{zh ? '用心制作' : 'Made with love'} &middot; &copy; 2026 Yaner Apps</span>
         <div class="footer-links">
-          <a href="/">Home</a>
-          <a href="/privacy/">Privacy Policy</a>
-          <a href="/support/">Support</a>
+          <a href={home}>{zh ? '首页' : 'Home'}</a>
+          <a href={privacy}>{zh ? '隐私政策' : 'Privacy Policy'}</a>
+          <a href={support}>{zh ? '支持' : 'Support'}</a>
         </div>
       </div>
     </footer>

@@ -6,6 +6,11 @@ const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root l
 ---
 
 <Layout title={title} description={description} currentPath="/">
+  <Fragment slot="head">
+    <link rel="alternate" hreflang="en" href="https://yanerapps.com/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://yanerapps.com/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://yanerapps.com/" />
+  </Fragment>
   <!-- Hero Section -->
   <section class="hero">
     <h1 class="reveal">
@@ -14,7 +19,7 @@ const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root l
     </h1>
     <div class="hero-bottom reveal">
       <p>An independent software studio.</p>
-      <div class="hero-tag">[Est. 2026]</div>
+      <div class="hero-tag">[Est. 2026] <a class="lang-switch" href="/zh/">中文版本</a></div>
     </div>
   </section>
 

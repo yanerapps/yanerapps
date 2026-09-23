@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Yaner Apps — 认真做好用的 App';
+const description = 'Yaner Apps 认真做好用的 App，作品有 GPS-Go——一款免 root 的安卓虚拟定位工具。';
+---
+
+<Layout title={title} description={description} currentPath="/zh/" lang="zh-CN">
+  <Fragment slot="head">
+    <link rel="alternate" hreflang="en" href="https://yanerapps.com/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://yanerapps.com/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://yanerapps.com/" />
+  </Fragment>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="reveal">
+      认真做 <br />
+      好用的 App
+    </h1>
+    <div class="hero-bottom reveal">
+      <p>一间独立软件工作室。</p>
+      <div class="hero-tag">[2026 年创立] <a class="lang-switch" href="/">English</a></div>
+    </div>
+  </section>
+
+  <!-- Section 01: Manifesto -->
+  <section class="gallery-section" aria-label="理念">
+    <div class="gallery-label reveal">01 / 理念</div>
+    <div class="gallery-content">
+      <div class="manifesto-origin reveal">
+        Yaner <span class="cjk">取自「燕儿」，就是小燕子。</span>
+      </div>
+      <div class="manifesto-body">
+        <p class="reveal">
+          燕子筑巢，一口泥一口泥地衔回来，不急不躁，也清楚要把家安在哪里。我们做软件也是这样。
+        </p>
+        <p class="reveal">
+          不做诱导性设计，不制造虚假的紧迫感。规模小、方向专，反而是长处：每一个工具，都要打磨到值得存在为止。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 02: Featured Product -->
+  <section class="gallery-section" aria-label="应用">
+    <div class="gallery-label reveal">02 / 应用</div>
+    <div class="gallery-content">
+      <div class="product-heading reveal">GPS-Go</div>
+      <div class="product-role reveal">免 root 的虚拟定位工具</div>
+      <p class="product-desc reveal">
+        在地图上选一个点，模拟设备坐标，再用悬浮摇杆控制移动。
+      </p>
+      <ul class="gallery-features reveal">
+        <li>瞬移到任意坐标或收藏地点，也可以沿路线移动并调节速度</li>
+        <li>悬浮摇杆，可选圆盘摇杆或十字方向键</li>
+        <li>完全私密——所有数据都留在你的设备上</li>
+      </ul>
+      <div class="reveal">
+        <span class="status-pill">即将上线</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 03: Contact -->
+  <section class="gallery-section" aria-label="联系">
+    <div class="gallery-label reveal">03 / 联系</div>
+    <div class="gallery-content">
+      <div class="reveal">
+        <a href="mailto:yanerapps@gmail.com" class="contact-action">
+          yanerapps@gmail.com
+        </a>
+        <p class="contact-sub">
+          问题、反馈和技术支持，都可以写信来。<a href="/support/zh/">支持页面</a>列出了来信时需要附上的信息。
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
