@@ -30,18 +30,16 @@ import {
   Vector3,
   WebGLRenderer,
 } from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // Bird space: x is forward (the beak), y is up, z is the right wing. The camera
-// starts below the flight line on the right-wing side, looking up, and can be
-// dragged around the bird. Everything is unlit painted surfaces in barn-swallow
-// livery; the sky itself is a CSS gradient behind the transparent canvas.
+// sits below the flight line on the right-wing side, looking up, and only leans a
+// few degrees with the pointer and the page. Everything is unlit painted surfaces
+// in barn-swallow livery; the sky itself is a CSS gradient behind the transparent canvas.
 const ELEVATION = 0.6; // radians below the flight plane (~35°)
 const AZIMUTH = 0.45; // camera a little ahead of the bird, so the wings lie on a diagonal
 const DISTANCE = 8.0;
 const FOV = 24; // long lens: the near wing stays close to the far one in size, so the silhouette reads flat
 const BANK = -0.14; // standing roll that tips the belly toward the camera
-const HOME_AFTER = 5; // seconds without dragging before the camera drifts back
 const WIND_X = 5; // wind streaks recycle across this half-width
 const SPAN = 1.5; // shoulder to wing tip
 const WRIST = 0.45; // as a fraction of the span
@@ -466,7 +464,7 @@ export function mount(el: HTMLElement) {
   try {
     renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true });
   } catch {
-    el.remove();
+    (el.parentElement ?? el).remove(); // no WebGL: drop the sky and its inscription together
     return;
   }
   const small = el.clientWidth < 480;
@@ -479,7 +477,6 @@ export function mount(el: HTMLElement) {
     .set(Math.sin(AZIMUTH) * Math.cos(ELEVATION), -Math.sin(ELEVATION), Math.cos(AZIMUTH) * Math.cos(ELEVATION))
     .multiplyScalar(DISTANCE);
   camera.lookAt(0, 0, 0);
-  const home = camera.position.clone();
 
   const flight = new Group();
   flight.rotation.z = 0.12; // the flight line climbs gently to the right
@@ -491,21 +488,36 @@ export function mount(el: HTMLElement) {
   let raf = 0;
   let last = 0;
 
-  // Drag to look at the bird from any side; the wheel and vertical swipes keep scrolling the page.
-  const controls = new OrbitControls(camera, canvas);
-  controls.enablePan = false;
-  controls.enableZoom = false;
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.rotateSpeed = 0.6;
-  controls.minPolarAngle = 0.2;
-  controls.maxPolarAngle = Math.PI - 0.2;
-  canvas.style.touchAction = 'pan-y';
-  let dragging = false;
-  let idle = 0;
-  controls.addEventListener('start', () => { dragging = true; });
-  controls.addEventListener('end', () => { dragging = false; idle = 0; });
-  controls.addEventListener('change', () => { dirty = true; });
+  // The camera only leans: a few degrees after the pointer, a little with the page as the sky
+  // scrolls through the viewport, and a slow idle drift. A quick sweep of the pointer is a gust.
+  let aimX = 0; // pointer across the viewport, -1..1
+  let aimY = 0;
+  let leanX = 0; // eased
+  let leanY = 0;
+  let breeze = 0; // gust raised by the pointer
+  if (!reduced) {
+    let px: number | null = null;
+    let py = 0;
+    window.addEventListener('pointermove', (e) => {
+      const nx = (e.clientX / innerWidth) * 2 - 1;
+      const ny = (e.clientY / innerHeight) * 2 - 1;
+      if (px !== null) breeze = Math.min(0.6, breeze + Math.hypot(nx - px, ny - py) * 0.5);
+      px = aimX = nx;
+      py = aimY = ny;
+    }, { passive: true });
+    document.documentElement.addEventListener('mouseleave', () => { aimX = 0; aimY = 0; });
+  }
+  function aimCamera(dt: number) {
+    const k = 1 - Math.exp(-dt * 3);
+    leanX += (aimX - leanX) * k;
+    leanY += (aimY - leanY) * k;
+    const r = el.getBoundingClientRect();
+    const scrolled = Math.max(-1, Math.min(1, ((r.top + r.height / 2) / innerHeight) * 2 - 1)); // -1 at the top of the viewport
+    const az = AZIMUTH + 0.1 * leanX + 0.02 * Math.sin(t * 0.17);
+    const elev = ELEVATION + 0.06 * leanY + 0.05 * scrolled;
+    camera.position.set(Math.sin(az) * Math.cos(elev), -Math.sin(elev), Math.cos(az) * Math.cos(elev)).multiplyScalar(DISTANCE);
+    camera.lookAt(0, 0, 0);
+  }
 
   // The wing and tail are painted onto canvases in bird units, then draped over their surfaces.
   const wingGeo = wingGeometry();
@@ -704,7 +716,8 @@ export function mount(el: HTMLElement) {
       }
     }
     const g = (t - gustAt) / gustLen;
-    const gust = g > 0 && g < 1 ? Math.sin(Math.PI * g) ** 2 : 0;
+    breeze = Math.max(0, breeze - dt * 0.6);
+    const gust = Math.max(breeze, g > 0 && g < 1 ? Math.sin(Math.PI * g) ** 2 : 0);
 
     if (t - flapAt > beats * WING.beat + glide) {
       flapAt = t; // glided long enough: a few strokes, then glide again
@@ -723,15 +736,10 @@ export function mount(el: HTMLElement) {
     if (!visible) return;
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
-    if (!reduced) step(dt);
-    if (!dragging && !reduced) {
-      idle += dt;
-      if (idle > HOME_AFTER && camera.position.distanceToSquared(home) > 1e-4) {
-        camera.position.lerp(home, 1 - Math.exp(-dt)); // drift back to the composed view
-        dirty = true;
-      }
+    if (!reduced) {
+      step(dt);
+      aimCamera(dt);
     }
-    if (controls.update(dt)) dirty = true;
     if (!reduced || dirty) {
       renderer.render(scene, camera);
       dirty = false;

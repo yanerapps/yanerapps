@@ -1,4 +1,15 @@
-<div class="sky reveal" aria-hidden="true"><canvas></canvas></div>
+---
+interface Props {
+  inscription: string; // the studio motto in the page's language: 逐风而行 / Ride the Wind
+  lang: string;
+}
+const { inscription, lang } = Astro.props;
+---
+
+<div class="sky-frame">
+  <div class="sky reveal" aria-hidden="true"><canvas></canvas></div>
+  <p class="sky-inscription reveal" lang={lang}>{inscription}</p>
+</div>
 
 <script>
   // three.js is only fetched once the sky is about to scroll into view.
@@ -8,7 +19,7 @@
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
         io.disconnect();
-        import('./swallow').then((m) => m.mount(el), () => el.remove());
+        import('./swallow').then((m) => m.mount(el), () => el.parentElement?.remove());
       },
       { rootMargin: '400px 0px' },
     );

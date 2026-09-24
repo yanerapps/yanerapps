@@ -398,9 +398,13 @@ main.wrap {
 
 /* ---- manifesto sky (decorative three.js swallow, SwallowSky.astro) ---- */
 
+.sky-frame {
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
 .sky {
   aspect-ratio: 16 / 9;
-  margin-bottom: 1.75rem;
   background: linear-gradient(var(--sky-top), var(--sky-mid) 55%, var(--sky-bottom));
   /* The sky washes out into the page on every side instead of ending at a frame. */
   mask-image:
@@ -415,12 +419,33 @@ main.wrap {
   display: block;
   width: 100%;
   height: 100%;
-  cursor: grab; /* drag to look at the swallow from another side */
-  touch-action: pan-y;
 }
 
-.sky canvas:active {
-  cursor: grabbing;
+/* The inscription of a painting: the studio's motto in the corner of the sky — a vertical 落款 of
+   upright characters on the Chinese page, an italic line on the English one. It sits outside .sky
+   so the sky's edge mask leaves it crisp. */
+.sky-inscription {
+  position: absolute;
+  top: 8%;
+  right: 6%;
+  margin: 0;
+  white-space: nowrap; /* one line, even if the frame has no height yet */
+  line-height: 1;
+  color: var(--text-main);
+  opacity: 0.85;
+}
+
+.sky-inscription:lang(zh) {
+  font-family: var(--font-cjk);
+  font-size: 1.05rem;
+  letter-spacing: 0.25em;
+}
+
+.sky-inscription:lang(en) {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
 }
 
 @media (max-width: 479px) {
@@ -429,7 +454,7 @@ main.wrap {
   }
 }
 
-html:not(.js) .sky {
+html:not(.js) .sky-frame {
   display: none;
 }
 
@@ -783,7 +808,7 @@ html.js .reveal.is-visible {
     color: #000 !important;
     font-size: 11pt;
   }
-  header.site, footer.site, .lang-switch, .skip, .sky {
+  header.site, footer.site, .lang-switch, .skip, .sky-frame {
     display: none !important;
   }
   main.wrap {
