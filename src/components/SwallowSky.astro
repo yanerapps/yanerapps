@@ -1,0 +1,17 @@
+<div class="sky reveal" aria-hidden="true"><canvas></canvas></div>
+
+<script>
+  // three.js is only fetched once the sky is about to scroll into view.
+  const el = document.querySelector<HTMLElement>('.sky');
+  if (el) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        import('./swallow').then((m) => m.mount(el), () => el.remove());
+      },
+      { rootMargin: '400px 0px' },
+    );
+    io.observe(el);
+  }
+</script>

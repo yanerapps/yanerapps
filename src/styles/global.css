@@ -18,6 +18,15 @@
   --glass: rgba(244, 241, 234, 0.9);
   --accent: #c23b22;
 
+  /* manifesto sky: a muted daytime wash; dark mode turns it to dusk */
+  --sky-top: #9dbdd0;
+  --sky-mid: #bfd3dc;
+  --sky-bottom: #e2e9e5;
+  --swallow-back: #222a4f;
+  --swallow-belly: #f7f4ed;
+  --swallow-face: var(--accent);
+  --sky-wind: rgba(252, 251, 247, 0.6);
+
   --font-sans: 'Instrument Sans Variable', 'Instrument Sans', -apple-system,
     BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-serif: 'Newsreader Variable', 'Newsreader', 'Times New Roman', Georgia,
@@ -45,6 +54,13 @@
     --border-subtle: rgba(237, 232, 222, 0.06);
     --glass: rgba(14, 13, 11, 0.9);
     --accent: #e8664a;
+    --sky-top: #1a2439;
+    --sky-mid: #37476a;
+    --sky-bottom: #6e5650;
+    --swallow-back: #0d1120;
+    --swallow-belly: #7e8196;
+    --swallow-face: #a8452b;
+    --sky-wind: rgba(237, 232, 222, 0.16);
   }
 }
 
@@ -61,6 +77,13 @@
   --border-subtle: rgba(237, 232, 222, 0.06);
   --glass: rgba(14, 13, 11, 0.9);
   --accent: #e8664a;
+  --sky-top: #1a2439;
+  --sky-mid: #37476a;
+  --sky-bottom: #6e5650;
+  --swallow-back: #0d1120;
+  --swallow-belly: #7e8196;
+  --swallow-face: #a8452b;
+  --sky-wind: rgba(237, 232, 222, 0.16);
 }
 
 *, *::before, *::after {
@@ -362,6 +385,37 @@ main.wrap {
 
 .manifesto-body p + p {
   margin-top: 1rem;
+}
+
+/* ---- manifesto sky (decorative three.js swallow, SwallowSky.astro) ---- */
+
+.sky {
+  aspect-ratio: 16 / 9;
+  margin-bottom: 1.75rem;
+  background: linear-gradient(var(--sky-top), var(--sky-mid) 55%, var(--sky-bottom));
+  /* The sky washes out into the page on every side instead of ending at a frame. */
+  mask-image:
+    linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.4) 6%, rgba(0, 0, 0, 0.8) 12%, #000 20%,
+      #000 80%, rgba(0, 0, 0, 0.8) 88%, rgba(0, 0, 0, 0.4) 94%, transparent),
+    linear-gradient(transparent, rgba(0, 0, 0, 0.4) 6%, rgba(0, 0, 0, 0.8) 12%, #000 18%,
+      #000 82%, rgba(0, 0, 0, 0.8) 88%, rgba(0, 0, 0, 0.4) 94%, transparent);
+  mask-composite: intersect;
+}
+
+.sky canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 479px) {
+  .sky {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+html:not(.js) .sky {
+  display: none;
 }
 
 /* ---- product showcase (GPS-Go) ---- */
@@ -714,7 +768,7 @@ html.js .reveal.is-visible {
     color: #000 !important;
     font-size: 11pt;
   }
-  header.site, footer.site, .lang-switch, .skip {
+  header.site, footer.site, .lang-switch, .skip, .sky {
     display: none !important;
   }
   main.wrap {
