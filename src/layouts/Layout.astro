@@ -3,6 +3,7 @@ import '@fontsource-variable/instrument-sans/wdth.css';
 import '@fontsource-variable/newsreader';
 import '@fontsource-variable/newsreader/wght-italic.css';
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -56,6 +57,7 @@ const zhUrl = new URL(zhPath, site).href;
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <ClientRouter />
 
     <script is:inline>
       (function () {
@@ -65,6 +67,12 @@ const zhUrl = new URL(zhPath, site).href;
           var t = localStorage.getItem('theme');
           if (t) d.dataset.theme = t;
         } catch (e) {}
+        // Client-side navigation replaces <html>'s attributes with the next page's; carry these over.
+        document.addEventListener('astro:before-swap', function (e) {
+          var n = e.newDocument.documentElement;
+          n.classList.add('js');
+          if (d.dataset.theme) n.dataset.theme = d.dataset.theme;
+        });
       })();
     </script>
   </head>
@@ -113,9 +121,11 @@ const zhUrl = new URL(zhPath, site).href;
       </div>
     </footer>
 
-    <!-- Theme toggle: an explicit choice is stored; picking the system theme clears it -->
+    <!-- Theme toggle: an explicit choice is stored; picking the system theme clears it.
+         Delegated, so it keeps working after client-side navigation swaps the body. -->
     <script is:inline>
-      document.querySelector('.theme-toggle').addEventListener('click', function () {
+      document.addEventListener('click', function (ev) {
+        if (!ev.target.closest('.theme-toggle')) return;
         var d = document.documentElement;
         var sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         var next = (d.dataset.theme || sys) === 'dark' ? 'light' : 'dark';
@@ -128,33 +138,37 @@ const zhUrl = new URL(zhPath, site).href;
       });
     </script>
 
-    <!-- Scroll Reveal Enhancement -->
+    <!-- Scroll reveal: runs on load and again for each page swapped in by client-side navigation -->
     <script is:inline>
       (function () {
         var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var items = document.querySelectorAll('.reveal');
-        if (reduced || !('IntersectionObserver' in window)) {
-          items.forEach(function (el) {
-            el.classList.add('is-visible');
-          });
-          return;
-        }
-        var seen = 0;
-        var io = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
-              if (!entry.isIntersecting) return;
-              var el = entry.target;
-              el.style.transitionDelay = Math.min(seen++ % 4, 3) * 60 + 'ms';
+        function reveal() {
+          var items = document.querySelectorAll('.reveal:not(.is-visible)');
+          if (reduced || !('IntersectionObserver' in window)) {
+            items.forEach(function (el) {
               el.classList.add('is-visible');
-              io.unobserve(el);
             });
-          },
-          { rootMargin: '999% 0px -6% 0px', threshold: 0.05 }
-        );
-        items.forEach(function (el) {
-          io.observe(el);
-        });
+            return;
+          }
+          var seen = 0;
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return;
+                var el = entry.target;
+                el.style.transitionDelay = Math.min(seen++ % 4, 3) * 60 + 'ms';
+                el.classList.add('is-visible');
+                io.unobserve(el);
+              });
+            },
+            { rootMargin: '999% 0px -6% 0px', threshold: 0.05 }
+          );
+          items.forEach(function (el) {
+            io.observe(el);
+          });
+        }
+        reveal();
+        document.addEventListener('astro:after-swap', reveal);
       })();
     </script>
   </body>

@@ -11,17 +11,34 @@ const { inscription } = Astro.props;
 </div>
 
 <script>
-  // three.js is only fetched once the sky is about to scroll into view.
-  const el = document.querySelector<HTMLElement>('.sky');
-  if (el) {
-    const io = new IntersectionObserver(
+  // three.js is only fetched once the sky is about to scroll into view. Client-side navigation swaps
+  // the page's DOM, so the scene is mounted per page and torn down before the swap.
+  let dispose: (() => void) | undefined;
+  let io: IntersectionObserver | undefined;
+  function init() {
+    const el = document.querySelector<HTMLElement>('.sky');
+    if (!el || el.dataset.live !== undefined) return;
+    el.dataset.live = '';
+    io = new IntersectionObserver(
       (entries) => {
         if (!entries.some((e) => e.isIntersecting)) return;
-        io.disconnect();
-        import('./swallow').then((m) => m.mount(el), () => el.parentElement?.remove());
+        io?.disconnect();
+        import('./swallow').then(
+          (m) => {
+            if (el.isConnected) dispose = m.mount(el);
+          },
+          () => el.parentElement?.remove(),
+        );
       },
       { rootMargin: '400px 0px' },
     );
     io.observe(el);
   }
+  init();
+  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', () => {
+    io?.disconnect();
+    dispose?.();
+    dispose = undefined;
+  });
 </script>

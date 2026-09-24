@@ -495,17 +495,19 @@ export function mount(el: HTMLElement) {
   let leanX = 0; // eased
   let leanY = 0;
   let breeze = 0; // gust raised by the pointer
+  let px: number | null = null;
+  let py = 0;
+  const onPointer = (e: PointerEvent) => {
+    const nx = (e.clientX / innerWidth) * 2 - 1;
+    const ny = (e.clientY / innerHeight) * 2 - 1;
+    if (px !== null) breeze = Math.min(0.6, breeze + Math.hypot(nx - px, ny - py) * 0.5);
+    px = aimX = nx;
+    py = aimY = ny;
+  };
+  const onLeave = () => { aimX = 0; aimY = 0; };
   if (!reduced) {
-    let px: number | null = null;
-    let py = 0;
-    window.addEventListener('pointermove', (e) => {
-      const nx = (e.clientX / innerWidth) * 2 - 1;
-      const ny = (e.clientY / innerHeight) * 2 - 1;
-      if (px !== null) breeze = Math.min(0.6, breeze + Math.hypot(nx - px, ny - py) * 0.5);
-      px = aimX = nx;
-      py = aimY = ny;
-    }, { passive: true });
-    document.documentElement.addEventListener('mouseleave', () => { aimX = 0; aimY = 0; });
+    window.addEventListener('pointermove', onPointer, { passive: true });
+    document.documentElement.addEventListener('mouseleave', onLeave);
   }
   function aimCamera(dt: number) {
     const k = 1 - Math.exp(-dt * 3);
@@ -774,8 +776,10 @@ export function mount(el: HTMLElement) {
     dirty = true;
   }
   applyTheme();
-  new MutationObserver(applyTheme).observe(document.documentElement, { attributeFilter: ['data-theme'] });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+  const themeWatch = new MutationObserver(applyTheme);
+  themeWatch.observe(document.documentElement, { attributeFilter: ['data-theme'] });
+  const scheme = matchMedia('(prefers-color-scheme: dark)');
+  scheme.addEventListener('change', applyTheme);
 
   // Development only: `?wing` in the URL opens a panel of live sliders for the WING parameters.
   // Vite drops this branch, and the module behind it, from production builds.
@@ -796,13 +800,29 @@ export function mount(el: HTMLElement) {
     dirty = true;
   }
   resize();
-  new ResizeObserver(resize).observe(el);
+  const sizer = new ResizeObserver(resize);
+  sizer.observe(el);
 
-  new IntersectionObserver((entries) => {
+  const watcher = new IntersectionObserver((entries) => {
     visible = entries[entries.length - 1].isIntersecting;
     if (visible && !raf) {
       last = performance.now();
       raf = requestAnimationFrame(frame);
     }
-  }).observe(el);
+  });
+  watcher.observe(el);
+
+  // Tear-down for client-side navigation: stop the loop, drop the listeners, release the GL context.
+  return () => {
+    visible = false;
+    cancelAnimationFrame(raf);
+    watcher.disconnect();
+    sizer.disconnect();
+    themeWatch.disconnect();
+    scheme.removeEventListener('change', applyTheme);
+    window.removeEventListener('pointermove', onPointer);
+    document.documentElement.removeEventListener('mouseleave', onLeave);
+    renderer.dispose();
+    renderer.forceContextLoss();
+  };
 }
