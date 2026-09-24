@@ -46,6 +46,7 @@ const HOME_AFTER = 5; // seconds without dragging before the camera drifts back
 const WIND_X = 5; // wind streaks recycle across this half-width
 const SPAN = 1.5; // shoulder to wing tip
 const WRIST = 0.45; // as a fraction of the span
+const OUTER = 0.72; // pivot of the tip section, as a fraction of the span
 const ROOT = -0.05; // span fraction buried in the body
 const ROOT_CHORD = 0.52;
 const SHOULDER = new Vector3(0.2, 0.04, 0.08); // high on the chest, so the wing grows out of the shoulder
@@ -127,12 +128,13 @@ function wingGeometry() {
     // The body holds the buried root, the shoulder takes over across the first fifth
     // of the span and the wrist across the middle: the surface bends instead of hinging.
     const arm = smoothstep(0, 0.2, s);
-    const hand = smoothstep(WRIST - 0.18, WRIST + 0.18, s); // wide, so the hand curves instead of creasing
+    const hand = smoothstep(WRIST - 0.18, WRIST + 0.18, s); // wide blends, so the wing curves instead of creasing
+    const outer = smoothstep(0.6, 0.92, s);
     for (let j = 0; j <= NC; j++) {
       const v = j / NC;
       position.push(te + (le - te) * v, 0.05 * (le - te) * Math.sin(Math.PI * v), s * SPAN); // gentle camber
-      skinIndex.push(0, 1, 2, 0);
-      skinWeight.push(1 - arm, arm * (1 - hand), arm * hand, 0);
+      skinIndex.push(0, 1, 2, 3);
+      skinWeight.push(1 - arm, arm * (1 - hand), arm * hand * (1 - outer), arm * hand * outer);
     }
   }
   for (let i = 0; i < NS; i++) {
@@ -348,9 +350,10 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
   beak.position.set(0.53, -0.028, 0);
   bird.add(beak);
 
-  // Each wing is one skinned surface: an anchor bone holds the root inside the body, the
-  // shoulder swings the arm and the wrist folds and twists the hand. The left wing is the
-  // right one mirrored, so the same bone rotations drive both.
+  // Each wing is one skinned surface over a chain of bones: an anchor holds the root inside the
+  // body, the shoulder swings the arm, the wrist the hand and an outer joint the tip section, so
+  // motion can travel out along the wing. The left wing is the right one mirrored, so the same
+  // bone rotations drive both.
   const wings = [1, -1].map((side) => {
     const root = new Group();
     root.position.set(SHOULDER.x, SHOULDER.y, SHOULDER.z * side);
@@ -360,14 +363,17 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
     const anchor = new Bone();
     const shoulder = new Bone();
     const wrist = new Bone();
+    const outer = new Bone();
     wrist.position.z = WRIST * SPAN;
+    outer.position.z = (OUTER - WRIST) * SPAN;
     anchor.add(shoulder);
     shoulder.add(wrist);
+    wrist.add(outer);
     mesh.add(anchor);
-    mesh.bind(new Skeleton([anchor, shoulder, wrist]));
+    mesh.bind(new Skeleton([anchor, shoulder, wrist, outer]));
     root.add(mesh);
     bird.add(root);
-    return { shoulder, wrist };
+    return { shoulder, wrist, outer };
   });
 
   const tail = new Group();
@@ -569,19 +575,28 @@ export function mount(el: HTMLElement) {
     const on = beat >= 0 && beat < beats;
     const env = on ? Math.min(1, 2 * beat, 2 * (beats - beat)) : 0; // half a beat to ease into and out of a bout
     const arm = on ? phase(beat) : 0;
-    const hand = on ? phase(Math.max(0, beat - 0.1)) : 0;
+    const hand = on ? phase(Math.max(0, beat - 0.08)) : 0; // the hand trails the arm...
+    const tip = on ? phase(Math.max(0, beat - 0.16)) : 0; // ...and the tip trails the hand
     const down = env * Math.sin(arm); // positive through the power stroke
-    const fold = env * Math.max(0, -Math.sin(hand)) ** 2; // primaries tuck in on the recovery only
+    const fold = env * Math.max(0, -Math.sin(hand)) ** 2; // primaries tuck in a little on the recovery
+    // 0 at the top of the stroke, 1 at the bottom and a little past it: the wing sweeps back as it
+    // comes down and returns forward as it rises, the tip tracing a narrow loop.
+    const sweep = (psi: number) => 0.5 * (1 - Math.cos(psi) - 0.35 * Math.sin(psi));
     wings.forEach((w, i) => {
       const flutter = (0.025 + 0.07 * gust) * (0.6 * Math.sin(t * 29 + i) + 0.4 * Math.sin(t * 43 + 2 * i));
+      // Root: the main down-and-up stroke, swinging back through the power stroke. Each section
+      // further out trails the one before and sweeps back further, so the wing bends like a whip
+      // rather than swinging as one plate: at the bottom it is curved and strongly swept, and on
+      // the way up the root leads while the tip is still finishing its sweep.
       w.shoulder.rotation.x = -(0.1 + 0.62 * env * Math.cos(arm)) - flutter * 0.25; // glides with a slight dihedral
-      // The tip sweeps back through the power stroke and comes forward again on the recovery,
-      // a narrow loop rather than a plain up-and-down beat.
-      w.shoulder.rotation.y = -(0.04 + 0.1 * env * (1 - Math.cos(arm) - 0.35 * Math.sin(arm)));
-      w.shoulder.rotation.z = -0.08 * down;
-      w.wrist.rotation.x = 0.04 - 0.55 * fold; // the hand droops a little in the glide, folds up on the recovery
-      w.wrist.rotation.y = -(0.1 + 0.3 * fold + 0.06 * down); // swept back a little, more when folded or pulling
-      w.wrist.rotation.z = -0.22 * env * Math.sin(hand) + flutter; // leading edge pitches down through the power stroke
+      w.shoulder.rotation.y = -(0.04 + 0.28 * env * sweep(arm));
+      w.shoulder.rotation.z = -0.08 * down; // pronation
+      w.wrist.rotation.x = 0.04 - 0.3 * fold - 0.4 * env * (Math.cos(hand) - Math.cos(arm));
+      w.wrist.rotation.y = -(0.08 + 0.3 * env * sweep(hand) + 0.2 * fold);
+      w.wrist.rotation.z = -0.2 * env * Math.sin(hand) + flutter; // leading edge pitches down through the power stroke
+      w.outer.rotation.x = -0.3 * env * (Math.cos(tip) - Math.cos(hand));
+      w.outer.rotation.y = -(0.03 + 0.22 * env * sweep(tip));
+      w.outer.rotation.z = -0.1 * env * Math.sin(tip);
     });
     const flutter = (0.03 + 0.08 * gust) * Math.sin(t * 37);
     tail.scale.z = 1 - 0.15 * env + 0.1 * Math.sin(t * 0.7) + flutter; // streamers close while flapping, fan in the glide
