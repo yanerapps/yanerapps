@@ -4,6 +4,7 @@ import {
   CanvasTexture,
   Color,
   ConeGeometry,
+  CylinderGeometry,
   DoubleSide,
   Float32BufferAttribute,
   Group,
@@ -40,8 +41,6 @@ const AZIMUTH = 0.45; // camera a little ahead of the bird, so the wings lie on 
 const DISTANCE = 8.0;
 const FOV = 24; // long lens: the near wing stays close to the far one in size, so the silhouette reads flat
 const BANK = -0.14; // standing roll that tips the belly toward the camera
-const BEAT = 0.3; // seconds per wingbeat; a real swallow is ~2x faster, too quick to read
-const DOWNSTROKE = 0.58; // share of each beat spent on the power stroke; the recovery is quicker
 const HOME_AFTER = 5; // seconds without dragging before the camera drifts back
 const WIND_X = 5; // wind streaks recycle across this half-width
 const SPAN = 1.5; // shoulder to wing tip
@@ -50,10 +49,46 @@ const OUTER = 0.72; // pivot of the tip section, as a fraction of the span
 const ROOT = -0.05; // span fraction buried in the body
 const ROOT_CHORD = 0.52;
 const SHOULDER = new Vector3(0.2, 0.04, 0.08); // high on the chest, so the wing grows out of the shoulder
-const FOCUS = { x: 0.06, z: -0.22 }; // every flight feather radiates from this point inside the shoulder
 // Flight feathers, innermost first, by the span fraction where each tip meets the trailing edge.
 const TIPS = Array.from({ length: 16 }, (_, k) => 0.1 + 0.9 * ((k + 1) / 16) ** 1.15);
 const X_AXIS = new Vector3(1, 0, 0);
+
+// Everything that shapes the wingbeat, in one place. The dev-only panel in swallow-debug.ts edits
+// these live; the values here are the shipped ones. Angles are radians, lags are in beats.
+export const WING = {
+  beat: 0.3, // seconds per wingbeat; a real swallow is ~2x faster, too quick to read
+  downstroke: 0.58, // share of each beat spent on the power stroke; the recovery is quicker
+  flap: 0.7, // up-and-down amplitude at the shoulder
+  dihedral: 0.1, // wings raised this much in the glide
+  lead: 0.6, // the fore-aft swing runs this far ahead of the up-and-down (stroke phase)
+  sweepRoot: 0.55, // back-sweep through the power stroke, per section
+  sweepMid: 0.45,
+  sweepTip: 0.35,
+  reachRoot: 0.15, // forward reach on the way up, per section
+  reachMid: 0.25,
+  reachTip: 0.3,
+  reachPeak: 1.75, // where the reach peaks, in half-strokes: 1 = bottom, 1.5 = level, 2 = top
+  lagMid: 0.08, // the hand trails the arm by this many beats
+  lagTip: 0.16, // the tip trails the arm by this many beats
+  whipMid: 0.57, // how much of the flap each section's up-and-down lags the one before by
+  whipTip: 0.43,
+  fold: 0.3, // the hand tucks up on the recovery
+  foldSweep: 0.2, // and back
+  twistRoot: 0.08, // leading edge pitched down through the power stroke, per section
+  twistMid: 0.2,
+  twistTip: 0.1,
+  glideSweep: 1, // scales the resting sweep of the three sections
+  feet: false, // show the feet tucked under the belly
+  bob: 0.015, // body thrown up by each power stroke
+  pitch: 0.03, // and nosed up
+  always: false, // flap continuously instead of alternating with glides
+  freeze: false, // hold the wing at `phase` of a beat
+  phase: 0.3,
+  wedgeReach: 0.56, // covert wedge: how far out along the leading edge it reaches
+  wedgeRoot: 0.3, // and the chord fraction it leaves uncovered at the root
+  focusX: 0.06, // the flight feathers radiate from this point inside the shoulder
+  focusZ: -0.22,
+};
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const smoothstep = (a: number, b: number, x: number) => {
@@ -125,16 +160,22 @@ function wingGeometry() {
   for (let i = 0; i <= NS; i++) {
     const s = lerp(ROOT, 1, i / NS);
     const [le, te] = planform(s);
-    // The body holds the buried root, the shoulder takes over across the first fifth
-    // of the span and the wrist across the middle: the surface bends instead of hinging.
-    const arm = smoothstep(0, 0.2, s);
-    const hand = smoothstep(WRIST - 0.18, WRIST + 0.18, s); // wide blends, so the wing curves instead of creasing
+    // The body pins only the part of the root buried inside it, so the visible wing turns rigidly
+    // with the shoulder and meets the body exactly along the shoulder's plane, which is what the
+    // body shader colours by. The fore-aft swing blends in over the first third of the span, so
+    // the broad root is never shoved into the flank; the wrist takes over across the middle and
+    // the tip joint toward the end. Wide blends, so the wing curves instead of creasing.
+    const arm = smoothstep(-0.05, 0.03, s);
+    const swung = smoothstep(0, 0.35, s);
+    const hand = smoothstep(WRIST - 0.18, WRIST + 0.18, s);
     const outer = smoothstep(0.6, 0.92, s);
+    const weights = [1 - arm, arm * (1 - swung) * (1 - hand), arm * swung * (1 - hand), arm * hand * (1 - outer), arm * hand * outer];
+    const bones = [0, 1, 2, 3, 4].sort((a, b) => weights[b] - weights[a]).slice(0, 4); // never more than three are non-zero
     for (let j = 0; j <= NC; j++) {
       const v = j / NC;
-      position.push(te + (le - te) * v, 0.05 * (le - te) * Math.sin(Math.PI * v), s * SPAN); // gentle camber
-      skinIndex.push(0, 1, 2, 3);
-      skinWeight.push(1 - arm, arm * (1 - hand), arm * hand * (1 - outer), arm * hand * outer);
+      position.push(te + (le - te) * v, 0.05 * (le - te) * Math.sin(Math.PI * v) * smoothstep(0, 0.2, s), s * SPAN); // gentle camber, flat at the root
+      skinIndex.push(...bones);
+      skinWeight.push(...bones.map((b) => weights[b]));
     }
   }
   for (let i = 0; i < NS; i++) {
@@ -178,6 +219,7 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
   ctx.fillStyle = p.line; // shows through between feathers as their outlines
   ctx.fillRect(box.x, box.z, box.w, box.h);
   ctx.lineJoin = 'round';
+  const FOCUS = { x: WING.focusX, z: WING.focusZ };
   const feather = (k: number) => {
     const s = TIPS[k];
     const tx = trailing(s);
@@ -254,12 +296,12 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
   } else ctx.fillStyle = p.belly;
   ctx.lineWidth = 0.006;
   ctx.strokeStyle = p.line;
-  wedge(0.3, 0.56);
+  wedge(WING.wedgeRoot, WING.wedgeReach);
   ctx.fill();
   ctx.stroke();
   if (!upper) ctx.fillStyle = shade(p.belly, -0.05);
   ctx.lineWidth = 0.004;
-  wedge(0.62, 0.38); // lesser coverts: a second, finer row of scallops
+  wedge(lerp(WING.wedgeRoot, 1, 0.45), WING.wedgeReach * 0.68); // lesser coverts: a second, finer row of scallops
   ctx.fill();
   ctx.stroke();
 
@@ -322,13 +364,14 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
   ctx.stroke();
 }
 
-/** Stroke angle for a beat position: 0 at the top, π at the bottom, the downstroke taking DOWNSTROKE of the cycle. */
+/** Stroke angle for a beat position: 0 at the top, π at the bottom, the downstroke taking WING.downstroke of the cycle. */
 function phase(beat: number) {
+  const d = WING.downstroke;
   const c = beat - Math.floor(beat);
-  return c < DOWNSTROKE ? (Math.PI * c) / DOWNSTROKE : Math.PI + (Math.PI * (c - DOWNSTROKE)) / (1 - DOWNSTROKE);
+  return c < d ? (Math.PI * c) / d : Math.PI + (Math.PI * (c - d)) / (1 - d);
 }
 
-function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin: MeshBasicMaterial, wingGeo: BufferGeometry, tailGeo: BufferGeometry) {
+function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, tailGeo: BufferGeometry) {
   const bird = new Group();
   bird.rotation.order = 'YZX'; // roll about the body axis first, then pitch
 
@@ -350,10 +393,25 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
   beak.position.set(0.53, -0.028, 0);
   bird.add(beak);
 
+  // Tiny feet drawn up under the belly, as a swallow carries them in flight.
+  const feet = new Group();
+  const legGeometry = new CylinderGeometry(0.007, 0.01, 0.09, 6);
+  const footGeometry = new SphereGeometry(0.018, 8, 6);
+  for (const side of [1, -1]) {
+    const leg = new Mesh(legGeometry, feetSkin);
+    leg.position.set(-0.21, -0.13, side * 0.042);
+    leg.rotation.z = -0.6; // from the belly down and back
+    const foot = new Mesh(footGeometry, feetSkin);
+    foot.position.set(-0.255, -0.175, side * 0.048);
+    foot.scale.set(1.8, 0.55, 1);
+    feet.add(leg, foot);
+  }
+  bird.add(feet);
+
   // Each wing is one skinned surface over a chain of bones: an anchor holds the root inside the
-  // body, the shoulder swings the arm, the wrist the hand and an outer joint the tip section, so
-  // motion can travel out along the wing. The left wing is the right one mirrored, so the same
-  // bone rotations drive both.
+  // body, the shoulder flaps the arm and a second joint on the same pivot swings it fore and aft,
+  // the wrist moves the hand and an outer joint the tip section, so motion can travel out along
+  // the wing. The left wing is the right one mirrored, so the same bone rotations drive both.
   const wings = [1, -1].map((side) => {
     const root = new Group();
     root.position.set(SHOULDER.x, SHOULDER.y, SHOULDER.z * side);
@@ -362,18 +420,20 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
     mesh.frustumCulled = false;
     const anchor = new Bone();
     const shoulder = new Bone();
+    const sweeper = new Bone();
     const wrist = new Bone();
     const outer = new Bone();
     wrist.position.z = WRIST * SPAN;
     outer.position.z = (OUTER - WRIST) * SPAN;
     anchor.add(shoulder);
-    shoulder.add(wrist);
+    shoulder.add(sweeper);
+    sweeper.add(wrist);
     wrist.add(outer);
     mesh.add(anchor);
-    mesh.bind(new Skeleton([anchor, shoulder, wrist, outer]));
+    mesh.bind(new Skeleton([anchor, shoulder, sweeper, wrist, outer]));
     root.add(mesh);
     bird.add(root);
-    return { shoulder, wrist, outer };
+    return { shoulder, sweeper, wrist, outer };
   });
 
   const tail = new Group();
@@ -381,7 +441,7 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
   tail.add(new Mesh(tailGeo, tailSkin));
   bird.add(tail);
 
-  return { bird, wings, tail };
+  return { bird, wings, tail, feet };
 }
 
 type Streak = { x: number; y: number; z: number; len: number; width: number; strength: number; gusty: boolean };
@@ -475,9 +535,16 @@ export function mount(el: HTMLElement) {
       }`,
   });
   const tailSkin = new MeshBasicMaterial({ map: tailSheet.texture, side: DoubleSide });
+  const feetSkin = new MeshBasicMaterial();
   // A dark crown and back frame the warm white belly, with the orange throat cut off by a dark breast band.
   const plumage = new ShaderMaterial({
-    uniforms: { back: { value: new Color() }, belly: { value: new Color() }, face: { value: new Color() } },
+    uniforms: {
+      back: { value: new Color() },
+      belly: { value: new Color() },
+      face: { value: new Color() },
+      wingPivot: { value: SHOULDER.clone() }, // the right wing root's plane, in bird space; mirrored for the left
+      wingUp: { value: new Vector3(0, 1, 0) },
+    },
     vertexShader: /* glsl */ `
       varying vec3 vPos;
       void main() {
@@ -485,16 +552,24 @@ export function mount(el: HTMLElement) {
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }`,
     fragmentShader: /* glsl */ `
-      uniform vec3 back, belly, face;
+      uniform vec3 back, belly, face, wingPivot, wingUp;
       varying vec3 vPos;
       float edge(float v) { float w = fwidth(v); return smoothstep(-w, w, v); } // antialiased step at 0
       void main() {
         float up = vPos.y / max(length(vPos.yz), 1e-4); // -1 under the belly, 1 along the spine
-        // The dark collar's rear edge runs from under the throat up and back to the wing root, so
-        // throat line, collar and wing leading edge read as one line; the back stays dark down to
-        // where the wings leave the body.
+        // Dark above the wing roots, cream below: on the flanks alongside the roots the split is the
+        // very plane the wing roots turn in, so the colour boundary is exactly the curve where the
+        // wing meets the body, whatever the flap angle. Spine, keel, neck and rump keep a fixed
+        // split, which the plane meets where the roots begin and end. The dark collar's rear edge
+        // runs from under the throat up and back to the wing root, so throat line, collar and
+        // leading edge read as one line.
+        float side = vPos.z < 0.0 ? -1.0 : 1.0;
+        float aboveWing = dot(vPos - vec3(wingPivot.x, wingPivot.y, wingPivot.z * side), vec3(wingUp.x, wingUp.y, wingUp.z * side));
+        float lat = abs(vPos.z) / max(length(vPos.yz), 1e-4); // 1 on the flanks, 0 along spine and keel
+        float onFlank = smoothstep(0.45, 0.8, lat) * smoothstep(-0.45, -0.28, vPos.x) * smoothstep(0.3, 0.18, vPos.x);
+        float lower = mix(1.0 - edge(up - 0.42), 1.0 - edge(aboveWing), onFlank);
         float collar = 0.279 - 0.078 * (up + 1.0) / 1.37;
-        float white = (1.0 - edge(vPos.x - collar)) * (1.0 - edge(up - 0.38));
+        float white = (1.0 - edge(vPos.x - collar)) * lower;
         vec3 c = mix(back, belly, white);
         vec3 throat = (vPos - vec3(0.387, -0.04, 0.0)) / vec3(0.081, 0.075, 0.095);
         c = mix(c, face, edge(1.0 - dot(throat, throat)) * edge(0.3 - up));
@@ -505,7 +580,7 @@ export function mount(el: HTMLElement) {
         #include <colorspace_fragment>
       }`,
   });
-  const { bird, wings, tail } = buildSwallow(plumage, feather, tailSkin, wingGeo, tailGeo);
+  const { bird, wings, tail, feet } = buildSwallow(plumage, feather, tailSkin, feetSkin, wingGeo, tailGeo);
   flight.add(bird);
 
   const wind = new ShaderMaterial({
@@ -572,39 +647,43 @@ export function mount(el: HTMLElement) {
   // spread and pitched nose-down, then a quick recovery with the hand folded and swept back,
   // the hand trailing the arm. The body is thrown up a little by each downstroke.
   function pose(beat: number, gust: number) {
-    const on = beat >= 0 && beat < beats;
-    const env = on ? Math.min(1, 2 * beat, 2 * (beats - beat)) : 0; // half a beat to ease into and out of a bout
+    const W = WING;
+    const total = W.always || W.freeze ? Infinity : beats;
+    const on = beat >= 0 && beat < total;
+    const env = on ? Math.min(1, 2 * beat, 2 * (total - beat)) : 0; // half a beat to ease into and out of a bout
     const arm = on ? phase(beat) : 0;
-    const hand = on ? phase(Math.max(0, beat - 0.08)) : 0; // the hand trails the arm...
-    const tip = on ? phase(Math.max(0, beat - 0.16)) : 0; // ...and the tip trails the hand
+    const hand = on ? phase(Math.max(0, beat - W.lagMid)) : 0; // the hand trails the arm...
+    const tip = on ? phase(Math.max(0, beat - W.lagTip)) : 0; // ...and the tip trails the hand
     const down = env * Math.sin(arm); // positive through the power stroke
     const fold = env * Math.max(0, -Math.sin(hand)) ** 2; // primaries tuck in a little on the recovery
-    // 0 at the top of the stroke, 1 at the bottom and a little past it: the wing sweeps back as it
-    // comes down and returns forward as it rises, the tip tracing a narrow loop.
-    const sweep = (psi: number) => 0.5 * (1 - Math.cos(psi) - 0.35 * Math.sin(psi));
+    // The fore-aft swing runs ahead of the up-and-down: each section swings back as it comes down,
+    // is furthest back just before the bottom, comes forward while still low, then reaches ahead
+    // of its resting line as it rises past level, peaking near the top. The tip draws a wide loop.
+    const sweep = (psi: number) => 0.5 * (1 - Math.cos(psi + W.lead));
+    const reach = (psi: number) => Math.max(0, -Math.sin(psi + (1.5 - W.reachPeak) * Math.PI)) ** 2;
     wings.forEach((w, i) => {
       const flutter = (0.025 + 0.07 * gust) * (0.6 * Math.sin(t * 29 + i) + 0.4 * Math.sin(t * 43 + 2 * i));
-      // Root: the main down-and-up stroke, swinging back through the power stroke. Each section
-      // further out trails the one before and sweeps back further, so the wing bends like a whip
-      // rather than swinging as one plate: at the bottom it is curved and strongly swept, and on
-      // the way up the root leads while the tip is still finishing its sweep.
-      w.shoulder.rotation.x = -(0.1 + 0.62 * env * Math.cos(arm)) - flutter * 0.25; // glides with a slight dihedral
-      w.shoulder.rotation.y = -(0.04 + 0.28 * env * sweep(arm));
-      w.shoulder.rotation.z = -0.08 * down; // pronation
-      w.wrist.rotation.x = 0.04 - 0.3 * fold - 0.4 * env * (Math.cos(hand) - Math.cos(arm));
-      w.wrist.rotation.y = -(0.08 + 0.3 * env * sweep(hand) + 0.2 * fold);
-      w.wrist.rotation.z = -0.2 * env * Math.sin(hand) + flutter; // leading edge pitches down through the power stroke
-      w.outer.rotation.x = -0.3 * env * (Math.cos(tip) - Math.cos(hand));
-      w.outer.rotation.y = -(0.03 + 0.22 * env * sweep(tip));
-      w.outer.rotation.z = -0.1 * env * Math.sin(tip);
+      // Root, hand and tip: each trails the one before and swings further, so the wing bends like
+      // a whip instead of swinging as one plate; the root moves least and the tip most.
+      w.shoulder.rotation.x = -(W.dihedral + W.flap * env * Math.cos(arm)) - flutter * 0.25;
+      w.shoulder.rotation.z = -W.twistRoot * down; // pronation
+      w.sweeper.rotation.y = -(0.04 * W.glideSweep + env * (W.sweepRoot * sweep(arm) - W.reachRoot * reach(arm)));
+      w.wrist.rotation.x = 0.04 - W.fold * fold - W.whipMid * W.flap * env * (Math.cos(hand) - Math.cos(arm));
+      w.wrist.rotation.y = -(0.08 * W.glideSweep + env * (W.sweepMid * sweep(hand) - W.reachMid * reach(hand)) + W.foldSweep * fold);
+      w.wrist.rotation.z = -W.twistMid * env * Math.sin(hand) + flutter; // leading edge pitches down through the power stroke
+      w.outer.rotation.x = -W.whipTip * W.flap * env * (Math.cos(tip) - Math.cos(hand));
+      w.outer.rotation.y = -(0.03 * W.glideSweep + env * (W.sweepTip * sweep(tip) - W.reachTip * reach(tip)));
+      w.outer.rotation.z = -W.twistTip * env * Math.sin(tip);
     });
+    feet.visible = W.feet;
+    plumage.uniforms.wingUp.value.set(0, 1, 0).applyEuler(wings[0].shoulder.rotation); // the flank's colour split follows the wing roots
     const flutter = (0.03 + 0.08 * gust) * Math.sin(t * 37);
     tail.scale.z = 1 - 0.15 * env + 0.1 * Math.sin(t * 0.7) + flutter; // streamers close while flapping, fan in the glide
     tail.rotation.x = flutter * 1.5;
     tail.rotation.z = -0.06 * env;
     // Holds its height: only a gust lifts it, and each downstroke throws the body up a touch.
-    bird.position.set(0.1 * Math.sin(t * 0.31) - 0.22 * gust, 0.06 * gust - 0.015 * env * Math.cos(arm), 0.06 * Math.sin(t * 0.23));
-    bird.rotation.z = 0.08 + 0.05 * env + 0.03 * down; // a little nose-up while flapping, more through each power stroke
+    bird.position.set(0.1 * Math.sin(t * 0.31) - 0.22 * gust, 0.06 * gust - WING.bob * env * Math.cos(arm), 0.06 * Math.sin(t * 0.23));
+    bird.rotation.z = 0.08 + 0.05 * env + WING.pitch * down; // a little nose-up while flapping, more through each power stroke
     bird.rotation.x = BANK + 0.22 * gust * Math.sin((t - gustAt) * 7) + 0.04 * Math.sin(t * 0.5);
   }
 
@@ -614,7 +693,7 @@ export function mount(el: HTMLElement) {
       gustAt = t;
       gustLen = lerp(1.6, 2.8, Math.random());
       nextGust = t + lerp(6, 12, Math.random());
-      if (t - flapAt > beats * BEAT && Math.random() < 0.5) {
+      if (t - flapAt > beats * WING.beat && Math.random() < 0.5) {
         flapAt = t + 0.4; // a couple of strokes to steady itself
         beats = 2;
       }
@@ -622,12 +701,12 @@ export function mount(el: HTMLElement) {
     const g = (t - gustAt) / gustLen;
     const gust = g > 0 && g < 1 ? Math.sin(Math.PI * g) ** 2 : 0;
 
-    if (t - flapAt > beats * BEAT + glide) {
+    if (t - flapAt > beats * WING.beat + glide) {
       flapAt = t; // glided long enough: a few strokes, then glide again
       beats = 3 + Math.floor(Math.random() * 3);
       glide = lerp(2.5, 5, Math.random());
     }
-    pose((t - flapAt) / BEAT, gust);
+    pose(WING.freeze ? 1 + WING.phase : (t - flapAt) / WING.beat, gust);
     placeStreaks(dt, gust);
   }
 
@@ -675,6 +754,7 @@ export function mount(el: HTMLElement) {
     plumage.uniforms.back.value.set(p.back);
     plumage.uniforms.belly.value.set(p.belly);
     plumage.uniforms.face.value.set(p.face);
+    feetSkin.color.set(shade(p.rib, -0.08));
     const [r = 255, g = 255, b = 255, a = 1] = (cs.getPropertyValue('--sky-wind').match(/[\d.]+/g) ?? []).map(Number);
     wind.uniforms.color.value.setRGB(r / 255, g / 255, b / 255, SRGBColorSpace);
     wind.uniforms.opacity.value = a;
@@ -683,6 +763,12 @@ export function mount(el: HTMLElement) {
   applyTheme();
   new MutationObserver(applyTheme).observe(document.documentElement, { attributeFilter: ['data-theme'] });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+
+  // Development only: `?wing` in the URL opens a panel of live sliders for the WING parameters.
+  // Vite drops this branch, and the module behind it, from production builds.
+  if (import.meta.env.DEV && new URLSearchParams(location.search).has('wing')) {
+    import('./swallow-debug').then((m) => m.mountWingDebug(WING, applyTheme));
+  }
 
   function resize() {
     const w = el.clientWidth;
