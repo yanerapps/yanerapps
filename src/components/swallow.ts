@@ -60,20 +60,20 @@ export const WING = {
   downstroke: 0.58, // share of each beat spent on the power stroke; the recovery is quicker
   flap: 0.7, // up-and-down amplitude at the shoulder
   dihedral: 0.1, // wings raised this much in the glide
-  lead: 0.6, // the fore-aft swing runs this far ahead of the up-and-down (stroke phase)
+  lead: 0.4, // the back-sweep runs a little ahead of the up-and-down, peaking at the bottom of the stroke
   sweepRoot: 0.55, // back-sweep through the power stroke, per section
   sweepMid: 0.45,
   sweepTip: 0.35,
-  reachRoot: 0.15, // forward reach on the way up, per section
-  reachMid: 0.25,
-  reachTip: 0.3,
-  reachPeak: 1.75, // where the reach peaks, in half-strokes: 1 = bottom, 1.5 = level, 2 = top
-  lagMid: 0.08, // the hand trails the arm by this many beats
-  lagTip: 0.16, // the tip trails the arm by this many beats
+  reachRoot: 0.12, // forward reach past the resting line on the way up, per section; the tip leads
+  reachMid: 0.3,
+  reachTip: 0.5,
+  reachPeak: 1.9, // where the reach peaks, in half-strokes: 1 = bottom, 1.5 = level, 2 = top
+  lagMid: 0.07, // the hand trails the arm by this many beats
+  lagTip: 0.14, // the tip trails the arm by this many beats
   whipMid: 0.57, // how much of the flap each section's up-and-down lags the one before by
   whipTip: 0.43,
   fold: 0.3, // the hand tucks up on the recovery
-  foldSweep: 0.2, // and back
+  foldSweep: 0.08, // and a touch back
   twistRoot: 0.08, // leading edge pitched down through the power stroke, per section
   twistMid: 0.2,
   twistTip: 0.1,
@@ -376,7 +376,7 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
   bird.rotation.order = 'YZX'; // roll about the body axis first, then pitch
 
   const body = [
-    [0, -0.45], [0.04, -0.405], [0.085, -0.27], [0.13, -0.108], [0.155, 0.045],
+    [0, -0.56], [0.025, -0.51], [0.055, -0.42], [0.085, -0.28], [0.13, -0.108], [0.155, 0.045],
     [0.148, 0.162], [0.12, 0.252], [0.095, 0.306], [0.095, 0.378], [0.078, 0.441],
     [0.03, 0.495], [0, 0.522],
   ].map(([r, x]) => new Vector2(r, x));
@@ -393,17 +393,18 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
   beak.position.set(0.53, -0.028, 0);
   bird.add(beak);
 
-  // Tiny feet drawn up under the belly, as a swallow carries them in flight.
+  // Slender feet drawn up under the belly as a swallow carries them in flight: each leg leaves
+  // the rear of the belly and reaches forward, toes toward the head, tucked close to the body.
   const feet = new Group();
-  const legGeometry = new CylinderGeometry(0.007, 0.01, 0.09, 6);
-  const footGeometry = new SphereGeometry(0.018, 8, 6);
+  const legGeometry = new CylinderGeometry(0.005, 0.007, 0.08, 6);
+  const footGeometry = new SphereGeometry(0.015, 8, 6);
   for (const side of [1, -1]) {
     const leg = new Mesh(legGeometry, feetSkin);
-    leg.position.set(-0.21, -0.13, side * 0.042);
-    leg.rotation.z = -0.6; // from the belly down and back
+    leg.position.set(-0.2, -0.115, side * 0.035);
+    leg.rotation.z = 0.9; // top end at the rear, foot end forward and down
     const foot = new Mesh(footGeometry, feetSkin);
-    foot.position.set(-0.255, -0.175, side * 0.048);
-    foot.scale.set(1.8, 0.55, 1);
+    foot.position.set(-0.15, -0.145, side * 0.037);
+    foot.scale.set(1.6, 0.45, 0.9);
     feet.add(leg, foot);
   }
   bird.add(feet);
@@ -436,8 +437,10 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
     return { shoulder, sweeper, wrist, outer };
   });
 
+  // The tail is rooted well inside the body: its base is narrower than the rump there, and the
+  // rump's cone runs on over the root, so the feathers grow out from under the body.
   const tail = new Group();
-  tail.position.set(-0.405, 0, 0);
+  tail.position.set(-0.33, 0, 0);
   tail.add(new Mesh(tailGeo, tailSkin));
   bird.add(tail);
 
@@ -656,9 +659,11 @@ export function mount(el: HTMLElement) {
     const tip = on ? phase(Math.max(0, beat - W.lagTip)) : 0; // ...and the tip trails the hand
     const down = env * Math.sin(arm); // positive through the power stroke
     const fold = env * Math.max(0, -Math.sin(hand)) ** 2; // primaries tuck in a little on the recovery
-    // The fore-aft swing runs ahead of the up-and-down: each section swings back as it comes down,
-    // is furthest back just before the bottom, comes forward while still low, then reaches ahead
-    // of its resting line as it rises past level, peaking near the top. The tip draws a wide loop.
+    // One beat is a loop, not a swing: from the top, forward and up, the root starts down and the
+    // sweep back builds through the power stroke to its peak at the bottom, where the wing hangs far
+    // behind the body; the root then leads forward and up while the tip is still behind, and past
+    // level every section reaches ahead of its resting line, the tip furthest, into the top again.
+    // The recovery path is forward of the power-stroke path, so the tip draws a wide loop.
     const sweep = (psi: number) => 0.5 * (1 - Math.cos(psi + W.lead));
     const reach = (psi: number) => Math.max(0, -Math.sin(psi + (1.5 - W.reachPeak) * Math.PI)) ** 2;
     wings.forEach((w, i) => {
