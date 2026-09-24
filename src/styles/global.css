@@ -22,9 +22,12 @@
   --sky-top: #9dbdd0;
   --sky-mid: #bfd3dc;
   --sky-bottom: #e2e9e5;
-  --swallow-back: #222a4f;
-  --swallow-belly: #f7f4ed;
-  --swallow-face: var(--accent);
+  --swallow-back: #283b54;
+  --swallow-belly: #fbf4e2;
+  --swallow-face: #db663b;
+  --swallow-rib: #776460;
+  --swallow-gloss: #6089a3;
+  --swallow-sheen: #3a8c9a;
   --sky-wind: rgba(252, 251, 247, 0.6);
 
   --font-sans: 'Instrument Sans Variable', 'Instrument Sans', -apple-system,
@@ -57,9 +60,12 @@
     --sky-top: #1a2439;
     --sky-mid: #37476a;
     --sky-bottom: #6e5650;
-    --swallow-back: #0d1120;
-    --swallow-belly: #7e8196;
-    --swallow-face: #a8452b;
+    --swallow-back: #405872;
+    --swallow-belly: #eee6d5;
+    --swallow-face: #e18058;
+    --swallow-rib: #a28b83;
+    --swallow-gloss: #7eabbd;
+    --swallow-sheen: #58a8b6;
     --sky-wind: rgba(237, 232, 222, 0.16);
   }
 }
@@ -80,9 +86,12 @@
   --sky-top: #1a2439;
   --sky-mid: #37476a;
   --sky-bottom: #6e5650;
-  --swallow-back: #0d1120;
-  --swallow-belly: #7e8196;
-  --swallow-face: #a8452b;
+  --swallow-back: #405872;
+  --swallow-belly: #eee6d5;
+  --swallow-face: #e18058;
+  --swallow-rib: #a28b83;
+  --swallow-gloss: #7eabbd;
+  --swallow-sheen: #58a8b6;
   --sky-wind: rgba(237, 232, 222, 0.16);
 }
 
@@ -406,6 +415,12 @@ main.wrap {
   display: block;
   width: 100%;
   height: 100%;
+  cursor: grab; /* drag to look at the swallow from another side */
+  touch-action: pan-y;
+}
+
+.sky canvas:active {
+  cursor: grabbing;
 }
 
 @media (max-width: 479px) {
