@@ -677,16 +677,17 @@ footer.site a:hover {
   color: var(--text-main);
 }
 
-/* ---- reveal animation ---- */
+/* ---- reveal animation ----
+   Gated on .js (set in <head>): without the reveal script, content must stay visible. */
 
-.reveal {
+html.js .reveal {
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reveal.is-visible {
+html.js .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
