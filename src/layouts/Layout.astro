@@ -138,6 +138,34 @@ const zhUrl = new URL(zhPath, site).href;
       });
     </script>
 
+    <!-- Long documents get a table of contents built from their h2s; CSS shows it only where the margin is wide -->
+    <script is:inline>
+      (function () {
+        function toc() {
+          var prose = document.querySelector('.prose');
+          var heads = prose ? prose.querySelectorAll('h2') : [];
+          if (heads.length < 4) return;
+          var nav = document.createElement('nav');
+          nav.className = 'toc';
+          nav.setAttribute('aria-label', document.documentElement.lang.indexOf('zh') === 0 ? '目录' : 'Contents');
+          heads.forEach(function (h) {
+            var text = h.textContent.replace(/^\d+\.\s*/, '').trim();
+            if (!h.id) h.id = text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
+            var a = document.createElement('a');
+            a.href = '#' + h.id;
+            a.textContent = text;
+            nav.appendChild(a);
+          });
+          var rail = document.createElement('div');
+          rail.className = 'toc-rail';
+          rail.appendChild(nav);
+          prose.prepend(rail);
+        }
+        toc();
+        document.addEventListener('astro:after-swap', toc);
+      })();
+    </script>
+
     <!-- Scroll reveal: runs on load and again for each page swapped in by client-side navigation -->
     <script is:inline>
       (function () {
