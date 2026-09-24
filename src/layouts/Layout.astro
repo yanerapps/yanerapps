@@ -99,12 +99,17 @@ const zhUrl = new URL(zhPath, site).href;
 
     <footer class="site">
       <div class="wrap">
-        <span>{zh ? '用心制作' : 'Made with love'} &middot; &copy; 2026 Yaner Apps</span>
+        <span><span class="motto">{zh ? '逐风而行' : 'Ride the Wind'}</span> &middot; &copy; 2026 Yaner Apps</span>
         <div class="footer-links">
           <a href={home}>{zh ? '首页' : 'Home'}</a>
           <a href={privacy}>{zh ? '隐私政策' : 'Privacy Policy'}</a>
           <a href={support}>{zh ? '支持' : 'Support'}</a>
         </div>
+        <p class="colophon">
+          {zh
+            ? '静态站点 · 无追踪 · 字体自托管 · 燕子由代码绘制'
+            : 'Static site · No tracking · Self-hosted fonts · Swallow drawn in code'}
+        </p>
       </div>
     </footer>
 

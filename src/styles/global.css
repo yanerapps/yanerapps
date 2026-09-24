@@ -125,6 +125,23 @@ body {
   color: var(--bg);
 }
 
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* CJK reads with looser leading and no negative tracking */
+:lang(zh) .prose p,
+:lang(zh) .prose li,
+:lang(zh) .manifesto-body p {
+  line-height: 1.8;
+}
+
+.hero h1:lang(zh) {
+  letter-spacing: 0;
+  line-height: 1.05;
+}
+
 /* ---- layout ---- */
 
 .wrap {
@@ -421,9 +438,25 @@ main.wrap {
   height: 100%;
 }
 
-/* The inscription of a painting: the studio's motto in the corner of the sky — a vertical 落款 of
-   upright characters on the Chinese page, an italic line on the English one. It sits outside .sky
-   so the sky's edge mask leaves it crisp. */
+/* The studio motto, 逐风而行 / Ride the Wind: a Songti line on the Chinese pages, a Newsreader italic
+   on the English ones. It signs the sky and the footer. */
+.motto {
+  text-transform: none;
+}
+
+.motto:lang(zh) {
+  font-family: var(--font-cjk);
+  letter-spacing: 0.25em;
+}
+
+.motto:lang(en) {
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* The inscription of a painting, in the corner of the sky. It sits outside .sky so the sky's edge
+   mask leaves it crisp. */
 .sky-inscription {
   position: absolute;
   top: 8%;
@@ -431,21 +464,13 @@ main.wrap {
   margin: 0;
   white-space: nowrap; /* one line, even if the frame has no height yet */
   line-height: 1;
+  font-size: 1.05rem;
   color: var(--text-main);
   opacity: 0.85;
 }
 
-.sky-inscription:lang(zh) {
-  font-family: var(--font-cjk);
-  font-size: 1.05rem;
-  letter-spacing: 0.25em;
-}
-
 .sky-inscription:lang(en) {
-  font-family: var(--font-serif);
-  font-style: italic;
   font-size: 1.15rem;
-  letter-spacing: 0.02em;
 }
 
 @media (max-width: 479px) {
@@ -543,6 +568,73 @@ html:not(.js) .sky-frame {
 }
 
 .contact-sub a {
+  color: var(--text-main);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* ---- button: a bordered mono label, the site's one call to action ---- */
+
+.button,
+.prose a.button {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-main);
+  border: 1px solid var(--border-main);
+  padding: 0.55rem 0.95rem;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.button:hover,
+.prose a.button:hover {
+  background: var(--text-main);
+  color: var(--bg);
+  opacity: 1;
+}
+
+/* ---- 404: an empty nest under a faint 燕 ---- */
+
+.lost {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(2rem, 8vh, 5rem);
+}
+
+.lost-glyph {
+  position: absolute;
+  right: -0.12em;
+  top: -0.1em;
+  font-family: var(--font-cjk);
+  font-size: clamp(14rem, 40vw, 24rem);
+  line-height: 1;
+  color: var(--swallow-back);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+}
+
+.lost h1 {
+  font-size: clamp(2.4rem, 7vw, 4.4rem);
+  font-weight: 700;
+  font-stretch: 78%;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-transform: uppercase;
+  margin: 1rem 0 1.25rem;
+}
+
+.lost p {
+  max-width: 44ch;
+  color: var(--text-sub);
+  margin-bottom: 1rem;
+}
+
+.lost p a {
   color: var(--text-main);
   text-decoration: underline;
   text-underline-offset: 0.15em;
@@ -771,12 +863,25 @@ footer.site a:hover {
   color: var(--text-main);
 }
 
+footer.site .motto {
+  font-size: 0.95rem;
+}
+
+footer.site .colophon {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+
 /* ---- reveal animation ----
    Gated on .js (set in <head>): without the reveal script, content must stay visible. */
 
 html.js .reveal {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translate(-8px, 10px); /* arrives on the wind, from the lower left like the swallow */
   transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }

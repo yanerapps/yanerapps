@@ -3,6 +3,27 @@ import Layout from '../../layouts/Layout.astro';
 
 const title = 'Support — GPS-Go';
 const description = 'Support and contact for GPS-Go by Yaner Apps.';
+
+// One tap opens a mail draft with the report fields already laid out.
+const template =
+  'mailto:yanerapps@gmail.com?' +
+  new URLSearchParams({
+    subject: 'GPS-Go: ',
+    body: [
+      'Device model: ',
+      'Android version: ',
+      'GPS-Go version (Settings → About): ',
+      '',
+      'What I did:',
+      '',
+      'What I expected:',
+      '',
+      'What happened instead:',
+      '',
+    ].join('\n'),
+  })
+    .toString()
+    .replace(/\+/g, '%20');
 ---
 
 <Layout title={title} description={description} currentPath="/support/">
@@ -25,6 +46,7 @@ const description = 'Support and contact for GPS-Go by Yaner Apps.';
       <li>The app version (Settings &rarr; About)</li>
       <li>What you did, what you expected, and what happened instead</li>
     </ul>
+    <p><a class="button" href={template}>Start an email with these fields</a></p>
 
     <h2>Common questions</h2>
 

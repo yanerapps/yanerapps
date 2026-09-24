@@ -3,6 +3,27 @@ import Layout from '../../../layouts/Layout.astro';
 
 const title = '技术支持 — GPS-Go';
 const description = 'GPS-Go（Yaner Apps 出品）技术支持、常见问题与联系方式。';
+
+// 点一下就打开一封已经列好字段的邮件草稿。
+const template =
+  'mailto:yanerapps@gmail.com?' +
+  new URLSearchParams({
+    subject: 'GPS-Go：',
+    body: [
+      '设备型号：',
+      '安卓系统版本：',
+      'GPS-Go 版本号（设置 → 关于）：',
+      '',
+      '具体操作步骤：',
+      '',
+      '预期效果：',
+      '',
+      '实际现象：',
+      '',
+    ].join('\n'),
+  })
+    .toString()
+    .replace(/\+/g, '%20');
 ---
 
 <Layout title={title} description={description} currentPath="/support/zh/" lang="zh-CN">
@@ -24,6 +45,7 @@ const description = 'GPS-Go（Yaner Apps 出品）技术支持、常见问题与
       <li>应用版本号（可在「设置 &rarr; 关于」中查看）</li>
       <li>具体操作步骤、预期效果与实际现象</li>
     </ul>
+    <p><a class="button" href={template}>用这个模板写邮件</a></p>
 
     <h2>常见问题</h2>
 

@@ -1,14 +1,13 @@
 ---
 interface Props {
   inscription: string; // the studio motto in the page's language: 逐风而行 / Ride the Wind
-  lang: string;
 }
-const { inscription, lang } = Astro.props;
+const { inscription } = Astro.props;
 ---
 
 <div class="sky-frame">
   <div class="sky reveal" aria-hidden="true"><canvas></canvas></div>
-  <p class="sky-inscription reveal" lang={lang}>{inscription}</p>
+  <p class="sky-inscription motto reveal">{inscription}</p>
 </div>
 
 <script>
