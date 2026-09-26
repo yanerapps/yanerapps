@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Privacy — Yaner Apps';
+const description = 'Privacy policies for apps by Yaner Apps.';
+---
+
+<Layout title={title} description={description} currentPath="/privacy">
+  <div class="prose">
+    <div class="prose-header">
+      <h1>Privacy</h1>
+      <p class="lede">Each Yaner Apps app has its own privacy policy.</p>
+    </div>
+
+    <ul>
+      <li>
+        <a href="/gps-go/privacy"><strong>GPS-Go</strong></a> &mdash; no-root location simulator for Android
+      </li>
+    </ul>
+
+    <p>
+      Questions about privacy: <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+    </p>
+  </div>
+</Layout>

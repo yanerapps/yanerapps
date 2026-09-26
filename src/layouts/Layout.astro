@@ -19,17 +19,16 @@ const {
   lang = 'en',
 } = Astro.props;
 
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site || 'https://yanerapps.com').href;
-
 const zh = lang.startsWith('zh');
-const home = zh ? '/zh/' : '/';
-const privacy = zh ? '/privacy/zh/' : '/privacy/';
-const support = zh ? '/support/zh/' : '/support/';
-
-// Every page has a counterpart: /x/ <-> /x/zh/
-const enPath = zh ? currentPath.replace(/zh\/$/, '') : currentPath;
-const zhPath = enPath + 'zh/';
+// Every page has a counterpart: /x <-> /zh-hans/x, with the English page at the unprefixed path.
+const enPath = zh ? currentPath.replace(/^\/zh-hans/, '') || '/' : currentPath;
+const zhPath = enPath === '/' ? '/zh-hans' : '/zh-hans' + enPath;
+const local = (path: string) => (zh ? (path === '/' ? '/zh-hans' : '/zh-hans' + path) : path);
+const home = local('/');
+const privacy = local('/privacy');
+const support = local('/gps-go/support');
 const site = Astro.site || 'https://yanerapps.com';
+const canonicalUrl = new URL(currentPath, site).href;
 const enUrl = new URL(enPath, site).href;
 const zhUrl = new URL(zhPath, site).href;
 ---
@@ -55,7 +54,7 @@ const zhUrl = new URL(zhPath, site).href;
     <meta property="og:image" content="https://yanerapps.com/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" hreflang="en" href={enUrl} />
-    <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
+    <link rel="alternate" hreflang="zh-Hans" href={zhUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
     <ClientRouter />
 
@@ -86,11 +85,11 @@ const zhUrl = new URL(zhPath, site).href;
           <span class="brand-name">Yaner Apps</span>
         </a>
         <nav class="site-nav" aria-label={zh ? '站点导航' : 'Site navigation'}>
-          <a href={privacy} aria-current={currentPath.startsWith('/privacy') ? 'page' : undefined}>{zh ? '隐私' : 'Privacy'}</a>
-          <a href={support} aria-current={currentPath.startsWith('/support') ? 'page' : undefined}>{zh ? '支持' : 'Support'}</a>
+          <a href={privacy} aria-current={currentPath.endsWith('/privacy') ? 'page' : undefined}>{zh ? '隐私' : 'Privacy'}</a>
+          <a href={support} aria-current={currentPath.endsWith('/support') ? 'page' : undefined}>{zh ? '支持' : 'Support'}</a>
           {zh
             ? <a class="lang-switch" href={enPath} hreflang="en" lang="en" aria-label="English">EN</a>
-            : <a class="lang-switch" href={zhPath} hreflang="zh-CN" lang="zh-CN" aria-label="中文">ZH</a>}
+            : <a class="lang-switch" href={zhPath} hreflang="zh-Hans" lang="zh-Hans" aria-label="中文">ZH</a>}
           <button class="theme-toggle" type="button" aria-label={zh ? '切换深浅色' : 'Toggle dark mode'}>
             <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
               <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5" />
