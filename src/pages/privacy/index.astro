@@ -13,13 +13,14 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       <div class="meta">
         <span>Effective: 31 Aug 2026</span>
         <span>&middot;</span>
-        <span>Updated: 21 Sep 2026</span>
+        <span>Updated: 25 Sep 2026</span>
       </div>
     </div>
 
     <p>
-      This policy explains what GPS-Go does with your data. GPS-Go is developed by Yaner Apps
-      ("we", "us"). It applies to the GPS-Go Android application and to this website.
+      This policy explains what GPS-Go does with your data. GPS-Go is developed by Yaner Yang, an individual
+      developer publishing as Yaner Apps ("we", "us"). It applies to the GPS-Go Android application and to
+      this website.
     </p>
 
     <div class="card">
@@ -47,9 +48,11 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     <h2>2. Your device's real location</h2>
     <p>
       GPS-Go requests location permission so it can show where you actually are on the map (the "Locate"
-      button) and so it can register itself as a mock location provider. Your real location is used on the
-      device only. We do not transmit it, store it on any server, or share it with anyone. Coordinates may
-      be sent to Google or Geoapify only as part of a map or search request you initiate &mdash; see section 3.
+      button) and so it can register itself as a mock location provider. We never receive your real
+      location, and the app never sends it anywhere on its own. One exception follows from how search
+      works: when you search for a place, the centre of the visible map is sent with the query to rank
+      nearby results, and if the map is following your position, that point is your real location
+      &mdash; see section 3.
     </p>
 
     <h2>3. Data sent to third parties</h2>
@@ -70,22 +73,22 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
         <tbody>
           <tr>
             <td>Google Maps Platform</td>
-            <td>Map viewport coordinates and zoom level</td>
-            <td>To render the map</td>
+            <td>Map viewport coordinates and zoom level, your IP address, device and SDK information, a pseudonymous SDK identifier, map interaction events, and crash diagnostics from the Maps SDK</td>
+            <td>To render the map; Google also uses the diagnostics to keep the service working</td>
           </tr>
           <tr>
             <td>Google Places</td>
-            <td>Your search text and, for biasing results, an approximate location</td>
+            <td>Your search text, the centre of the visible map (to bias results), your IP address, device and SDK information, and crash diagnostics from the Places SDK</td>
             <td>To return place suggestions and their coordinates</td>
           </tr>
           <tr>
             <td>Geoapify (OpenStreetMap data)</td>
-            <td>Your search text and, for biasing results, an approximate location</td>
+            <td>Your search text, the centre of the visible map (to bias results), and your IP address</td>
             <td>To return place suggestions and their coordinates</td>
           </tr>
           <tr>
             <td>Google AdMob and the Google User Messaging Platform</td>
-            <td>Your advertising ID (AAID), device and app information sent with an ad request, and your consent choices</td>
+            <td>Your advertising ID (AAID) and app set ID, your IP address (from which Google may estimate a general location), device and app information, ad interactions, SDK diagnostics, and your consent choices</td>
             <td>To request and display rewarded video, interstitial, and banner ads, and to record your consent</td>
           </tr>
         </tbody>
@@ -93,8 +96,9 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     </div>
 
     <p>
-      Place searches are routed to Geoapify where possible and fall back to Google Places. Both providers
-      receive only the text you type and, at most, an approximate location &mdash; never your location history.
+      Place searches are routed to Geoapify where possible and fall back to Google Places. Neither provider
+      receives your location history, saved places, or routes. Geoapify states that it generally keeps logs
+      of successful requests for no longer than 24 hours.
     </p>
     <p>
       When a search result comes from Google Places, its coordinates are removed from your local search
@@ -109,15 +113,17 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     </p>
     <ul>
       <li><strong>Rewarded video ads:</strong> Never forced on you; only play after you tap a button offering extra daily usage in exchange for watching an ad.</li>
-      <li><strong>Interstitial ads:</strong> May appear between activity transitions, subject to daily frequency caps and cooldown intervals.</li>
+      <li><strong>Interstitial ads:</strong> May appear only when you close the summary shown after a simulation session ends, at most four times a day and at least three minutes apart.</li>
       <li><strong>Banner ads:</strong> Displayed inline within certain app screens.</li>
     </ul>
     <p>
-      No ads are ever shown in the floating joystick overlay or in the ongoing notification.
+      No ads are ever shown in the floating joystick overlay or in the ongoing notification, and a running
+      simulation is never interrupted by an ad.
     </p>
     <p>
-      We use Google AdMob only. We do not use any other ad network, mediation layer, or analytics or
-      crash-reporting SDK. We never send your location history, saved places, or routes to any advertising
+      We use Google AdMob only. We do not use any other ad network or mediation layer, and we have not
+      added any analytics or crash-reporting SDK of our own. The Google SDKs described in section 3 collect
+      their own diagnostics, which we do not receive. We never send your location history, saved places, or routes to any advertising
       service, and we never attach location data to an ad request as a custom parameter.
     </p>
 
@@ -126,7 +132,8 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       If you are in the European Economic Area, the United Kingdom, or Switzerland, GPS-Go asks for your
       consent before ads are requested, using Google's certified User Messaging Platform. You can review or
       change your choice at any time in the app under <strong>Settings &rarr; About &rarr; Privacy Options</strong>.
-      If you decline, the app remains fully usable and the ad-gated actions are granted without an ad.
+      If you decline, the app remains fully usable; Google may still show limited, non-personalised ads,
+      and whenever no ad is available the ad-gated action is granted without one.
     </p>
 
     <h3>US state privacy laws</h3>
@@ -166,7 +173,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     <ul>
       <li>No user accounts, sign-in, or profiles</li>
       <li>No servers operated by us, and therefore no copy of your data held by us</li>
-      <li>No analytics or crash-reporting SDKs</li>
+      <li>No analytics or crash-reporting SDKs added by us</li>
       <li>No sale of personal information</li>
       <li>No tracking of other people &mdash; GPS-Go simulates only your own device's location</li>
     </ul>
@@ -186,7 +193,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     </p>
     <p>
       Data held by Google or Geoapify as a result of the requests described in section 3 is subject to
-      their own retention practices and their own policies, linked above.
+      their own retention practices and their own policies, linked in section 4.
     </p>
 
     <h2>9. Security</h2>
@@ -195,7 +202,86 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       which other apps cannot read on a non-rooted device.
     </p>
 
-    <h2>10. Your rights</h2>
+    <h2>10. Additional information for the EEA, UK and Switzerland</h2>
+    <p>
+      This section gives the information required by the EU and UK General Data Protection Regulation and
+      the Swiss Federal Act on Data Protection.
+    </p>
+
+    <h3>Controller</h3>
+    <p>
+      The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
+      reachable at <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. Google and Geoapify act as
+      independent controllers for the data they receive, under their own policies linked in section 4.
+    </p>
+
+    <h3>Purposes and legal bases</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Data</th>
+            <th>Legal basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Showing the map and returning place search results</td>
+            <td>Map viewport, search text, map centre, IP address, device and SDK information</td>
+            <td>Necessary to provide the service you ask for (Art. 6(1)(b) GDPR)</td>
+          </tr>
+          <tr>
+            <td>Keeping the map and search services reliable</td>
+            <td>SDK crash and usage diagnostics, pseudonymous SDK identifier</td>
+            <td>Legitimate interests in a working, secure app (Art. 6(1)(f))</td>
+          </tr>
+          <tr>
+            <td>Personalised ads, and storing or reading ad identifiers on your device</td>
+            <td>Advertising ID, app set ID, IP address, ad interactions</td>
+            <td>Your consent (Art. 6(1)(a)), which you can withdraw at any time in Privacy Options</td>
+          </tr>
+          <tr>
+            <td>Non-personalised ads, ad measurement and fraud prevention</td>
+            <td>IP address, device and app information, ad interactions</td>
+            <td>Legitimate interests in funding a free app and preventing ad fraud (Art. 6(1)(f)), and your consent where the law requires it for storage on your device</td>
+          </tr>
+          <tr>
+            <td>Answering your emails</td>
+            <td>Your email address and message</td>
+            <td>Legitimate interests in responding to you (Art. 6(1)(f)); we delete the correspondence once the matter is closed, and within 12 months at the latest</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Data that stays on your device (section 1) is not processed by us at all. You are not required to
+      provide any personal data. Without a network connection the map and place search do not work, and if
+      you decline consent you see only limited ads. We make no decisions based solely on automated
+      processing that have legal or similarly significant effects on you; with your consent, Google may use
+      ad data to personalise the ads you see.
+    </p>
+
+    <h3>International transfers</h3>
+    <p>
+      Geoapify processes requests in data centres in the EU. Google may process data in the United States
+      and other countries, relying on the EU-U.S. Data Privacy Framework, its UK Extension and the
+      Swiss-U.S. Data Privacy Framework, and on Standard Contractual Clauses where needed (see
+      <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google's data transfer frameworks</a>).
+      We are based outside the EEA, but we receive none of the data described in section 3.
+    </p>
+
+    <h3>Your rights under the GDPR</h3>
+    <p>
+      You have the right to access, rectify and erase your personal data, to restrict or object to its
+      processing, to data portability, and to withdraw consent at any time without affecting the
+      lawfulness of processing before the withdrawal. You also have the right to lodge a complaint with a
+      data protection supervisory authority, in particular in the country where you live or work; in the
+      UK this is the Information Commissioner's Office, and in Switzerland the Federal Data Protection and
+      Information Commissioner. Section 11 explains how to exercise these rights.
+    </p>
+
+    <h2>11. Your rights</h2>
     <p>
       Depending on where you live, you may have rights to access, correct, delete, or port your personal
       data, or to object to certain processing. Since GPS-Go stores your data only on your device, you can
@@ -204,15 +290,15 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a> and we will respond within 30 days.
     </p>
 
-    <h2>11. Changes to this policy</h2>
+    <h2>12. Changes to this policy</h2>
     <p>
       If this policy changes, the updated version is published on this page with a new "last updated" date.
       Material changes affecting how data is shared will also be noted in the app's release notes.
     </p>
 
-    <h2>12. Contact</h2>
+    <h2>13. Contact</h2>
     <p>
-      Yaner Apps &mdash; <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+      Yaner Yang (Yaner Apps) &mdash; <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
     </p>
   </div>
 </Layout>

@@ -13,12 +13,12 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       <div class="meta">
         <span>生效日期：2026 年 8 月 31 日</span>
         <span>&middot;</span>
-        <span>更新日期：2026 年 9 月 21 日</span>
+        <span>更新日期：2026 年 9 月 25 日</span>
       </div>
     </div>
 
     <p>
-      本政策说明 GPS-Go 如何处理你的数据。GPS-Go 由 Yaner Apps（下称「我们」）开发，本政策适用于
+      本政策说明 GPS-Go 如何处理你的数据。GPS-Go 由个人开发者 Yaner Yang 以 Yaner Apps 名义开发（下称「我们」），本政策适用于
       GPS-Go 安卓应用及本网站。中英文版本如有歧义，以
       <a href="/privacy/">英文版本</a>为准。
     </p>
@@ -42,8 +42,8 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     <h2>2. 设备的真实位置</h2>
     <p>
       GPS-Go 申请定位权限，用于在地图上显示你的真实位置（「定位」按钮），以及将自身注册为模拟位置提供者。
-      真实位置仅在设备本地使用：我们不传输、不在任何服务器上留存、也不提供给任何人。只有在你主动发起地图或
-      搜索请求时，坐标才可能随该请求发往 Google 或 Geoapify——见第 3 节。
+      我们从不接收你的真实位置，应用也不会主动把它发往任何地方。唯一的例外来自搜索的工作方式：搜索地点时，当前
+      地图的中心点会随查询一起发出，用于优先返回附近结果；如果地图正跟随你的位置，这个点就是你的真实位置——见第 3 节。
     </p>
 
     <h2>3. 会发往第三方的数据</h2>
@@ -61,22 +61,22 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
         <tbody>
           <tr>
             <td>Google Maps Platform</td>
-            <td>地图视口坐标与缩放级别</td>
-            <td>渲染地图</td>
+            <td>地图视口坐标与缩放级别、IP 地址、设备与 SDK 信息、假名化的 SDK 标识符、地图操作事件，以及 Maps SDK 的崩溃诊断信息</td>
+            <td>渲染地图；Google 也用诊断信息维持服务正常运行</td>
           </tr>
           <tr>
             <td>Google Places</td>
-            <td>你输入的搜索文本，以及用于结果偏置的大致位置</td>
+            <td>你输入的搜索文本、当前地图中心点（用于结果偏置）、IP 地址、设备与 SDK 信息，以及 Places SDK 的崩溃诊断信息</td>
             <td>返回地点建议及其坐标</td>
           </tr>
           <tr>
             <td>Geoapify（基于 OpenStreetMap 数据）</td>
-            <td>你输入的搜索文本，以及用于结果偏置的大致位置</td>
+            <td>你输入的搜索文本、当前地图中心点（用于结果偏置）、IP 地址</td>
             <td>返回地点建议及其坐标</td>
           </tr>
           <tr>
             <td>Google AdMob 与 Google User Messaging Platform</td>
-            <td>广告 ID（AAID）、随广告请求发送的设备与应用信息、你的同意选择</td>
+            <td>广告 ID（AAID）与应用集 ID、IP 地址（Google 可能据此估算大致位置）、设备与应用信息、广告互动、SDK 诊断信息、你的同意选择</td>
             <td>请求并展示激励视频广告、插屏广告及横幅广告，记录同意状态</td>
           </tr>
         </tbody>
@@ -84,8 +84,8 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     </div>
 
     <p>
-      地点搜索优先走 Geoapify，必要时回落到 Google Places。两家收到的都只有你输入的文本，以及至多一个大致
-      位置，绝不包含你的位置历史。
+      地点搜索优先走 Geoapify，必要时回落到 Google Places。两家都收不到你的位置历史、收藏地点或路线。
+      Geoapify 声明，成功请求的日志一般保留不超过 24 小时。
     </p>
     <p>
       当搜索结果来自 Google Places 时，按 Google 条款要求，其坐标会在搜索 30 天后从你的本地搜索历史中移除；
@@ -98,14 +98,15 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     </p>
     <ul>
       <li><strong>激励视频广告：</strong>绝不强制播放，仅在你主动点击「观看广告以获得今日额度」等按钮后才会播放。</li>
-      <li><strong>插屏广告：</strong>仅在部分流程转换节点展示，并受每日展示频次与冷却时间限制。</li>
+      <li><strong>插屏广告：</strong>只会在你关闭模拟会话结束后的总结页时出现，每天最多 4 次，两次之间至少间隔 3 分钟。</li>
       <li><strong>横幅广告：</strong>嵌入在部分应用页面内展示。</li>
     </ul>
     <p>
-      悬浮摇杆窗口内与常驻通知栏内永远不会出现任何广告。
+      悬浮摇杆窗口内与常驻通知栏内永远不会出现任何广告，正在进行的模拟也绝不会被广告打断。
     </p>
     <p>
-      我们只接入 Google AdMob，没有其他广告网络、没有聚合层，也没有任何统计分析或崩溃上报 SDK。我们绝不会把你的
+      我们只接入 Google AdMob，没有其他广告网络或聚合层，也没有自行接入任何统计分析或崩溃上报 SDK；第 3 节所列的
+      Google SDK 会自行收集诊断信息，我们接收不到。我们绝不会把你的
       位置历史、收藏地点或路线发送给任何广告服务，也绝不把位置数据作为自定义参数附加到广告请求上。
     </p>
 
@@ -113,7 +114,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     <p>
       若你位于欧洲经济区、英国或瑞士，GPS-Go 会在请求广告之前，通过 Google 认证的 User Messaging Platform
       征求你的同意。你可以随时在应用内的<strong>「设置 &rarr; 关于 &rarr; 隐私选项」</strong>中查看或更改选择。
-      即使你拒绝，应用仍可完整使用，原本需要看广告解锁的操作会直接放行。
+      即使你拒绝，应用仍可完整使用；Google 仍可能展示有限的非个性化广告，而没有可用广告时，原本需要看广告解锁的操作会直接放行。
     </p>
 
     <h3>美国各州隐私法</h3>
@@ -150,7 +151,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     <ul>
       <li>没有账号、登录或用户画像</li>
       <li>没有我们运营的服务器，因此我们手上不存在你的数据副本</li>
-      <li>没有统计分析或崩溃上报 SDK</li>
+      <li>没有我们自行接入的统计分析或崩溃上报 SDK</li>
       <li>不出售个人信息</li>
       <li>不追踪他人——GPS-Go 只模拟你自己设备的位置</li>
     </ul>
@@ -167,7 +168,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       在应用内单独或批量删除，卸载即全部清除。我们这边没有任何东西需要删除，因为我们本就不持有。
     </p>
     <p>
-      因第 3 节所述请求而由 Google 或 Geoapify 持有的数据，适用它们各自的留存做法与政策（链接见上）。
+      因第 3 节所述请求而由 Google 或 Geoapify 持有的数据，适用它们各自的留存做法与政策（链接见第 4 节）。
     </p>
 
     <h2>9. 安全</h2>
@@ -175,7 +176,79 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       应用发起的所有网络请求均使用 HTTPS。本地数据存放在应用私有存储中，未 root 的设备上其他应用无法读取。
     </p>
 
-    <h2>10. 你的权利</h2>
+    <h2>10. 欧洲经济区、英国与瑞士用户的补充说明</h2>
+    <p>
+      本节提供欧盟与英国《通用数据保护条例》（GDPR）及瑞士《联邦数据保护法》要求披露的信息。
+    </p>
+
+    <h3>数据控制者</h3>
+    <p>
+      本政策所述处理活动的控制者为 Yaner Yang（以 Yaner Apps 名义发布），联系邮箱
+      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>。Google 与 Geoapify 对各自收到的数据是独立的控制者，
+      适用第 4 节链接的各自政策。
+    </p>
+
+    <h3>处理目的与法律依据</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>目的</th>
+            <th>数据</th>
+            <th>法律依据</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>显示地图、返回地点搜索结果</td>
+            <td>地图视口、搜索文本、地图中心点、IP 地址、设备与 SDK 信息</td>
+            <td>提供你所请求的服务所必需（GDPR 第 6(1)(b) 条）</td>
+          </tr>
+          <tr>
+            <td>保障地图与搜索服务稳定</td>
+            <td>SDK 崩溃与使用诊断信息、假名化的 SDK 标识符</td>
+            <td>维持应用正常、安全运行的正当利益（第 6(1)(f) 条）</td>
+          </tr>
+          <tr>
+            <td>个性化广告，以及在设备上存储或读取广告标识符</td>
+            <td>广告 ID、应用集 ID、IP 地址、广告互动</td>
+            <td>你的同意（第 6(1)(a) 条），可随时在「隐私选项」中撤回</td>
+          </tr>
+          <tr>
+            <td>非个性化广告、广告效果衡量与反欺诈</td>
+            <td>IP 地址、设备与应用信息、广告互动</td>
+            <td>为免费应用提供资金、防止广告欺诈的正当利益（第 6(1)(f) 条）；法律要求在设备上存储信息须经同意时，以你的同意为依据</td>
+          </tr>
+          <tr>
+            <td>回复你的邮件</td>
+            <td>你的邮箱地址与邮件内容</td>
+            <td>回复你的正当利益（第 6(1)(f) 条）；事项处理完毕即删除往来邮件，最迟不超过 12 个月</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      只保存在你设备上的数据（第 1 节）完全不经我们处理。你没有提供任何个人数据的义务；没有网络连接时地图与地点搜索
+      无法使用，拒绝同意时你只会看到有限的广告。我们不会仅凭自动化处理作出对你产生法律效力或类似重大影响的决定；
+      在你同意的前提下，Google 可能利用广告数据为你个性化广告。
+    </p>
+
+    <h3>跨境传输</h3>
+    <p>
+      Geoapify 在欧盟境内的数据中心处理请求。Google 可能在美国及其他国家处理数据，依据欧盟—美国数据隐私框架、
+      其英国扩展、瑞士—美国数据隐私框架，并在需要时依据标准合同条款（见
+      <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google 数据传输框架</a>）。
+      我们位于欧洲经济区之外，但第 3 节所述数据我们一概不接收。
+    </p>
+
+    <h3>你在 GDPR 下的权利</h3>
+    <p>
+      你有权访问、更正、删除你的个人数据，有权限制或反对对其处理，有权获得数据可携，并有权随时撤回同意，撤回不影响
+      撤回前处理的合法性。你还有权向数据保护监管机构投诉，尤其是你居住或工作所在国的监管机构；在英国为信息专员办公室
+      （ICO），在瑞士为联邦数据保护与信息专员（FDPIC）。行使这些权利的方式见第 11 节。
+    </p>
+
+    <h2>11. 你的权利</h2>
     <p>
       取决于你所在地区，你可能享有访问、更正、删除、转移个人数据或反对特定处理的权利。由于 GPS-Go 只在你的设备上
       存储数据，这些权利可直接在应用内行使。涉及 Google 持有的广告数据，请使用应用内的「隐私选项」页面以及
@@ -183,15 +256,15 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>，我们会在 30 天内回复。
     </p>
 
-    <h2>11. 政策变更</h2>
+    <h2>12. 政策变更</h2>
     <p>
       本政策如有变更，更新版本会发布在本页面并标注新的「最近更新」日期。涉及数据共享方式的实质性变更，也会在
       应用的版本更新说明中提示。
     </p>
 
-    <h2>12. 联系方式</h2>
+    <h2>13. 联系方式</h2>
     <p>
-      Yaner Apps — <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+      Yaner Yang（Yaner Apps）— <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
     </p>
   </div>
 </Layout>
