@@ -405,26 +405,41 @@ function phase(beat: number) {
   return c < d ? (Math.PI * c) / d : Math.PI + (Math.PI * (c - d)) / (1 - d);
 }
 
+/** Flatten the back, keep a shallow breast keel and blend into a compact head. */
+function bodyGeometry() {
+  const outline = [
+    [0, -0.56], [0.025, -0.51], [0.055, -0.42], [0.085, -0.28], [0.13, -0.108], [0.155, 0.045],
+    [0.148, 0.162], [0.12, 0.252], [0.095, 0.306], [0.098, 0.378], [0.078, 0.441],
+    [0.03, 0.495], [0, 0.522],
+  ].map(([r, x]) => new Vector2(r, x));
+  const geometry = new LatheGeometry(outline, 24).rotateZ(-Math.PI / 2);
+  const positions = geometry.getAttribute('position');
+  for (let i = 0; i < positions.count; i++) {
+    const x = positions.getX(i), y = positions.getY(i), z = positions.getZ(i);
+    const head = smoothstep(0.27, 0.37, x);
+    const keel = 0.012 * Math.exp(-(((x - 0.06) / 0.21) ** 2)) * Math.max(0, -y / 0.155);
+    const height = y >= 0 ? lerp(0.8, 0.72, head) : lerp(1, 0.86, head);
+    positions.setXYZ(i, x, y * height - keel, z * lerp(0.88, 0.94, head));
+  }
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
 function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, tailGeo: BufferGeometry) {
   const bird = new Group();
   bird.rotation.order = 'YZX'; // roll about the body axis first, then pitch
 
-  const body = [
-    [0, -0.56], [0.025, -0.51], [0.055, -0.42], [0.085, -0.28], [0.13, -0.108], [0.155, 0.045],
-    [0.148, 0.162], [0.12, 0.252], [0.095, 0.306], [0.095, 0.378], [0.078, 0.441],
-    [0.03, 0.495], [0, 0.522],
-  ].map(([r, x]) => new Vector2(r, x));
-  bird.add(new Mesh(new LatheGeometry(body, 24).rotateZ(-Math.PI / 2), plumage));
+  bird.add(new Mesh(bodyGeometry(), plumage));
 
   const dark = new MeshBasicMaterial({ color: 0x161d29 });
   const eyeGeometry = new SphereGeometry(0.011, 8, 6);
   for (const side of [1, -1]) {
     const eye = new Mesh(eyeGeometry, dark);
-    eye.position.set(0.396, 0.02, side * 0.088);
+    eye.position.set(0.396, 0.014, side * 0.087);
     bird.add(eye);
   }
-  const beak = new Mesh(new ConeGeometry(0.024, 0.115, 4).rotateZ(-Math.PI / 2), dark);
-  beak.position.set(0.53, -0.028, 0);
+  const beak = new Mesh(new ConeGeometry(0.024, 0.085, 4).rotateZ(-Math.PI / 2).scale(1, 0.45, 1), dark);
+  beak.position.set(0.529, -0.022, 0);
   bird.add(beak);
 
   // Slender feet drawn up under the belly as a swallow carries them in flight: each leg leaves
@@ -616,9 +631,9 @@ export function mount(el: HTMLElement) {
         float collar = 0.279 - 0.078 * (up + 1.0) / 1.37;
         float white = (1.0 - edge(vPos.x - collar)) * lower;
         vec3 c = mix(back, belly, white);
-        vec3 throat = (vPos - vec3(0.387, -0.04, 0.0)) / vec3(0.081, 0.075, 0.095);
+        vec3 throat = (vPos - vec3(0.387, -0.04, 0.0)) / vec3(0.081, 0.065, 0.09);
         c = mix(c, face, edge(1.0 - dot(throat, throat)) * edge(0.3 - up));
-        vec3 brow = (vPos - vec3(0.45, 0.025, 0.0)) / vec3(0.05, 0.055, 0.065);
+        vec3 brow = (vPos - vec3(0.45, 0.025, 0.0)) / vec3(0.05, 0.046, 0.061);
         c = mix(c, face, edge(1.0 - dot(brow, brow)));
         c = mix(c, back, edge(vPos.x - 0.49)); // dark base behind the pointed beak
         gl_FragColor = vec4(c, 1.0);
