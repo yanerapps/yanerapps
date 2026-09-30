@@ -193,8 +193,8 @@ function wingGeometry() {
     const s = lerp(ROOT, 1, i / NS);
     const [le, te] = planform(s);
     // The body pins only the part of the root buried inside it, so the visible wing turns rigidly
-    // with the shoulder and meets the body exactly along the shoulder's plane, which is what the
-    // body shader colours by. The fore-aft swing blends in over the first third of the span, so
+    // with the shoulder. The buried surface overlaps the fixed body plumage and the painted
+    // shoulder coverts hide the attachment. Fore-aft swing blends over the first third, so
     // the broad root is never shoved into the flank; the wrist takes over across the middle and
     // the tip joint toward the end. Wide blends, so the wing curves instead of creasing.
     const arm = smoothstep(-0.05, 0.03, s);
@@ -597,8 +597,6 @@ export function mount(el: HTMLElement) {
       back: { value: new Color() },
       belly: { value: new Color() },
       face: { value: new Color() },
-      wingPivot: { value: SHOULDER.clone() }, // the right wing root's plane, in bird space; mirrored for the left
-      wingUp: { value: new Vector3(0, 1, 0) },
     },
     vertexShader: /* glsl */ `
       varying vec3 vPos;
@@ -607,22 +605,14 @@ export function mount(el: HTMLElement) {
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }`,
     fragmentShader: /* glsl */ `
-      uniform vec3 back, belly, face, wingPivot, wingUp;
+      uniform vec3 back, belly, face;
       varying vec3 vPos;
       float edge(float v) { float w = fwidth(v); return smoothstep(-w, w, v); } // antialiased step at 0
       void main() {
         float up = vPos.y / max(length(vPos.yz), 1e-4); // -1 under the belly, 1 along the spine
-        // Dark above the wing roots, cream below: on the flanks alongside the roots the split is the
-        // very plane the wing roots turn in, so the colour boundary is exactly the curve where the
-        // wing meets the body, whatever the flap angle. Spine, keel, neck and rump keep a fixed
-        // split, which the plane meets where the roots begin and end. The dark collar's rear edge
-        // runs from under the throat up and back to the wing root, so throat line, collar and
-        // leading edge read as one line.
-        float side = vPos.z < 0.0 ? -1.0 : 1.0;
-        float aboveWing = dot(vPos - vec3(wingPivot.x, wingPivot.y, wingPivot.z * side), vec3(wingUp.x, wingUp.y, wingUp.z * side));
-        float lat = abs(vPos.z) / max(length(vPos.yz), 1e-4); // 1 on the flanks, 0 along spine and keel
-        float onFlank = smoothstep(0.45, 0.8, lat) * smoothstep(-0.45, -0.28, vPos.x) * smoothstep(0.3, 0.18, vPos.x);
-        float lower = mix(1.0 - edge(up - 0.42), 1.0 - edge(aboveWing), onFlank);
+        // Plumage belongs to the body: the crown/back boundary stays fixed through every
+        // wingbeat. The broad cream flanks meet the cream shoulder coverts over the buried root.
+        float lower = 1.0 - edge(up - 0.42);
         float collar = 0.279 - 0.078 * (up + 1.0) / 1.37;
         float white = (1.0 - edge(vPos.x - collar)) * lower;
         vec3 c = mix(back, belly, white);
@@ -733,7 +723,6 @@ export function mount(el: HTMLElement) {
       w.outer.rotation.z = -W.twistTip * env * Math.sin(tip);
     });
     feet.visible = W.feet;
-    plumage.uniforms.wingUp.value.set(0, 1, 0).applyEuler(wings[0].shoulder.rotation); // the flank's colour split follows the wing roots
     const flutter = (0.03 + 0.08 * gust) * Math.sin(t * 37);
     tail.scale.z = 1 - 0.15 * env + 0.1 * Math.sin(t * 0.7) + flutter; // streamers close while flapping, fan in the glide
     tail.rotation.x = flutter * 1.5;
