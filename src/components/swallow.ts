@@ -386,8 +386,8 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
   ctx.fillStyle = p.line;
   ctx.fillRect(box.x, box.z, box.w, box.h);
   ctx.lineJoin = 'round';
-  // Five feathers a side fanning from the base, the outermost the long streamer, painted like the
-  // wing's flight feathers: dark outlined vanes with a pale streak, and the white windows of the fork.
+  // Five feathers per side: dark margins frame continuous cream centers that narrow
+  // from the rump into fine points, including the long outer streamers.
   const tips: [number, number][] = [[-1.08, 0.34], [-0.87, 0.245], [-0.72, 0.18], [-0.55, 0.11], [-0.38, 0.05]];
   for (const side of [1, -1]) {
     tips.forEach(([tx, z0], i) => {
@@ -409,19 +409,19 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
       ctx.lineWidth = 0.006;
       ctx.strokeStyle = p.line;
       ctx.stroke();
-      ctx.beginPath(); // pale streak beside the shaft
-      ctx.moveTo(...at(0.35, 0.12));
-      ctx.lineTo(...at(0.92, 0.06));
-      ctx.lineWidth = i === 0 ? 0.014 : 0.011;
-      ctx.strokeStyle = p.rib;
-      ctx.stroke();
-      if (i >= 2) {
-        const [cx, cz] = at(0.64, -0.05);
-        ctx.fillStyle = p.belly;
-        ctx.beginPath();
-        ctx.ellipse(cx, cz, 0.05, 0.014, Math.atan2(uz, ux), 0, Math.PI * 2);
-        ctx.fill();
-      }
+      // An inset white vane stays inside the dark feather margins and ends at its tip.
+      // The body overlaps its broad base, so the white rump flows into both sides of the fork.
+      ctx.beginPath();
+      ctx.moveTo(...at(0.035, 0.08));
+      ctx.quadraticCurveTo(...at(0.38, 0.3), ...at(0.99, 0));
+      ctx.quadraticCurveTo(...at(0.38, -0.3), ...at(0.035, -0.08));
+      ctx.closePath();
+      const center = ctx.createLinearGradient(0, 0, tx, tz);
+      center.addColorStop(0, p.belly);
+      center.addColorStop(0.55, shade(p.belly, -0.03));
+      center.addColorStop(1, p.belly);
+      ctx.fillStyle = center;
+      ctx.fill();
     });
   }
   ctx.beginPath(); // outline the edge
