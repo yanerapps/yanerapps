@@ -84,8 +84,8 @@ export const WING = {
   phase: 0.3,
   wedgeReach: 0.56, // covert wedge: how far out along the leading edge it reaches
   wedgeRoot: 0.3, // and the chord fraction it leaves uncovered at the root
-  focusX: 0.06, // the flight feathers radiate from this point inside the shoulder
-  focusZ: -0.22,
+  rootOffsetX: 0, // live offsets for the distributed flight-feather attachment line
+  rootOffsetZ: 0,
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -114,6 +114,17 @@ function trailing(s: number) {
 
 /** Leading and trailing edge x, relative to the shoulder, at span fraction s. */
 const planform = (s: number): [number, number] => [leading(s), trailing(s)];
+
+/** Secondaries follow the forearm; primaries spread from the hand beyond the wrist. */
+function featherRoot(s: number) {
+  const station = s <= WRIST
+    ? lerp(0.025, WRIST - 0.065, smoothstep(0.1, WRIST, s))
+    : lerp(WRIST - 0.065, 0.6, (s - WRIST) / (1 - WRIST));
+  return {
+    x: leading(station) - chord(station) * 0.2 + WING.rootOffsetX,
+    z: station * SPAN + WING.rootOffsetZ,
+  };
+}
 
 type Box = { x: number; z: number; w: number; h: number };
 
@@ -217,25 +228,25 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
   ctx.fillStyle = p.line; // shows through between feathers as their outlines
   ctx.fillRect(box.x, box.z, box.w, box.h);
   ctx.lineJoin = 'round';
-  const FOCUS = { x: WING.focusX, z: WING.focusZ };
   const feather = (k: number) => {
     const s = TIPS[k];
+    const root = featherRoot(s);
     const tx = trailing(s);
     const tz = s * SPAN;
-    const len = Math.hypot(tx - FOCUS.x, tz - FOCUS.z);
-    return { s, tx, tz, ux: (tx - FOCUS.x) / len, uz: (tz - FOCUS.z) / len, len };
+    const len = Math.hypot(tx - root.x, tz - root.z);
+    return { s, root, tx, tz, ux: (tx - root.x) / len, uz: (tz - root.z) / len, len };
   };
   const along = (f: ReturnType<typeof feather>, t: number): [number, number] =>
-    [FOCUS.x + f.ux * f.len * t, FOCUS.z + f.uz * f.len * t];
+    [f.root.x + f.ux * f.len * t, f.root.z + f.uz * f.len * t];
 
-  // Flight feathers: one fan from the focus, outermost first so each inner feather overlaps the
-  // next. Inner ones are short and point back, outer ones long and along the span, all tapering.
+  // Paint from the outermost feather inward, preserving overlaps across the wrist. The short
+  // secondaries point back from the forearm; the longer primaries fan outward from the hand.
   for (let k = TIPS.length - 1; k >= 0; k--) {
     const f = feather(k);
     const w = 0.13 * (1 - 0.4 * f.s);
     const nx = -f.uz; // toward the trailing side, where the vane is wider
     const nz = f.ux;
-    const [rx, rz] = along(f, 0.12);
+    const [rx, rz] = along(f, 0.02);
     const [mx, mz] = along(f, 0.58);
     ctx.beginPath();
     ctx.moveTo(rx + nx * w * 0.1, rz + nz * w * 0.1);
@@ -278,8 +289,9 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
       const [le, te] = planform(s);
       const bx = te + (le - te) * lerp(1, rootChord, smoothstep(reach, ROOT, s) ** 0.7);
       const bz = s * SPAN;
-      const len = Math.hypot(bx - FOCUS.x, bz - FOCUS.z);
-      ctx.quadraticCurveTo((px + bx) / 2 + ((bx - FOCUS.x) / len) * 0.03, (pz + bz) / 2 + ((bz - FOCUS.z) / len) * 0.03, bx, bz);
+      const root = featherRoot(Math.max(0.1, s));
+      const len = Math.max(0.001, Math.hypot(bx - root.x, bz - root.z));
+      ctx.quadraticCurveTo((px + bx) / 2 + ((bx - root.x) / len) * 0.03, (pz + bz) / 2 + ((bz - root.z) / len) * 0.03, bx, bz);
       px = bx;
       pz = bz;
     }

@@ -53,11 +53,11 @@ const GROUPS: [string, Row[]][] = [
   ['Form (repaints the wing)', [
     ['wedgeReach', 'white wedge reach', 0.2, 0.95, 0.01],
     ['wedgeRoot', 'white wedge root gap', 0, 0.9, 0.01],
-    ['focusX', 'feather focus x', -0.3, 0.3, 0.005],
-    ['focusZ', 'feather focus z', -0.8, 0.2, 0.005],
+    ['rootOffsetX', 'feather root offset x', -0.08, 0.08, 0.005],
+    ['rootOffsetZ', 'feather root offset z', -0.08, 0.08, 0.005],
   ]],
 ];
-const FORM: Key[] = ['wedgeReach', 'wedgeRoot', 'focusX', 'focusZ'];
+const FORM: Key[] = ['wedgeReach', 'wedgeRoot', 'rootOffsetX', 'rootOffsetZ'];
 
 export function mountWingDebug(params: Params, repaint: () => void) {
   const defaults = { ...params };
