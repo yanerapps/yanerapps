@@ -277,10 +277,23 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
     ctx.quadraticCurveTo(mx + nx * w * 0.62, mz + nz * w * 0.62, f.tx, f.tz);
     ctx.quadraticCurveTo(mx - nx * w * 0.42, mz - nz * w * 0.42, rx - nx * w * 0.1, rz - nz * w * 0.1);
     ctx.closePath();
-    ctx.fillStyle = shade(p.back, -0.02 * (k % 2) - 0.03 * f.s);
+    const vane = ctx.createLinearGradient(f.root.x, f.root.z, f.tx, f.tz);
+    const dark = shade(p.back, -0.02 * (k % 2) - 0.03 * f.s);
+    if (upper) {
+      vane.addColorStop(0, p.sheen);
+      vane.addColorStop(0.36, p.back);
+    } else {
+      // Each vane carries the transition along its own shaft, preserving the radial fan.
+      vane.addColorStop(0, p.belly);
+      vane.addColorStop(0.24, shade(p.belly, -0.035));
+      vane.addColorStop(0.46, shade(p.belly, -0.2));
+      vane.addColorStop(0.7, shade(p.back, 0.13));
+    }
+    vane.addColorStop(1, dark);
+    ctx.fillStyle = vane;
     ctx.fill();
-    ctx.lineWidth = 0.006;
-    ctx.strokeStyle = p.line;
+    ctx.lineWidth = 0.004;
+    ctx.strokeStyle = upper ? shade(p.back, -0.05) : shade(p.back, 0.06);
     ctx.stroke();
     if (k >= 4) { // a pale streak down the trailing vane of each exposed flight feather
       ctx.beginPath();
@@ -291,7 +304,7 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
         const c = t * t;
         ctx.lineTo(a * (rx + nx * w * 0.1) + b * (mx + nx * w * 0.5) + c * f.tx, a * (rz + nz * w * 0.1) + b * (mz + nz * w * 0.5) + c * f.tz);
       }
-      ctx.lineWidth = 0.016 * (1 - 0.4 * f.s);
+      ctx.lineWidth = 0.009 * (1 - 0.4 * f.s);
       ctx.strokeStyle = upper ? p.gloss : p.rib;
       ctx.stroke();
     }
