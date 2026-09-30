@@ -96,17 +96,40 @@ const smoothstep = (a: number, b: number, x: number) => {
 const flat = (shape: Shape) => new ShapeGeometry(shape, 16).rotateX(Math.PI / 2); // shape y becomes bird z
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
-const leading = (s: number) => 0.035 * Math.sin(Math.PI * clamp01(s)); // bows forward a little at mid-span
-const chord = (s: number) => {
+type ProfileStation = readonly [span: number, value: number, slope: number];
+// Cubic tangents join the shoulder, elbow, wrist and swept hand without angular seams.
+const LEADING_PROFILE: readonly ProfileStation[] = [
+  [0, 0, 0.15], [0.24, 0.055, 0.08], [WRIST, 0.08, 0],
+  [OUTER, -0.055, -0.85], [1, -0.3, -0.8],
+];
+const CHORD_PROFILE: readonly ProfileStation[] = [
+  [0, ROOT_CHORD, 0], [0.24, 0.48, -0.32], [WRIST, 0.36, -0.57],
+  [OUTER, 0.205, -0.55], [0.9, 0.085, -0.68], [1, 0, -0.95],
+];
+
+function profile(s: number, stations: readonly ProfileStation[]) {
   const u = clamp01(s);
-  return ROOT_CHORD * (1 - u) ** 0.6 * (1 + 0.25 * u * (1 - u)); // broad secondaries tapering to a point
-};
+  for (let i = 1; i < stations.length; i++) {
+    const [a, va, da] = stations[i - 1];
+    const [b, vb, db] = stations[i];
+    if (u > b) continue;
+    const h = b - a;
+    const t = (u - a) / h;
+    const t2 = t * t, t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * va + (t3 - 2 * t2 + t) * h * da
+      + (-2 * t3 + 3 * t2) * vb + (t3 - t2) * h * db;
+  }
+  return stations[stations.length - 1][1];
+}
+const leading = (s: number) => profile(s, LEADING_PROFILE);
+const chord = (s: number) => profile(s, CHORD_PROFILE);
 function trailing(s: number) {
   let notch = 0;
   for (let k = 3; k < TIPS.length; k++) {
     if (s > TIPS[k - 1] && s < TIPS[k]) { // scalloped between feather tips
       const u = (s - TIPS[k - 1]) / (TIPS[k] - TIPS[k - 1]);
-      notch = (0.012 + 0.014 * smoothstep(0.3, 0.7, s)) * Math.sin(Math.PI * u) ** 0.8;
+      notch = Math.min(0.008 + 0.006 * smoothstep(0.3, 0.7, s), chord(s) * 0.1)
+        * Math.sin(Math.PI * u) ** 1.2;
     }
   }
   return leading(s) - chord(s) + notch;
@@ -182,7 +205,8 @@ function wingGeometry() {
     const bones = [0, 1, 2, 3, 4].sort((a, b) => weights[b] - weights[a]).slice(0, 4); // never more than three are non-zero
     for (let j = 0; j <= NC; j++) {
       const v = j / NC;
-      position.push(te + (le - te) * v, 0.05 * (le - te) * Math.sin(Math.PI * v) * smoothstep(0, 0.2, s), s * SPAN); // gentle camber, flat at the root
+      const camber = lerp(0.09, 0.035, clamp01(s));
+      position.push(te + (le - te) * v, camber * (le - te) * Math.sin(Math.PI * v) * smoothstep(0, 0.2, s), s * SPAN); // fuller inner wing, thin swept tip
       skinIndex.push(...bones);
       skinWeight.push(...bones.map((b) => weights[b]));
     }
@@ -434,8 +458,10 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
     const sweeper = new Bone();
     const wrist = new Bone();
     const outer = new Bone();
-    wrist.position.z = WRIST * SPAN;
-    outer.position.z = (OUTER - WRIST) * SPAN;
+    const wristX = leading(WRIST) - chord(WRIST) * 0.2;
+    const outerX = leading(OUTER) - chord(OUTER) * 0.2;
+    wrist.position.set(wristX, 0, WRIST * SPAN);
+    outer.position.set(outerX - wristX, 0, (OUTER - WRIST) * SPAN);
     anchor.add(shoulder);
     shoulder.add(sweeper);
     sweeper.add(wrist);
