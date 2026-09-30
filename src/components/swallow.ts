@@ -341,16 +341,37 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
     g.addColorStop(1, p.sheen);
     ctx.fillStyle = g;
   } else ctx.fillStyle = p.belly;
-  ctx.lineWidth = 0.006;
-  ctx.strokeStyle = p.line;
+  ctx.lineWidth = 0.003;
+  ctx.strokeStyle = upper ? shade(p.back, 0.05) : shade(p.belly, -0.1);
   wedge(WING.wedgeRoot, WING.wedgeReach);
   ctx.fill();
   ctx.stroke();
-  if (!upper) ctx.fillStyle = shade(p.belly, -0.05);
-  ctx.lineWidth = 0.004;
+  if (!upper) ctx.fillStyle = shade(p.belly, -0.018);
+  ctx.lineWidth = 0.002;
   wedge(lerp(WING.wedgeRoot, 1, 0.45), WING.wedgeReach * 0.68); // lesser coverts: a second, finer row of scallops
   ctx.fill();
   ctx.stroke();
+
+  // Small overlapping covert tips follow the same attachment line as the flight feathers.
+  // Clip them to the root patch so the longer vanes retain their uninterrupted gradients.
+  ctx.save();
+  wedge(WING.wedgeRoot, WING.wedgeReach);
+  ctx.clip();
+  ctx.strokeStyle = upper ? shade(p.sheen, 0.03) : shade(p.belly, -0.09);
+  ctx.lineWidth = 0.0025;
+  for (let k = 0; k < 11; k++) {
+    const f = feather(k);
+    const nx = -f.uz, nz = f.ux;
+    for (const t of [0.17, 0.29]) {
+      const [x, z] = along(f, t);
+      const width = 0.022 * (1 - 0.3 * f.s);
+      ctx.beginPath();
+      ctx.moveTo(x + nx * width, z + nz * width);
+      ctx.quadraticCurveTo(x + f.ux * 0.035, z + f.uz * 0.035, x - nx * width, z - nz * width);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
 
   ctx.beginPath(); // outline the edge, feather tips included
   for (let i = 0; i <= 80; i++) ctx.lineTo(leading(i / 80), (i / 80) * SPAN);
