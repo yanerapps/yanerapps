@@ -46,6 +46,8 @@ const WRIST = 0.45; // as a fraction of the span
 const OUTER = 0.72; // pivot of the tip section, as a fraction of the span
 const ROOT = -0.05; // span fraction buried in the body
 const ROOT_CHORD = 0.52;
+const WING_CHORD_SCALE = 0.9; // shorten both leading and trailing reach without changing span
+const BODY_SCALE = new Vector3(0.88, 0.88, 0.86);
 const SHOULDER = new Vector3(0.2, 0.04, 0.08); // high on the chest, so the wing grows out of the shoulder
 // Flight feathers, innermost first, by the span fraction where each tip meets the trailing edge.
 const TIPS = Array.from({ length: 16 }, (_, k) => 0.1 + 0.9 * ((k + 1) / 16) ** 1.15);
@@ -121,8 +123,8 @@ function profile(s: number, stations: readonly ProfileStation[]) {
   }
   return stations[stations.length - 1][1];
 }
-const leading = (s: number) => profile(s, LEADING_PROFILE);
-const chord = (s: number) => profile(s, CHORD_PROFILE);
+const leading = (s: number) => WING_CHORD_SCALE * profile(s, LEADING_PROFILE);
+const chord = (s: number) => WING_CHORD_SCALE * profile(s, CHORD_PROFILE);
 function trailing(s: number) {
   let notch = 0;
   for (let k = 3; k < TIPS.length; k++) {
@@ -274,7 +276,7 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
   // secondaries point back from the forearm; the longer primaries fan outward from the hand.
   for (let k = TIPS.length - 1; k >= 0; k--) {
     const f = feather(k);
-    const w = 0.14 * (1 - 0.43 * f.s);
+    const w = WING_CHORD_SCALE * 0.14 * (1 - 0.43 * f.s);
     const nx = -f.uz; // toward the trailing side, where the vane is wider
     const nz = f.ux;
     const [rx, rz] = along(f, 0.02);
@@ -473,6 +475,7 @@ function bodyGeometry() {
     const height = y >= 0 ? lerp(0.74, 0.72, head) : lerp(1.04, 0.86, head);
     positions.setXYZ(i, x, y * height - keel, z * lerp(0.88, 0.94, head));
   }
+  geometry.scale(BODY_SCALE.x, BODY_SCALE.y, BODY_SCALE.z);
   geometry.computeVertexNormals();
   return geometry;
 }
@@ -487,11 +490,13 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
   const eyeGeometry = new SphereGeometry(0.011, 8, 6);
   for (const side of [1, -1]) {
     const eye = new Mesh(eyeGeometry, dark);
-    eye.position.set(0.396, 0.014, side * 0.087);
+    eye.position.set(0.396, 0.014, side * 0.087).multiply(BODY_SCALE);
+    eye.scale.copy(BODY_SCALE);
     bird.add(eye);
   }
   const beak = new Mesh(new ConeGeometry(0.024, 0.085, 4).rotateZ(-Math.PI / 2).scale(1, 0.45, 1), dark);
-  beak.position.set(0.529, -0.022, 0);
+  beak.position.set(0.529, -0.022, 0).multiply(BODY_SCALE);
+  beak.scale.copy(BODY_SCALE);
   bird.add(beak);
 
   // Slender feet drawn up under the belly as a swallow carries them in flight: each leg leaves
@@ -508,6 +513,7 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
     foot.scale.set(1.6, 0.45, 0.9);
     feet.add(leg, foot);
   }
+  feet.scale.copy(BODY_SCALE);
   bird.add(feet);
 
   // Each wing is one skinned surface over a chain of bones: an anchor holds the root inside the
@@ -516,7 +522,7 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
   // the wing. The left wing is the right one mirrored, so the same bone rotations drive both.
   const wings = [1, -1].map((side) => {
     const root = new Group();
-    root.position.set(SHOULDER.x, SHOULDER.y, SHOULDER.z * side);
+    root.position.set(SHOULDER.x, SHOULDER.y, SHOULDER.z * side).multiply(BODY_SCALE);
     root.scale.z = side;
     const mesh = new SkinnedMesh(wingGeo, feather);
     mesh.frustumCulled = false;
@@ -543,7 +549,7 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
   // The tail is rooted well inside the body: its base is narrower than the rump there, and the
   // rump's cone runs on over the root, so the feathers grow out from under the body.
   const tail = new Group();
-  tail.position.set(-0.33, 0, 0);
+  tail.position.set(-0.33 * BODY_SCALE.x, 0, 0);
   tail.add(new Mesh(tailGeo, tailSkin));
   bird.add(tail);
 
@@ -664,11 +670,13 @@ export function mount(el: HTMLElement) {
       back: { value: new Color() },
       belly: { value: new Color() },
       face: { value: new Color() },
+      bodyScale: { value: BODY_SCALE.clone() },
     },
     vertexShader: /* glsl */ `
+      uniform vec3 bodyScale;
       varying vec3 vPos;
       void main() {
-        vPos = position;
+        vPos = position / bodyScale;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }`,
     fragmentShader: /* glsl */ `
