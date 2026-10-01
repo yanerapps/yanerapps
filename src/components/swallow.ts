@@ -100,11 +100,11 @@ type ProfileStation = readonly [span: number, value: number, slope: number];
 // Cubic tangents join the shoulder, elbow, wrist and swept hand without angular seams.
 const LEADING_PROFILE: readonly ProfileStation[] = [
   [0, 0, 0.15], [0.24, 0.055, 0.08], [WRIST, 0.08, 0],
-  [OUTER, -0.055, -0.85], [1, -0.3, -0.8],
+  [OUTER, -0.025, -0.65], [1, -0.25, -0.8],
 ];
 const CHORD_PROFILE: readonly ProfileStation[] = [
-  [0, ROOT_CHORD, 0], [0.24, 0.48, -0.32], [WRIST, 0.36, -0.57],
-  [OUTER, 0.205, -0.55], [0.9, 0.085, -0.68], [1, 0, -0.95],
+  [0, ROOT_CHORD, 0], [0.24, 0.51, -0.2], [WRIST, 0.405, -0.57],
+  [OUTER, 0.225, -0.65], [0.9, 0.09, -0.72], [1, 0, -0.95],
 ];
 
 function profile(s: number, stations: readonly ProfileStation[]) {
@@ -128,7 +128,7 @@ function trailing(s: number) {
   for (let k = 3; k < TIPS.length; k++) {
     if (s > TIPS[k - 1] && s < TIPS[k]) { // scalloped between feather tips
       const u = (s - TIPS[k - 1]) / (TIPS[k] - TIPS[k - 1]);
-      notch = Math.min(0.008 + 0.006 * smoothstep(0.3, 0.7, s), chord(s) * 0.1)
+      notch = Math.min(0.006 + 0.004 * smoothstep(0.3, 0.7, s), chord(s) * 0.1)
         * Math.sin(Math.PI * u) ** 1.2;
     }
   }
@@ -267,7 +267,7 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
   // secondaries point back from the forearm; the longer primaries fan outward from the hand.
   for (let k = TIPS.length - 1; k >= 0; k--) {
     const f = feather(k);
-    const w = 0.13 * (1 - 0.4 * f.s);
+    const w = 0.14 * (1 - 0.43 * f.s);
     const nx = -f.uz; // toward the trailing side, where the vane is wider
     const nz = f.ux;
     const [rx, rz] = along(f, 0.02);
