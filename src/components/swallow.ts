@@ -276,6 +276,89 @@ function wingGeometry() {
   return geometry;
 }
 
+type FeatherBlade = { rx: number; rz: number; tx: number; tz: number; width: number; lift: number };
+
+/** Closed curved vanes sit on both sides of the airfoil and share its bone deformation. */
+function featherLayerGeometry(box: Box, blades: FeatherBlade[]) {
+  const NT = 18, NW = 6;
+  const position: number[] = [], uv: number[] = [], coverSide: number[] = [];
+  const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
+  for (const upper of [true, false]) {
+    const sign = upper ? 1 : -1;
+    for (const blade of blades) {
+      const start = position.length / 3;
+      const dx = blade.tx - blade.rx, dz = blade.tz - blade.rz;
+      const len = Math.hypot(dx, dz), nx = -dz / len, nz = dx / len;
+      for (const outside of [true, false]) {
+        for (let i = 0; i <= NT; i++) {
+          const t = i / NT;
+          const fan = Math.sin(Math.PI * t) ** 0.85;
+          for (let j = 0; j <= NW; j++) {
+            const q = j / NW;
+            const across = lerp(-0.42, 0.62, q) * blade.width * fan;
+            const z = Math.min(SPAN, Math.max(ROOT * SPAN, blade.rz + dz * t + nz * across));
+            const span = z / SPAN, [le, te] = planform(span);
+            const x = Math.min(le, Math.max(te, blade.rx + dx * t + nx * across));
+            const v = clamp01((x - te) / Math.max(0.000001, le - te));
+            // The underside of each vane sinks into the wing; its convex outer face
+            // makes a narrow overlapping lip and a subtle raised shaft, never a gap.
+            const ridge = Math.sin(Math.PI * q) * fan;
+            const raised = outside ? 0.001 + blade.lift * fan + 0.003 * ridge : -0.001;
+            position.push(x, wingHeight(span, v, upper) + sign * raised, z);
+            uv.push((x - box.x) / box.w, (z - box.z) / box.h);
+            coverSide.push(upper ? 1 : 0);
+            const skin = wingWeights(span);
+            skinIndex.push(...skin.bones);
+            skinWeight.push(...skin.weights);
+          }
+        }
+      }
+      const count = (NT + 1) * (NW + 1);
+      const tri = (a: number, b: number, c: number) => {
+        index.push(start + a, start + (upper ? b : c), start + (upper ? c : b));
+      };
+      for (let i = 0; i < NT; i++) {
+        for (let j = 0; j < NW; j++) {
+          const a = i * (NW + 1) + j, b = a + NW + 1;
+          // The vane cross-axis points aft, reversing the wing grid winding.
+          tri(a, a + 1, b); tri(b, a + 1, b + 1);
+          tri(count + a, count + b, count + a + 1); tri(count + b, count + b + 1, count + a + 1);
+        }
+        for (const j of [0, NW]) {
+          const a = i * (NW + 1) + j, b = a + NW + 1;
+          if (j === 0) { tri(a, b, count + a); tri(b, count + b, count + a); }
+          else { tri(a, count + a, b); tri(b, count + a, count + b); }
+        }
+      }
+      for (let j = 0; j < NW; j++) {
+        tri(j, count + j, j + 1); tri(j + 1, count + j, count + j + 1);
+        const a = NT * (NW + 1) + j;
+        tri(a, a + 1, count + a); tri(a + 1, count + a + 1, count + a);
+      }
+    }
+  }
+  const geometry = new BufferGeometry();
+  geometry.setAttribute('position', new Float32BufferAttribute(position, 3));
+  geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2));
+  geometry.setAttribute('coverSide', new Float32BufferAttribute(coverSide, 1));
+  geometry.setAttribute('skinIndex', new Uint16BufferAttribute(skinIndex, 4));
+  geometry.setAttribute('skinWeight', new Float32BufferAttribute(skinWeight, 4));
+  geometry.setIndex(index);
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
+function flightFeathersGeometry(box: Box) {
+  return featherLayerGeometry(box, TIPS.map((span, k) => {
+    const root = featherRoot(span);
+    return {
+      rx: root.x, rz: root.z, tx: trailing(span), tz: span * SPAN,
+      width: WING_CHORD_SCALE * 0.14 * (1 - 0.43 * span),
+      lift: 0.004 + 0.00025 * (TIPS.length - 1 - k),
+    };
+  }));
+}
+
 /** A shallow closed feather cuff bridges the fixed body into the moving inner wing. */
 function shoulderGeometry(box: Box) {
   const NS = 14, NC = 8, end = 0.14;
@@ -572,7 +655,7 @@ function bodyGeometry() {
   return geometry;
 }
 
-function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSkin: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, coverGeo: BufferGeometry, tailGeo: BufferGeometry) {
+function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSkin: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, coverGeo: BufferGeometry, flightGeo: BufferGeometry, tailGeo: BufferGeometry) {
   const bird = new Group();
   bird.rotation.order = 'YZX'; // roll about the body axis first, then pitch
 
@@ -637,7 +720,10 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSki
     const cover = new SkinnedMesh(coverGeo, coverSkin);
     cover.frustumCulled = false;
     cover.bind(skeleton);
-    root.add(mesh, cover);
+    const vanes = new SkinnedMesh(flightGeo, feather);
+    vanes.frustumCulled = false;
+    vanes.bind(skeleton);
+    root.add(mesh, cover, vanes);
     bird.add(root);
     return { shoulder, sweeper, wrist, outer };
   });
@@ -762,6 +848,7 @@ export function mount(el: HTMLElement) {
         #include <colorspace_fragment>
       }`,
   });
+  const flightGeo = flightFeathersGeometry(lower.box);
   const coverGeo = shoulderGeometry(lower.box);
   const coverSkin = feather; // closed surfaces carry explicit upper/lower color attributes
   const tailSkin = new MeshBasicMaterial({ map: tailSheet.texture, side: DoubleSide });
@@ -809,7 +896,7 @@ export function mount(el: HTMLElement) {
         #include <colorspace_fragment>
       }`,
   });
-  const { bird, wings, tail, feet } = buildSwallow(plumage, feather, coverSkin, tailSkin, feetSkin, wingGeo, coverGeo, tailGeo);
+  const { bird, wings, tail, feet } = buildSwallow(plumage, feather, coverSkin, tailSkin, feetSkin, wingGeo, coverGeo, flightGeo, tailGeo);
   flight.add(bird);
 
   const wind = new ShaderMaterial({
@@ -970,6 +1057,9 @@ export function mount(el: HTMLElement) {
       rib: css('--swallow-rib'),
       line: shade(back, -0.12),
     };
+    const updatedVanes = flightFeathersGeometry(lower.box);
+    flightGeo.copy(updatedVanes);
+    updatedVanes.dispose();
     paintWing(lower.ctx, lower.box, p, false);
     paintWing(upper.ctx, upper.box, p, true);
     paintTail(tailSheet.ctx, tailSheet.box, p);
