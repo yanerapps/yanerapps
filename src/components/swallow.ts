@@ -58,21 +58,21 @@ export const WING = {
   dihedral: 0.1, // wings raised this much in the glide
   lead: 0.4, // the back-sweep runs a little ahead of the up-and-down, peaking at the bottom of the stroke
   sweepRoot: 0.3, // back-sweep through the power stroke, per section
-  sweepMid: 0.15,
-  sweepTip: 0.06,
+  sweepMid: 0.12,
+  sweepTip: 0.045,
   reachRoot: 0.08, // forward reach past the resting line on the way up, per section; the tip leads
   reachMid: 0.1,
   reachTip: 0.08,
   reachPeak: 1.9, // where the reach peaks, in half-strokes: 1 = bottom, 1.5 = level, 2 = top
-  lagMid: 0.03, // the hand trails the arm by this many beats
-  lagTip: 0.05, // the tip trails the arm by this many beats
-  whipMid: 0.25, // how much of the flap each section's up-and-down lags the one before by
-  whipTip: 0.15,
-  fold: 0.14, // a shallow hand fold on the recovery
+  lagMid: 0.025, // the hand trails the arm by this many beats
+  lagTip: 0.04, // the tip trails the arm by this many beats
+  whipMid: 0.2, // how much of the flap each section's up-and-down lags the one before by
+  whipTip: 0.12,
+  fold: 0.11, // a shallow hand fold on the recovery
   foldSweep: 0.035, // and a touch back
   twistRoot: 0.04, // leading edge pitched down through the power stroke, per section
-  twistMid: 0.08,
-  twistTip: 0.025,
+  twistMid: 0.055,
+  twistTip: 0.02,
   glideSweep: 1, // scales the resting sweep of the three sections
   feet: false, // show the feet tucked under the belly
   bob: 0.015, // body thrown up by each power stroke
@@ -709,7 +709,7 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSki
   feet.scale.copy(BODY_SCALE);
   bird.add(feet);
 
-  // Each wing is one skinned surface over a chain of bones: an anchor holds the root inside the
+  // Each wing has a closed airfoil, layered vanes and a cuff sharing one bone chain: an anchor holds the root inside the
   // body, the shoulder flaps the arm and a second joint on the same pivot swings it fore and aft,
   // the wrist moves the hand and an outer joint the tip section, so motion can travel out along
   // the wing. The left wing is the right one mirrored, so the same bone rotations drive both.
@@ -1084,6 +1084,7 @@ export function mount(el: HTMLElement) {
     raf = requestAnimationFrame(frame);
   }
 
+  let vaneRootX = WING.rootOffsetX, vaneRootZ = WING.rootOffsetZ;
   function applyTheme() {
     const cs = getComputedStyle(document.documentElement);
     const css = (name: string) => cs.getPropertyValue(name).trim();
@@ -1097,10 +1098,15 @@ export function mount(el: HTMLElement) {
       rib: css('--swallow-rib'),
       line: shade(back, -0.12),
     };
-    for (const [target, make] of [[flightGeo, flightFeathersGeometry], [covertGeo, covertFeathersGeometry]] as const) {
-      const updated = make(lower.box);
-      target.copy(updated);
-      updated.dispose();
+    if (vaneRootX !== WING.rootOffsetX || vaneRootZ !== WING.rootOffsetZ) {
+      for (const [target, make] of [[flightGeo, flightFeathersGeometry], [covertGeo, covertFeathersGeometry]] as const) {
+        const updated = make(lower.box);
+        target.dispose(); // release old GPU attributes before a live form rebuild
+        target.copy(updated);
+        updated.dispose();
+      }
+      vaneRootX = WING.rootOffsetX;
+      vaneRootZ = WING.rootOffsetZ;
     }
     paintWing(lower.ctx, lower.box, p, false);
     paintWing(upper.ctx, upper.box, p, true);
@@ -1165,6 +1171,23 @@ export function mount(el: HTMLElement) {
     scheme.removeEventListener('change', applyTheme);
     window.removeEventListener('pointermove', onPointer);
     document.documentElement.removeEventListener('mouseleave', onLeave);
+    // The closed skin, vanes and coverts share resources between mirrored wings.
+    const geometries = new Set<BufferGeometry>();
+    const materials = new Set<ShaderMaterial | MeshBasicMaterial>();
+    const skeletons = new Set<Skeleton>();
+    scene.traverse((object) => {
+      if (object instanceof Mesh) {
+        geometries.add(object.geometry);
+        for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
+          materials.add(material as ShaderMaterial | MeshBasicMaterial);
+        }
+      }
+      if (object instanceof SkinnedMesh) skeletons.add(object.skeleton);
+    });
+    geometries.forEach((geometry) => geometry.dispose());
+    materials.forEach((material) => material.dispose());
+    skeletons.forEach((skeleton) => skeleton.dispose());
+    for (const { texture } of [lower, upper, tailSheet]) texture.dispose();
     renderer.dispose();
     renderer.forceContextLoss();
   };

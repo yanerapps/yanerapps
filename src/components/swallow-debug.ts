@@ -38,7 +38,7 @@ const GROUPS: [string, Row[]][] = [
   ['Back-sweep (down-stroke)', [
     ['sweepRoot', 'root', 0, 1.2, 0.01],
     ['sweepMid', 'hand', 0, 1.2, 0.01],
-    ['sweepTip', 'tip', 0, 1.2, 0.01],
+    ['sweepTip', 'tip', 0, 1.2, 0.005],
     ['glideSweep', 'resting sweep ×', 0, 4, 0.05],
   ]],
   ['Forward reach (up-stroke)', [
@@ -55,9 +55,9 @@ const GROUPS: [string, Row[]][] = [
   ]],
   ['Recovery fold & twist', [
     ['fold', 'fold up', 0, 1, 0.01],
-    ['foldSweep', 'fold back', 0, 1, 0.01],
+    ['foldSweep', 'fold back', 0, 1, 0.005],
     ['twistRoot', 'twist root', 0, 0.5, 0.01],
-    ['twistMid', 'twist hand', 0, 0.6, 0.01],
+    ['twistMid', 'twist hand', 0, 0.6, 0.005],
     ['twistTip', 'twist tip', 0, 0.5, 0.01],
   ]],
   ['Body', [
