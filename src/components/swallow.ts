@@ -33,8 +33,7 @@ import {
 
 // Bird space: x is forward (the beak), y is up, z is the right wing. The camera
 // moves between oblique underside and upper-side views with slow, eased arcs.
-// Everything is unlit painted surfaces
-// in barn-swallow livery; the sky itself is a CSS gradient behind the transparent canvas.
+// Painted barn-swallow livery uses restrained matte shading on the body and wings; the sky itself is a CSS gradient behind the transparent canvas.
 const FOV = 24; // long lens: the near wing stays close to the far one in size, so the silhouette reads flat
 const BANK = -0.14; // standing roll that tips the belly toward the camera
 const WIND_X = 5; // wind streaks recycle across this half-width
@@ -788,6 +787,8 @@ export function mount(el: HTMLElement) {
 
   const scene = new Scene();
   const camera = new PerspectiveCamera(FOV, 16 / 9, 0.1, 60);
+  const worldLight = new Vector3(0.4, 0.85, 1).normalize();
+  const lightDirection = { value: new Vector3() };
 
   const flight = new Group();
   flight.rotation.z = 0.12; // the flight line climbs gently to the right
@@ -835,6 +836,8 @@ export function mount(el: HTMLElement) {
     const elev = view.elevation + (playback ? 0.025 * leanY + 0.015 * scrolled : 0);
     camera.position.set(Math.sin(az) * Math.cos(elev), Math.sin(elev), Math.cos(az) * Math.cos(elev)).multiplyScalar(view.distance);
     camera.lookAt(0, 0, 0);
+    camera.updateMatrixWorld();
+    lightDirection.value.copy(worldLight).transformDirection(camera.matrixWorldInverse);
   }
 
   // The wing and tail are painted onto canvases in bird units, then draped over their surfaces.
@@ -847,9 +850,10 @@ export function mount(el: HTMLElement) {
   for (const { texture } of [lower, upper, tailSheet]) texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
   const feather = new ShaderMaterial({
-    uniforms: { upper: { value: upper.texture }, lower: { value: lower.texture } },
+    uniforms: { upper: { value: upper.texture }, lower: { value: lower.texture }, lightDirection },
     vertexShader: /* glsl */ `
       #include <skinning_pars_vertex>
+      varying vec3 vNormal;
       attribute float coverSide;
       varying float vCoverSide;
       varying vec2 vUv;
@@ -857,16 +861,23 @@ export function mount(el: HTMLElement) {
         vUv = uv;
         vCoverSide = coverSide;
         #include <skinbase_vertex>
+        #include <beginnormal_vertex>
+        #include <skinnormal_vertex>
+        vNormal = normalize(normalMatrix * objectNormal);
         #include <begin_vertex>
         #include <skinning_vertex>
         #include <project_vertex>
       }`,
     fragmentShader: /* glsl */ `
       uniform sampler2D upper, lower;
+      uniform vec3 lightDirection;
+      varying vec3 vNormal;
       varying float vCoverSide;
       varying vec2 vUv;
       void main() {
         gl_FragColor = mix(texture2D(lower, vUv), texture2D(upper, vUv), vCoverSide);
+        float matte = 0.78 + 0.22 * max(0.0, dot(normalize(vNormal), lightDirection));
+        gl_FragColor.rgb *= matte;
         #include <colorspace_fragment>
       }`,
   });
@@ -883,16 +894,21 @@ export function mount(el: HTMLElement) {
       belly: { value: new Color() },
       face: { value: new Color() },
       bodyScale: { value: BODY_SCALE.clone() },
+      lightDirection,
     },
     vertexShader: /* glsl */ `
       uniform vec3 bodyScale;
+      varying vec3 vNormal;
       varying vec3 vPos;
       void main() {
         vPos = position / bodyScale;
+        vNormal = normalize(normalMatrix * normal);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }`,
     fragmentShader: /* glsl */ `
       uniform vec3 back, belly, face;
+      uniform vec3 lightDirection;
+      varying vec3 vNormal;
       varying vec3 vPos;
       float edge(float v) { float w = fwidth(v); return smoothstep(-w, w, v); } // antialiased step at 0
       void main() {
@@ -915,7 +931,8 @@ export function mount(el: HTMLElement) {
         vec3 brow = (vPos - vec3(0.45, 0.025, 0.0)) / vec3(0.044, 0.041, 0.058);
         c = mix(c, face, edge(1.0 - dot(brow, brow)));
         c = mix(c, back, edge(vPos.x - 0.49)); // dark base behind the pointed beak
-        gl_FragColor = vec4(c, 1.0);
+        float matte = 0.78 + 0.22 * max(0.0, dot(normalize(vNormal), lightDirection));
+        gl_FragColor = vec4(c * matte, 1.0);
         #include <colorspace_fragment>
       }`,
   });
