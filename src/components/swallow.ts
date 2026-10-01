@@ -41,7 +41,7 @@ const WIND_X = 5; // wind streaks recycle across this half-width
 const SPAN = 1.33; // shoulder to wing tip
 const WRIST = 0.45; // as a fraction of the span
 const OUTER = 0.72; // pivot of the tip section, as a fraction of the span
-const ROOT = -0.05; // span fraction buried in the body
+const ROOT = -0.085; // span fraction buried in the body
 const ROOT_CHORD = 0.52;
 const WING_CHORD_SCALE = 0.9; // shorten both leading and trailing reach without changing span
 const BODY_SCALE = new Vector3(0.88, 0.88, 0.86);
@@ -226,13 +226,13 @@ function wingGeometry() {
   for (let i = 0; i <= NS; i++) {
     const s = lerp(ROOT, 1, i / NS);
     const [le, te] = planform(s);
-    // The body pins only the part of the root buried inside it, so the visible wing turns rigidly
-    // with the shoulder. The buried surface overlaps the fixed body plumage and the painted
-    // shoulder coverts hide the attachment. Most of each feather fan follows one section
+    // The deeper buried root remains fixed to the body; shoulder motion begins under
+    // the feather cuff and takes over before its tapered outer edge. The cuff closes
+    // the attachment while the main wing retains its shallow, coordinated stroke. Most of each feather fan follows one section
     // rigidly; compact, smooth blends around the wrist and outer joint keep the surface
     // continuous without stretching a large part of the painted feather fan.
-    const arm = smoothstep(-0.05, 0.03, s);
-    const swung = smoothstep(-0.025, 0.045, s);
+    const arm = smoothstep(-0.025, 0.055, s);
+    const swung = smoothstep(-0.01, 0.065, s);
     const hand = smoothstep(WRIST - 0.075, WRIST + 0.075, s);
     const outer = smoothstep(OUTER - 0.065, OUTER + 0.065, s);
     const weights = [1 - arm, arm * (1 - swung) * (1 - hand), arm * swung * (1 - hand), arm * hand * (1 - outer), arm * hand * outer];
