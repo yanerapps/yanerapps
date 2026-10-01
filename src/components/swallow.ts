@@ -260,6 +260,49 @@ function wingGeometry() {
   return geometry;
 }
 
+/** A shallow closed feather cuff bridges the fixed body into the moving inner wing. */
+function shoulderGeometry(box: Box) {
+  const NS = 14, NC = 8, end = 0.14;
+  const position: number[] = [], uv: number[] = [], coverSide: number[] = [];
+  const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
+  for (const top of [true, false]) {
+    for (let i = 0; i <= NS; i++) {
+      const s = lerp(ROOT, end, i / NS);
+      const [le, te] = planform(s);
+      const follow = smoothstep(ROOT, end, s);
+      for (let j = 0; j <= NC; j++) {
+        const v = j / NC, x = lerp(te, le, v), z = s * SPAN;
+        const arch = Math.sin(Math.PI * v);
+        const wingHeight = lerp(0.09, 0.035, clamp01(s)) * (le - te) * arch * smoothstep(0, 0.2, s);
+        const thickness = (top ? 0.02 : -0.014) * arch * (1 - smoothstep(0.055, end, s));
+        position.push(x, wingHeight + thickness, z);
+        uv.push((x - box.x) / box.w, (z - box.z) / box.h);
+        coverSide.push(top ? 1 : 0);
+        skinIndex.push(0, 2, 0, 0);
+        skinWeight.push(1 - follow, follow, 0, 0);
+      }
+    }
+  }
+  const offset = (NS + 1) * (NC + 1);
+  for (let i = 0; i < NS; i++) {
+    for (let j = 0; j < NC; j++) {
+      const a = i * (NC + 1) + j, b = a + NC + 1;
+      index.push(a, b, a + 1, b, b + 1, a + 1); // upper surface faces up
+      index.push(offset + a, offset + a + 1, offset + b, offset + b, offset + a + 1, offset + b + 1);
+    }
+  }
+  // Close the buried inner end; the outer end and both edges taper onto the wing surface.
+  for (let j = 0; j < NC; j++) index.push(j, j + 1, offset + j, offset + j, j + 1, offset + j + 1);
+  const geometry = new BufferGeometry();
+  geometry.setAttribute('position', new Float32BufferAttribute(position, 3));
+  geometry.setAttribute('uv', new Float32BufferAttribute(uv, 2));
+  geometry.setAttribute('coverSide', new Float32BufferAttribute(coverSide, 1));
+  geometry.setAttribute('skinIndex', new Uint16BufferAttribute(skinIndex, 4));
+  geometry.setAttribute('skinWeight', new Float32BufferAttribute(skinWeight, 4));
+  geometry.setIndex(index);
+  return geometry;
+}
+
 function tailShape() {
   const tail = new Shape(); // deep fork with long outer streamers
   tail.moveTo(0.04, 0.06);
@@ -512,7 +555,7 @@ function bodyGeometry() {
   return geometry;
 }
 
-function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, tailGeo: BufferGeometry) {
+function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSkin: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, coverGeo: BufferGeometry, tailGeo: BufferGeometry) {
   const bird = new Group();
   bird.rotation.order = 'YZX'; // roll about the body axis first, then pitch
 
@@ -572,8 +615,12 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, tailSkin
     sweeper.add(wrist);
     wrist.add(outer);
     mesh.add(anchor);
-    mesh.bind(new Skeleton([anchor, shoulder, sweeper, wrist, outer]));
-    root.add(mesh);
+    const skeleton = new Skeleton([anchor, shoulder, sweeper, wrist, outer]);
+    mesh.bind(skeleton);
+    const cover = new SkinnedMesh(coverGeo, coverSkin);
+    cover.frustumCulled = false;
+    cover.bind(skeleton);
+    root.add(mesh, cover);
     bird.add(root);
     return { shoulder, sweeper, wrist, outer };
   });
@@ -695,6 +742,32 @@ export function mount(el: HTMLElement) {
         #include <colorspace_fragment>
       }`,
   });
+  const coverGeo = shoulderGeometry(lower.box);
+  const coverSkin = new ShaderMaterial({
+    uniforms: feather.uniforms,
+    vertexShader: /* glsl */ `
+      #include <skinning_pars_vertex>
+      attribute float coverSide;
+      varying float vCoverSide;
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        vCoverSide = coverSide;
+        #include <skinbase_vertex>
+        #include <begin_vertex>
+        #include <skinning_vertex>
+        #include <project_vertex>
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform sampler2D upper, lower;
+      varying float vCoverSide;
+      varying vec2 vUv;
+      void main() {
+        // The upper cuff stays blue-black even when its local surface bends at the root.
+        gl_FragColor = mix(texture2D(lower, vUv), texture2D(upper, vUv), vCoverSide);
+        #include <colorspace_fragment>
+      }`,
+  });
   const tailSkin = new MeshBasicMaterial({ map: tailSheet.texture, side: DoubleSide });
   const feetSkin = new MeshBasicMaterial();
   // A dark crown and back frame the warm white belly, with the orange throat cut off by a dark breast band.
@@ -740,7 +813,7 @@ export function mount(el: HTMLElement) {
         #include <colorspace_fragment>
       }`,
   });
-  const { bird, wings, tail, feet } = buildSwallow(plumage, feather, tailSkin, feetSkin, wingGeo, tailGeo);
+  const { bird, wings, tail, feet } = buildSwallow(plumage, feather, coverSkin, tailSkin, feetSkin, wingGeo, coverGeo, tailGeo);
   flight.add(bird);
 
   const wind = new ShaderMaterial({
