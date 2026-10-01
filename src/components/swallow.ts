@@ -442,8 +442,8 @@ function phase(beat: number) {
 /** Flatten the back, keep a shallow breast keel and blend into a compact head. */
 function bodyGeometry() {
   const outline = [
-    [0, -0.56], [0.025, -0.51], [0.055, -0.42], [0.085, -0.28], [0.13, -0.108], [0.155, 0.045],
-    [0.148, 0.162], [0.12, 0.252], [0.095, 0.306], [0.098, 0.378], [0.078, 0.441],
+    [0, -0.56], [0.025, -0.51], [0.052, -0.42], [0.086, -0.28], [0.139, -0.108], [0.169, 0.045],
+    [0.163, 0.162], [0.126, 0.252], [0.095, 0.306], [0.098, 0.378], [0.078, 0.441],
     [0.03, 0.495], [0, 0.522],
   ].map(([r, x]) => new Vector2(r, x));
   const geometry = new LatheGeometry(outline, 24).rotateZ(-Math.PI / 2);
@@ -452,7 +452,7 @@ function bodyGeometry() {
     const x = positions.getX(i), y = positions.getY(i), z = positions.getZ(i);
     const head = smoothstep(0.27, 0.37, x);
     const keel = 0.012 * Math.exp(-(((x - 0.06) / 0.21) ** 2)) * Math.max(0, -y / 0.155);
-    const height = y >= 0 ? lerp(0.8, 0.72, head) : lerp(1, 0.86, head);
+    const height = y >= 0 ? lerp(0.74, 0.72, head) : lerp(1.04, 0.86, head);
     positions.setXYZ(i, x, y * height - keel, z * lerp(0.88, 0.94, head));
   }
   geometry.computeVertexNormals();
@@ -664,7 +664,11 @@ export function mount(el: HTMLElement) {
         float lower = 1.0 - edge(up - 0.42);
         float collar = 0.279 - 0.078 * (up + 1.0) / 1.37;
         float white = (1.0 - edge(vPos.x - collar)) * lower;
-        vec3 c = mix(back, belly, white);
+        // A restrained painted keel shadow separates the rounded belly from the flat wings.
+        float keelShade = (1.0 - smoothstep(-0.97, -0.68, up))
+          * smoothstep(-0.48, -0.2, vPos.x) * (1.0 - smoothstep(0.2, 0.29, vPos.x));
+        vec3 breast = mix(belly, back, 0.065 * keelShade);
+        vec3 c = mix(back, breast, white);
         vec3 throat = (vPos - vec3(0.387, -0.04, 0.0)) / vec3(0.081, 0.065, 0.09);
         c = mix(c, face, edge(1.0 - dot(throat, throat)) * edge(0.3 - up));
         vec3 brow = (vPos - vec3(0.45, 0.025, 0.0)) / vec3(0.05, 0.046, 0.061);
