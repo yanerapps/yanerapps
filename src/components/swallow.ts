@@ -41,7 +41,7 @@ const DISTANCE = 8.0;
 const FOV = 24; // long lens: the near wing stays close to the far one in size, so the silhouette reads flat
 const BANK = -0.14; // standing roll that tips the belly toward the camera
 const WIND_X = 5; // wind streaks recycle across this half-width
-const SPAN = 1.5; // shoulder to wing tip
+const SPAN = 1.33; // shoulder to wing tip
 const WRIST = 0.45; // as a fraction of the span
 const OUTER = 0.72; // pivot of the tip section, as a fraction of the span
 const ROOT = -0.05; // span fraction buried in the body
@@ -103,8 +103,8 @@ const LEADING_PROFILE: readonly ProfileStation[] = [
   [OUTER, -0.025, -0.65], [1, -0.25, -0.8],
 ];
 const CHORD_PROFILE: readonly ProfileStation[] = [
-  [0, ROOT_CHORD, 0], [0.24, 0.51, -0.2], [WRIST, 0.405, -0.57],
-  [OUTER, 0.225, -0.65], [0.9, 0.09, -0.72], [1, 0, -0.95],
+  [0, ROOT_CHORD, 0], [0.24, 0.475, -0.25], [WRIST, 0.375, -0.55],
+  [OUTER, 0.21, -0.6], [0.9, 0.085, -0.68], [1, 0, -0.95],
 ];
 
 function profile(s: number, stations: readonly ProfileStation[]) {
