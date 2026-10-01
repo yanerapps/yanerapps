@@ -216,47 +216,63 @@ function sheet(box: Box, ppu: number) {
   return { ctx, texture, box };
 }
 
+/** All wing layers share these weights, including their thickness and feather edges. */
+function wingWeights(s: number) {
+  const arm = smoothstep(-0.025, 0.055, s);
+  const swung = smoothstep(-0.01, 0.065, s);
+  const hand = smoothstep(WRIST - 0.075, WRIST + 0.075, s);
+  const outer = smoothstep(OUTER - 0.065, OUTER + 0.065, s);
+  const weights = [1 - arm, arm * (1 - swung) * (1 - hand), arm * swung * (1 - hand), arm * hand * (1 - outer), arm * hand * outer];
+  const bones = [0, 1, 2, 3, 4].sort((a, b) => weights[b] - weights[a]).slice(0, 4);
+  return { bones, weights: bones.map((b) => weights[b]) };
+}
+
+/** Shallow airfoil: a rounded, fuller forewing tapering into a fine trailing edge. */
+function wingHeight(s: number, v: number, top: boolean) {
+  const width = leading(s) - trailing(s);
+  const arch = Math.max(0, Math.sin(Math.PI * v));
+  const camber = lerp(0.09, 0.035, clamp01(s)) * width * arch * smoothstep(0, 0.2, s);
+  const thickness = 0.026 * width / (ROOT_CHORD * WING_CHORD_SCALE)
+    * (1 - clamp01(s)) ** 0.35 * arch ** 0.65;
+  return camber + (top ? thickness : -0.7 * thickness);
+}
+
+/** Closed upper/lower wing skin; both sides keep their own painted plumage. */
 function wingGeometry() {
-  const NS = 80; // span stations
-  const NC = 6;
-  const position: number[] = [];
-  const skinIndex: number[] = [];
-  const skinWeight: number[] = [];
-  const index: number[] = [];
-  for (let i = 0; i <= NS; i++) {
-    const s = lerp(ROOT, 1, i / NS);
-    const [le, te] = planform(s);
-    // The deeper buried root remains fixed to the body; shoulder motion begins under
-    // the feather cuff and takes over before its tapered outer edge. The cuff closes
-    // the attachment while the main wing retains its shallow, coordinated stroke. Most of each feather fan follows one section
-    // rigidly; compact, smooth blends around the wrist and outer joint keep the surface
-    // continuous without stretching a large part of the painted feather fan.
-    const arm = smoothstep(-0.025, 0.055, s);
-    const swung = smoothstep(-0.01, 0.065, s);
-    const hand = smoothstep(WRIST - 0.075, WRIST + 0.075, s);
-    const outer = smoothstep(OUTER - 0.065, OUTER + 0.065, s);
-    const weights = [1 - arm, arm * (1 - swung) * (1 - hand), arm * swung * (1 - hand), arm * hand * (1 - outer), arm * hand * outer];
-    const bones = [0, 1, 2, 3, 4].sort((a, b) => weights[b] - weights[a]).slice(0, 4); // never more than three are non-zero
-    for (let j = 0; j <= NC; j++) {
-      const v = j / NC;
-      const camber = lerp(0.09, 0.035, clamp01(s));
-      position.push(te + (le - te) * v, camber * (le - te) * Math.sin(Math.PI * v) * smoothstep(0, 0.2, s), s * SPAN); // fuller inner wing, thin swept tip
-      skinIndex.push(...bones);
-      skinWeight.push(...bones.map((b) => weights[b]));
+  const NS = 80, NC = 12;
+  const position: number[] = [], coverSide: number[] = [];
+  const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
+  for (const top of [true, false]) {
+    for (let i = 0; i <= NS; i++) {
+      const s = lerp(ROOT, 1, i / NS);
+      const [le, te] = planform(s);
+      const skin = wingWeights(s);
+      for (let j = 0; j <= NC; j++) {
+        const v = (1 - Math.cos(Math.PI * j / NC)) / 2;
+        position.push(lerp(te, le, v), wingHeight(s, v, top), s * SPAN);
+        coverSide.push(top ? 1 : 0);
+        skinIndex.push(...skin.bones);
+        skinWeight.push(...skin.weights);
+      }
     }
   }
+  const offset = (NS + 1) * (NC + 1);
   for (let i = 0; i < NS; i++) {
     for (let j = 0; j < NC; j++) {
-      const a = i * (NC + 1) + j;
-      const b = a + NC + 1;
-      index.push(a, a + 1, b, b, a + 1, b + 1); // front faces look down, at the belly side
+      const a = i * (NC + 1) + j, b = a + NC + 1;
+      index.push(a, b, a + 1, b, b + 1, a + 1);
+      index.push(offset + a, offset + a + 1, offset + b, offset + b, offset + a + 1, offset + b + 1);
     }
   }
+  // The leading/trailing edges and tip meet; only the buried root needs a cap.
+  for (let j = 0; j < NC; j++) index.push(j, j + 1, offset + j, offset + j, j + 1, offset + j + 1);
   const geometry = new BufferGeometry();
   geometry.setAttribute('position', new Float32BufferAttribute(position, 3));
+  geometry.setAttribute('coverSide', new Float32BufferAttribute(coverSide, 1));
   geometry.setAttribute('skinIndex', new Uint16BufferAttribute(skinIndex, 4));
   geometry.setAttribute('skinWeight', new Float32BufferAttribute(skinWeight, 4));
   geometry.setIndex(index);
+  geometry.computeVertexNormals();
   return geometry;
 }
 
@@ -273,9 +289,9 @@ function shoulderGeometry(box: Box) {
       for (let j = 0; j <= NC; j++) {
         const v = j / NC, x = lerp(te, le, v), z = s * SPAN;
         const arch = Math.sin(Math.PI * v);
-        const wingHeight = lerp(0.09, 0.035, clamp01(s)) * (le - te) * arch * smoothstep(0, 0.2, s);
+        const surface = wingHeight(s, v, top);
         const thickness = (top ? 0.02 : -0.014) * arch * (1 - smoothstep(0.055, end, s));
-        position.push(x, wingHeight + thickness, z);
+        position.push(x, surface + thickness, z);
         uv.push((x - box.x) / box.w, (z - box.z) / box.h);
         coverSide.push(top ? 1 : 0);
         skinIndex.push(0, 2, 0, 0);
@@ -300,6 +316,7 @@ function shoulderGeometry(box: Box) {
   geometry.setAttribute('skinIndex', new Uint16BufferAttribute(skinIndex, 4));
   geometry.setAttribute('skinWeight', new Float32BufferAttribute(skinWeight, 4));
   geometry.setIndex(index);
+  geometry.computeVertexNormals();
   return geometry;
 }
 
@@ -722,29 +739,7 @@ export function mount(el: HTMLElement) {
   for (const { texture } of [lower, upper, tailSheet]) texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
   const feather = new ShaderMaterial({
-    side: DoubleSide,
     uniforms: { upper: { value: upper.texture }, lower: { value: lower.texture } },
-    vertexShader: /* glsl */ `
-      #include <skinning_pars_vertex>
-      varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        #include <skinbase_vertex>
-        #include <begin_vertex>
-        #include <skinning_vertex>
-        #include <project_vertex>
-      }`,
-    fragmentShader: /* glsl */ `
-      uniform sampler2D upper, lower;
-      varying vec2 vUv;
-      void main() {
-        gl_FragColor = mix(texture2D(upper, vUv), texture2D(lower, vUv), float(gl_FrontFacing));
-        #include <colorspace_fragment>
-      }`,
-  });
-  const coverGeo = shoulderGeometry(lower.box);
-  const coverSkin = new ShaderMaterial({
-    uniforms: feather.uniforms,
     vertexShader: /* glsl */ `
       #include <skinning_pars_vertex>
       attribute float coverSide;
@@ -763,11 +758,12 @@ export function mount(el: HTMLElement) {
       varying float vCoverSide;
       varying vec2 vUv;
       void main() {
-        // The upper cuff stays blue-black even when its local surface bends at the root.
         gl_FragColor = mix(texture2D(lower, vUv), texture2D(upper, vUv), vCoverSide);
         #include <colorspace_fragment>
       }`,
   });
+  const coverGeo = shoulderGeometry(lower.box);
+  const coverSkin = feather; // closed surfaces carry explicit upper/lower color attributes
   const tailSkin = new MeshBasicMaterial({ map: tailSheet.texture, side: DoubleSide });
   const feetSkin = new MeshBasicMaterial();
   // A dark crown and back frame the warm white belly, with the orange throat cut off by a dark breast band.
