@@ -194,13 +194,13 @@ function wingGeometry() {
     const [le, te] = planform(s);
     // The body pins only the part of the root buried inside it, so the visible wing turns rigidly
     // with the shoulder. The buried surface overlaps the fixed body plumage and the painted
-    // shoulder coverts hide the attachment. Fore-aft swing blends over the first third, so
-    // the broad root is never shoved into the flank; the wrist takes over across the middle and
-    // the tip joint toward the end. Wide blends, so the wing curves instead of creasing.
+    // shoulder coverts hide the attachment. Most of each feather fan follows one section
+    // rigidly; compact, smooth blends around the wrist and outer joint keep the surface
+    // continuous without stretching a large part of the painted feather fan.
     const arm = smoothstep(-0.05, 0.03, s);
-    const swung = smoothstep(0, 0.35, s);
-    const hand = smoothstep(WRIST - 0.18, WRIST + 0.18, s);
-    const outer = smoothstep(0.6, 0.92, s);
+    const swung = smoothstep(-0.025, 0.045, s);
+    const hand = smoothstep(WRIST - 0.075, WRIST + 0.075, s);
+    const outer = smoothstep(OUTER - 0.065, OUTER + 0.065, s);
     const weights = [1 - arm, arm * (1 - swung) * (1 - hand), arm * swung * (1 - hand), arm * hand * (1 - outer), arm * hand * outer];
     const bones = [0, 1, 2, 3, 4].sort((a, b) => weights[b] - weights[a]).slice(0, 4); // never more than three are non-zero
     for (let j = 0; j <= NC; j++) {
