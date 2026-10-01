@@ -280,7 +280,7 @@ type FeatherBlade = { rx: number; rz: number; tx: number; tz: number; width: num
 
 /** Closed curved vanes sit on both sides of the airfoil and share its bone deformation. */
 function featherLayerGeometry(box: Box, blades: FeatherBlade[]) {
-  const NT = 18, NW = 6;
+  const NT = 12, NW = 4;
   const position: number[] = [], uv: number[] = [], coverSide: number[] = [];
   const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
   for (const upper of [true, false]) {
@@ -357,6 +357,25 @@ function flightFeathersGeometry(box: Box) {
       lift: 0.004 + 0.00025 * (TIPS.length - 1 - k),
     };
   }));
+}
+
+/** Two low-profile rows overlap the long vanes without enlarging the silhouette. */
+function covertFeathersGeometry(box: Box) {
+  const blades: FeatherBlade[] = [];
+  TIPS.slice(0, 11).forEach((span) => {
+    const root = featherRoot(span);
+    const dx = trailing(span) - root.x, dz = span * SPAN - root.z;
+    for (const row of [0, 1]) {
+      const begin = row === 0 ? 0.01 : 0.12;
+      const end = row === 0 ? 0.24 : 0.37;
+      blades.push({
+        rx: root.x + dx * begin, rz: root.z + dz * begin,
+        tx: root.x + dx * end, tz: root.z + dz * end,
+        width: 0.055 * (1 - 0.3 * span), lift: row === 0 ? 0.012 : 0.009,
+      });
+    }
+  });
+  return featherLayerGeometry(box, blades);
 }
 
 /** A shallow closed feather cuff bridges the fixed body into the moving inner wing. */
@@ -655,7 +674,7 @@ function bodyGeometry() {
   return geometry;
 }
 
-function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSkin: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, coverGeo: BufferGeometry, flightGeo: BufferGeometry, tailGeo: BufferGeometry) {
+function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSkin: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, coverGeo: BufferGeometry, flightGeo: BufferGeometry, covertGeo: BufferGeometry, tailGeo: BufferGeometry) {
   const bird = new Group();
   bird.rotation.order = 'YZX'; // roll about the body axis first, then pitch
 
@@ -723,7 +742,10 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSki
     const vanes = new SkinnedMesh(flightGeo, feather);
     vanes.frustumCulled = false;
     vanes.bind(skeleton);
-    root.add(mesh, cover, vanes);
+    const coverts = new SkinnedMesh(covertGeo, feather);
+    coverts.frustumCulled = false;
+    coverts.bind(skeleton);
+    root.add(mesh, cover, vanes, coverts);
     bird.add(root);
     return { shoulder, sweeper, wrist, outer };
   });
@@ -849,6 +871,7 @@ export function mount(el: HTMLElement) {
       }`,
   });
   const flightGeo = flightFeathersGeometry(lower.box);
+  const covertGeo = covertFeathersGeometry(lower.box);
   const coverGeo = shoulderGeometry(lower.box);
   const coverSkin = feather; // closed surfaces carry explicit upper/lower color attributes
   const tailSkin = new MeshBasicMaterial({ map: tailSheet.texture, side: DoubleSide });
@@ -896,7 +919,7 @@ export function mount(el: HTMLElement) {
         #include <colorspace_fragment>
       }`,
   });
-  const { bird, wings, tail, feet } = buildSwallow(plumage, feather, coverSkin, tailSkin, feetSkin, wingGeo, coverGeo, flightGeo, tailGeo);
+  const { bird, wings, tail, feet } = buildSwallow(plumage, feather, coverSkin, tailSkin, feetSkin, wingGeo, coverGeo, flightGeo, covertGeo, tailGeo);
   flight.add(bird);
 
   const wind = new ShaderMaterial({
@@ -1057,9 +1080,11 @@ export function mount(el: HTMLElement) {
       rib: css('--swallow-rib'),
       line: shade(back, -0.12),
     };
-    const updatedVanes = flightFeathersGeometry(lower.box);
-    flightGeo.copy(updatedVanes);
-    updatedVanes.dispose();
+    for (const [target, make] of [[flightGeo, flightFeathersGeometry], [covertGeo, covertFeathersGeometry]] as const) {
+      const updated = make(lower.box);
+      target.copy(updated);
+      updated.dispose();
+    }
     paintWing(lower.ctx, lower.box, p, false);
     paintWing(upper.ctx, upper.box, p, true);
     paintTail(tailSheet.ctx, tailSheet.box, p);
