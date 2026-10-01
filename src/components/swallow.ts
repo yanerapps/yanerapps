@@ -229,13 +229,13 @@ function wingGeometry() {
 function tailShape() {
   const tail = new Shape(); // deep fork with long outer streamers
   tail.moveTo(0.04, 0.06);
-  tail.quadraticCurveTo(-0.16, 0.13, -0.34, 0.16);
+  tail.quadraticCurveTo(-0.16, 0.145, -0.34, 0.16);
   tail.quadraticCurveTo(-0.72, 0.28, -1.08, 0.34);
   tail.quadraticCurveTo(-0.78, 0.18, -0.37, 0.05);
   tail.quadraticCurveTo(-0.27, 0, -0.37, -0.05);
   tail.quadraticCurveTo(-0.78, -0.18, -1.08, -0.34);
   tail.quadraticCurveTo(-0.72, -0.28, -0.34, -0.16);
-  tail.quadraticCurveTo(-0.16, -0.13, 0.04, -0.06);
+  tail.quadraticCurveTo(-0.16, -0.145, 0.04, -0.06);
   return tail;
 }
 
@@ -405,7 +405,8 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
       const uz = tz / len;
       const nx = -uz;
       const nz = ux;
-      const w = i === 0 ? 0.08 : 0.15 - 0.01 * i;
+      const w = i === 0 ? 0.068 : 0.15 - 0.01 * i;
+      const whiteWidth = i === 0 ? 0.16 : 0.27;
       const at = (t: number, k: number): [number, number] => [ux * len * t + nx * w * k, uz * len * t + nz * w * k];
       ctx.beginPath();
       ctx.moveTo(...at(0.05, 0.1));
@@ -421,8 +422,8 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
       // The body overlaps its broad base, so the white rump flows into both sides of the fork.
       ctx.beginPath();
       ctx.moveTo(...at(0.035, 0.08));
-      ctx.quadraticCurveTo(...at(0.38, 0.3), ...at(0.99, 0));
-      ctx.quadraticCurveTo(...at(0.38, -0.3), ...at(0.035, -0.08));
+      ctx.quadraticCurveTo(...at(0.34, whiteWidth), ...at(0.995, 0));
+      ctx.quadraticCurveTo(...at(0.34, -whiteWidth), ...at(0.035, -0.08));
       ctx.closePath();
       const center = ctx.createLinearGradient(0, 0, tx, tz);
       center.addColorStop(0, p.belly);
@@ -432,10 +433,19 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
       ctx.fill();
     });
   }
+  // Rump coverts bridge the body's cream belly into the two narrowing feather fans.
+  ctx.beginPath();
+  ctx.moveTo(0.04, 0.055);
+  ctx.quadraticCurveTo(-0.1, 0.075, -0.28, 0.042);
+  ctx.quadraticCurveTo(-0.16, 0, -0.28, -0.042);
+  ctx.quadraticCurveTo(-0.1, -0.075, 0.04, -0.055);
+  ctx.closePath();
+  ctx.fillStyle = p.belly;
+  ctx.fill();
   ctx.beginPath(); // outline the edge
   tailShape().getPoints(12).forEach((pt, i) => (i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y)));
   ctx.closePath();
-  ctx.lineWidth = 0.012;
+  ctx.lineWidth = 0.009;
   ctx.strokeStyle = p.line;
   ctx.stroke();
 }
