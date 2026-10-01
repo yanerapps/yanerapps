@@ -1,13 +1,28 @@
-// Temporary tuning panel for the swallow's wing. Development only: swallow.ts loads it behind an
+// Live tuning panel for the swallow and its camera. Development only: swallow.ts loads it behind an
 // `import.meta.env.DEV` check and a `?wing` query, so it never reaches a production build. Every
-// control edits the shared WING object in place; the animation reads it on its next frame.
-import type { WING } from './swallow';
+// control edits the shared WING or CAMERA object in place; the animation reads it on its next frame.
+import type { WING, CAMERA } from './swallow';
 
-type Params = typeof WING;
+type CameraParams = Omit<typeof CAMERA, 'auto' | 'freeze' | 'phase'> & { cameraAuto: boolean; cameraFreeze: boolean; cameraPhase: number };
+type Params = typeof WING & CameraParams;
 type Key = keyof Params;
 type Row = [Key, string, number?, number?, number?]; // key, label, then min/max/step for sliders
 
 const GROUPS: [string, Row[]][] = [
+  ['Camera · 视角运镜（角度为 °，时间为秒）', [
+    ['cameraAuto', '自动循环'],
+    ['cameraFreeze', '冻结相位'],
+    ['cameraPhase', '周期相位（默认 .5俯）', 0, 1, 0.005],
+    ['lowElevation', '仰视高度角', -70, -10, 1],
+    ['highElevation', '俯视高度角', 10, 70, 1],
+    ['lowAzimuth', '仰视方位角', -80, 80, 1],
+    ['highAzimuth', '俯视方位角', -80, 80, 1],
+    ['lowDistance', '仰视距离', 5, 12, 0.1],
+    ['highDistance', '俯视距离', 5, 12, 0.1],
+    ['lowHold', '仰视停留时间', 0, 30, 0.5],
+    ['highHold', '俯视停留时间', 0, 30, 0.5],
+    ['transition', '单次过渡时间', 1, 12, 0.5],
+  ]],
   ['Timing', [
     ['beat', 'seconds / beat', 0.12, 0.7, 0.01],
     ['downstroke', 'downstroke share', 0.4, 0.75, 0.01],
@@ -59,7 +74,18 @@ const GROUPS: [string, Row[]][] = [
 ];
 const FORM: Key[] = ['wedgeReach', 'wedgeRoot', 'rootOffsetX', 'rootOffsetZ'];
 
-export function mountWingDebug(params: Params, repaint: () => void) {
+export function mountWingDebug(wing: typeof WING, camera: typeof CAMERA, repaint: () => void) {
+  // Accessors route controls to the two live objects without duplicating their state.
+  const params = { ...wing } as Params;
+  for (const key of Object.keys(wing) as (keyof typeof WING)[]) {
+    Object.defineProperty(params, key, { enumerable: true, get: () => wing[key], set: (value) => { (wing as Record<string, number | boolean>)[key] = value; } });
+  }
+  const cameraKeys: Key[] = [];
+  for (const key of Object.keys(camera) as (keyof typeof CAMERA)[]) {
+    const control = (key === 'auto' ? 'cameraAuto' : key === 'freeze' ? 'cameraFreeze' : key === 'phase' ? 'cameraPhase' : key) as Key;
+    cameraKeys.push(control);
+    Object.defineProperty(params, control, { enumerable: true, get: () => camera[key], set: (value) => { (camera as Record<string, number | boolean>)[key] = value; } });
+  }
   const defaults = { ...params };
   const values = params as Record<Key, number | boolean>;
   const inputs = new Map<Key, HTMLInputElement>();
@@ -80,7 +106,7 @@ export function mountWingDebug(params: Params, repaint: () => void) {
     'background:rgba(20,24,32,0.93);color:#eee;font:12px/1.4 ui-monospace,monospace;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.4)';
   const bar = document.createElement('div');
   bar.style.cssText = 'display:flex;gap:8px;margin-bottom:6px;align-items:center';
-  bar.innerHTML = '<strong style="flex:1">Wing debug</strong>';
+  bar.innerHTML = '<strong style="flex:1">Swallow debug</strong>';
   const button = (label: string, onClick: () => void) => {
     const b = document.createElement('button');
     b.textContent = label;
@@ -110,6 +136,31 @@ export function mountWingDebug(params: Params, repaint: () => void) {
     heading.textContent = title;
     heading.style.cssText = 'margin:8px 0 2px;color:#9cc;font-weight:bold';
     content.append(heading);
+    if (title.startsWith('Camera')) {
+      const views = document.createElement('div');
+      views.style.cssText = 'display:flex;gap:6px;margin:6px 0';
+      const preview = (label: string, action: () => void) => {
+        const control = document.createElement('button');
+        control.textContent = label;
+        control.style.cssText = 'font:inherit;padding:3px 5px;border:1px solid #666;border-radius:4px;background:#333;color:#eee;cursor:pointer';
+        control.onclick = () => {
+          action();
+          cameraKeys.forEach(show);
+          repaint();
+        };
+        views.append(control);
+      };
+      preview('固定仰视', () => { camera.auto = true; camera.freeze = true; camera.phase = 0; });
+      preview('固定俯视', () => {
+        const low = Math.max(0, camera.lowHold), high = Math.max(0, camera.highHold);
+        const move = Math.max(0.1, camera.transition);
+        camera.auto = true;
+        camera.freeze = true;
+        camera.phase = (low + move + high / 2) / (low + high + 2 * move);
+      });
+      preview('恢复运镜', () => { camera.auto = true; camera.freeze = false; });
+      content.append(views);
+    }
     for (const [key, label, min, max, step] of rows) {
       const row = document.createElement('label');
       row.style.cssText = 'display:grid;grid-template-columns:118px 1fr 50px;gap:6px;align-items:center;margin:2px 0';
@@ -130,7 +181,7 @@ export function mountWingDebug(params: Params, repaint: () => void) {
       input.oninput = () => {
         values[key] = input.type === 'checkbox' ? input.checked : Number(input.value);
         show(key);
-        if (FORM.includes(key)) repaint();
+        if (FORM.includes(key) || cameraKeys.includes(key)) repaint();
       };
       inputs.set(key, input);
       outputs.set(key, out);
