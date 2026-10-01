@@ -719,8 +719,11 @@ export function mount(el: HTMLElement) {
       void main() {
         float up = vPos.y / max(length(vPos.yz), 1e-4); // -1 under the belly, 1 along the spine
         // Plumage belongs to the body: the crown/back boundary stays fixed through every
-        // wingbeat. The broad cream flanks meet the cream shoulder coverts over the buried root.
-        float lower = 1.0 - edge(up - 0.42);
+        // wingbeat. Dark scapular plumage wraps down over the wing attachments, while
+        // the keel, chest and rump keep their pale underside independent of wing motion.
+        float shoulderWrap = smoothstep(-0.46, -0.3, vPos.x)
+          * (1.0 - smoothstep(0.18, 0.29, vPos.x));
+        float lower = 1.0 - edge(up - mix(0.42, -0.16, shoulderWrap));
         float collar = 0.279 - 0.078 * (up + 1.0) / 1.37;
         float white = (1.0 - edge(vPos.x - collar)) * lower;
         // A restrained painted keel shadow separates the rounded belly from the flat wings.
