@@ -59,22 +59,22 @@ export const WING = {
   flap: 0.7, // up-and-down amplitude at the shoulder
   dihedral: 0.1, // wings raised this much in the glide
   lead: 0.4, // the back-sweep runs a little ahead of the up-and-down, peaking at the bottom of the stroke
-  sweepRoot: 0.55, // back-sweep through the power stroke, per section
+  sweepRoot: 0.3, // back-sweep through the power stroke, per section
   sweepMid: 0.15,
   sweepTip: 0.06,
-  reachRoot: 0.12, // forward reach past the resting line on the way up, per section; the tip leads
+  reachRoot: 0.08, // forward reach past the resting line on the way up, per section; the tip leads
   reachMid: 0.1,
   reachTip: 0.08,
   reachPeak: 1.9, // where the reach peaks, in half-strokes: 1 = bottom, 1.5 = level, 2 = top
-  lagMid: 0.07, // the hand trails the arm by this many beats
-  lagTip: 0.14, // the tip trails the arm by this many beats
+  lagMid: 0.03, // the hand trails the arm by this many beats
+  lagTip: 0.05, // the tip trails the arm by this many beats
   whipMid: 0.25, // how much of the flap each section's up-and-down lags the one before by
   whipTip: 0.15,
   fold: 0.14, // a shallow hand fold on the recovery
   foldSweep: 0.035, // and a touch back
-  twistRoot: 0.08, // leading edge pitched down through the power stroke, per section
-  twistMid: 0.2,
-  twistTip: 0.1,
+  twistRoot: 0.04, // leading edge pitched down through the power stroke, per section
+  twistMid: 0.08,
+  twistTip: 0.025,
   glideSweep: 1, // scales the resting sweep of the three sections
   feet: false, // show the feet tucked under the belly
   bob: 0.015, // body thrown up by each power stroke
@@ -772,23 +772,19 @@ export function mount(el: HTMLElement) {
     const tip = on ? phase(Math.max(0, beat - W.lagTip)) : 0; // ...and the tip trails the hand
     const down = env * Math.sin(arm); // positive through the power stroke
     const fold = env * Math.max(0, -Math.sin(hand)) ** 2; // primaries tuck in a little on the recovery
-    // One beat is a loop, not a swing: from the top, forward and up, the root starts down and the
-    // sweep back builds through the power stroke to its peak at the bottom, where the wing hangs far
-    // behind the body; the root then leads forward and up while the tip is still behind, and past
-    // level every section reaches ahead of its resting line, the tip furthest, into the top again.
-    // The recovery path is forward of the power-stroke path, so the tip draws a wide loop.
+    // A shallow fore-aft loop supports the main up/down stroke. Small delays and pitch
+    // changes keep the outer wing following the arm instead of rolling away from it.
     const sweep = (psi: number) => 0.5 * (1 - Math.cos(psi + W.lead));
     const reach = (psi: number) => Math.max(0, -Math.sin(psi + (1.5 - W.reachPeak) * Math.PI)) ** 2;
-    wings.forEach((w, i) => {
-      const flutter = (0.025 + 0.07 * gust) * (0.6 * Math.sin(t * 29 + i) + 0.4 * Math.sin(t * 43 + 2 * i));
+    wings.forEach((w) => {
       // The shoulder drives the stroke. Hand and tip add only small trailing corrections;
       // fore-aft motion shares the parent phase so adjacent sections do not counter-swing.
-      w.shoulder.rotation.x = -(W.dihedral + W.flap * env * Math.cos(arm)) - flutter * 0.25;
+      w.shoulder.rotation.x = -(W.dihedral + W.flap * env * Math.cos(arm));
       w.shoulder.rotation.z = -W.twistRoot * down; // pronation
       w.sweeper.rotation.y = -(0.04 * W.glideSweep + env * (W.sweepRoot * sweep(arm) - W.reachRoot * reach(arm)));
       w.wrist.rotation.x = 0.04 - W.fold * fold - W.whipMid * W.flap * env * (Math.cos(hand) - Math.cos(arm));
       w.wrist.rotation.y = -(0.08 * W.glideSweep + env * (W.sweepMid * sweep(arm) - W.reachMid * reach(arm)) + W.foldSweep * fold);
-      w.wrist.rotation.z = -W.twistMid * env * Math.sin(hand) + flutter; // leading edge pitches down through the power stroke
+      w.wrist.rotation.z = -W.twistMid * env * Math.sin(hand); // leading edge pitches down through the power stroke
       w.outer.rotation.x = -W.whipTip * W.flap * env * (Math.cos(tip) - Math.cos(hand));
       w.outer.rotation.y = -(0.03 * W.glideSweep + env * (W.sweepTip * sweep(hand) - W.reachTip * reach(hand)));
       w.outer.rotation.z = -W.twistTip * env * Math.sin(tip);
