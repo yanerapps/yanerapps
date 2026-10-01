@@ -32,12 +32,9 @@ import {
 } from 'three';
 
 // Bird space: x is forward (the beak), y is up, z is the right wing. The camera
-// sits below the flight line on the right-wing side, looking up, and only leans a
-// few degrees with the pointer and the page. Everything is unlit painted surfaces
+// moves between oblique underside and upper-side views with slow, eased arcs.
+// Everything is unlit painted surfaces
 // in barn-swallow livery; the sky itself is a CSS gradient behind the transparent canvas.
-const ELEVATION = 0.6; // radians below the flight plane (~35°)
-const AZIMUTH = 0.45; // camera a little ahead of the bird, so the wings lie on a diagonal
-const DISTANCE = 8.0;
 const FOV = 24; // long lens: the near wing stays close to the far one in size, so the silhouette reads flat
 const BANK = -0.14; // standing roll that tips the belly toward the camera
 const WIND_X = 5; // wind streaks recycle across this half-width
@@ -89,6 +86,41 @@ export const WING = {
   rootOffsetX: 0, // live offsets for the distributed flight-feather attachment line
   rootOffsetZ: 0,
 };
+
+// Camera angles are degrees: negative elevation looks up, positive elevation looks down.
+export const CAMERA = {
+  auto: true,
+  freeze: false,
+  phase: 0, // cycle position: 0 = underside, 0.5 = upper side with equal hold times
+  lowElevation: -32,
+  highElevation: 32,
+  lowAzimuth: 26,
+  highAzimuth: 54,
+  lowDistance: 8,
+  highDistance: 7.8,
+  lowHold: 7,
+  highHold: 7,
+  transition: 4, // seconds for each move; each view holds still between moves
+};
+
+/** Quintic easing starts and stops with zero velocity and acceleration. */
+const cinematicEase = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
+export function cameraView(progress: number, settings = CAMERA) {
+  const low = Math.max(0, settings.lowHold), high = Math.max(0, settings.highHold);
+  const move = Math.max(0.1, settings.transition);
+  const duration = low + high + 2 * move;
+  const time = ((progress % 1 + 1) % 1) * duration;
+  let blend = 0;
+  if (time >= low && time < low + move) blend = cinematicEase((time - low) / move);
+  else if (time >= low + move && time < low + move + high) blend = 1;
+  else if (time >= low + move + high) blend = 1 - cinematicEase((time - low - move - high) / move);
+  return {
+    elevation: lerp(settings.lowElevation, settings.highElevation, blend) * Math.PI / 180,
+    azimuth: lerp(settings.lowAzimuth, settings.highAzimuth, blend) * Math.PI / 180,
+    distance: lerp(settings.lowDistance, settings.highDistance, blend),
+    duration,
+  };
+}
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const smoothstep = (a: number, b: number, x: number) => {
@@ -584,10 +616,6 @@ export function mount(el: HTMLElement) {
 
   const scene = new Scene();
   const camera = new PerspectiveCamera(FOV, 16 / 9, 0.1, 60);
-  camera.position
-    .set(Math.sin(AZIMUTH) * Math.cos(ELEVATION), -Math.sin(ELEVATION), Math.cos(AZIMUTH) * Math.cos(ELEVATION))
-    .multiplyScalar(DISTANCE);
-  camera.lookAt(0, 0, 0);
 
   const flight = new Group();
   flight.rotation.z = 0.12; // the flight line climbs gently to the right
@@ -599,8 +627,8 @@ export function mount(el: HTMLElement) {
   let raf = 0;
   let last = 0;
 
-  // The camera only leans: a few degrees after the pointer, a little with the page as the sky
-  // scrolls through the viewport, and a slow idle drift. A quick sweep of the pointer is a gust.
+  // A timed camera arc alternates two oblique views. Pointer/page lean is restrained
+  // during playback and disabled when a debug view is held for inspection.
   let aimX = 0; // pointer across the viewport, -1..1
   let aimY = 0;
   let leanX = 0; // eased
@@ -620,15 +648,20 @@ export function mount(el: HTMLElement) {
     window.addEventListener('pointermove', onPointer, { passive: true });
     document.documentElement.addEventListener('mouseleave', onLeave);
   }
+  let cameraProgress = 0;
   function aimCamera(dt: number) {
     const k = 1 - Math.exp(-dt * 3);
     leanX += (aimX - leanX) * k;
     leanY += (aimY - leanY) * k;
     const r = el.getBoundingClientRect();
     const scrolled = Math.max(-1, Math.min(1, ((r.top + r.height / 2) / innerHeight) * 2 - 1)); // -1 at the top of the viewport
-    const az = AZIMUTH + 0.1 * leanX + 0.02 * Math.sin(t * 0.17);
-    const elev = ELEVATION + 0.06 * leanY + 0.05 * scrolled;
-    camera.position.set(Math.sin(az) * Math.cos(elev), -Math.sin(elev), Math.cos(az) * Math.cos(elev)).multiplyScalar(DISTANCE);
+    const playback = CAMERA.auto && !CAMERA.freeze && !reduced;
+    const view = cameraView(playback ? cameraProgress : reduced ? 0 : CAMERA.phase);
+    if (playback) cameraProgress = (cameraProgress + dt / view.duration) % 1;
+    else cameraProgress = reduced ? 0 : CAMERA.phase;
+    const az = view.azimuth + (playback ? 0.04 * leanX : 0);
+    const elev = view.elevation + (playback ? 0.025 * leanY + 0.015 * scrolled : 0);
+    camera.position.set(Math.sin(az) * Math.cos(elev), Math.sin(elev), Math.cos(az) * Math.cos(elev)).multiplyScalar(view.distance);
     camera.lookAt(0, 0, 0);
   }
 
@@ -833,6 +866,7 @@ export function mount(el: HTMLElement) {
   }
 
   pose(-1, 0);
+  aimCamera(0);
   placeStreaks(0, 0);
 
   function frame(now: number) {
@@ -841,8 +875,8 @@ export function mount(el: HTMLElement) {
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
     if (!reduced) {
-      step(dt);
       aimCamera(dt);
+      step(dt);
     }
     if (!reduced || dirty) {
       renderer.render(scene, camera);
@@ -886,7 +920,10 @@ export function mount(el: HTMLElement) {
   // Development only: `?wing` in the URL opens a panel of live sliders for the WING parameters.
   // Vite drops this branch, and the module behind it, from production builds.
   if (import.meta.env.DEV && new URLSearchParams(location.search).has('wing')) {
-    import('./swallow-debug').then((m) => m.mountWingDebug(WING, applyTheme));
+    import('./swallow-debug').then((m) => m.mountWingDebug(WING, CAMERA, () => {
+      applyTheme();
+      aimCamera(0);
+    }));
   }
 
   function resize() {
