@@ -248,6 +248,13 @@ function shade(color: string, dl: number) {
   return c.setHSL(hsl.h, hsl.s, Math.min(1, Math.max(0, hsl.l + dl)), SRGBColorSpace).getStyle(SRGBColorSpace);
 }
 
+/** Blend in display color space for restrained, neutral painted feather tones. */
+function mixPaint(a: string, b: string, amount: number) {
+  const first = new Color(a).convertLinearToSRGB();
+  const second = new Color(b).convertLinearToSRGB();
+  return first.lerp(second, amount).convertSRGBToLinear().getStyle(SRGBColorSpace);
+}
+
 function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: boolean) {
   ctx.fillStyle = p.line; // shows through between feathers as their outlines
   ctx.fillRect(box.x, box.z, box.w, box.h);
@@ -285,9 +292,9 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
     } else {
       // Each vane carries the transition along its own shaft, preserving the radial fan.
       vane.addColorStop(0, p.belly);
-      vane.addColorStop(0.24, shade(p.belly, -0.035));
-      vane.addColorStop(0.46, shade(p.belly, -0.2));
-      vane.addColorStop(0.7, shade(p.back, 0.13));
+      vane.addColorStop(0.19, mixPaint(p.belly, p.back, 0.12));
+      vane.addColorStop(0.42, mixPaint(p.belly, p.back, 0.46));
+      vane.addColorStop(0.68, mixPaint(p.belly, p.back, 0.82));
     }
     vane.addColorStop(1, dark);
     ctx.fillStyle = vane;
@@ -295,17 +302,17 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
     ctx.lineWidth = 0.004;
     ctx.strokeStyle = upper ? shade(p.back, -0.05) : shade(p.back, 0.06);
     ctx.stroke();
-    if (k >= 4) { // a pale streak down the trailing vane of each exposed flight feather
+    if (k >= 4 && k % 3 !== 0) { // sparse, varied shaft accents leave the vanes as the main structure
       ctx.beginPath();
       for (let i = 0; i <= 8; i++) {
-        const t = 0.45 + 0.47 * (i / 8);
+        const t = 0.59 + 0.28 * (i / 8) - 0.025 * (k % 3);
         const a = (1 - t) * (1 - t);
         const b = 2 * (1 - t) * t;
         const c = t * t;
         ctx.lineTo(a * (rx + nx * w * 0.1) + b * (mx + nx * w * 0.5) + c * f.tx, a * (rz + nz * w * 0.1) + b * (mz + nz * w * 0.5) + c * f.tz);
       }
-      ctx.lineWidth = 0.009 * (1 - 0.4 * f.s);
-      ctx.strokeStyle = upper ? p.gloss : p.rib;
+      ctx.lineWidth = 0.005 * (1 - 0.4 * f.s);
+      ctx.strokeStyle = upper ? mixPaint(p.back, p.gloss, 0.55) : mixPaint(p.back, p.rib, 0.3);
       ctx.stroke();
     }
   }
@@ -338,6 +345,7 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
   if (upper) {
     const g = ctx.createLinearGradient(0, 0.1, 0, 0.55);
     g.addColorStop(0, p.back);
+    g.addColorStop(0.45, mixPaint(p.back, p.sheen, 0.65));
     g.addColorStop(1, p.sheen);
     ctx.fillStyle = g;
   } else ctx.fillStyle = p.belly;
@@ -669,9 +677,9 @@ export function mount(el: HTMLElement) {
           * smoothstep(-0.48, -0.2, vPos.x) * (1.0 - smoothstep(0.2, 0.29, vPos.x));
         vec3 breast = mix(belly, back, 0.065 * keelShade);
         vec3 c = mix(back, breast, white);
-        vec3 throat = (vPos - vec3(0.387, -0.04, 0.0)) / vec3(0.081, 0.065, 0.09);
+        vec3 throat = (vPos - vec3(0.387, -0.04, 0.0)) / vec3(0.075, 0.059, 0.087);
         c = mix(c, face, edge(1.0 - dot(throat, throat)) * edge(0.3 - up));
-        vec3 brow = (vPos - vec3(0.45, 0.025, 0.0)) / vec3(0.05, 0.046, 0.061);
+        vec3 brow = (vPos - vec3(0.45, 0.025, 0.0)) / vec3(0.044, 0.041, 0.058);
         c = mix(c, face, edge(1.0 - dot(brow, brow)));
         c = mix(c, back, edge(vPos.x - 0.49)); // dark base behind the pointed beak
         gl_FragColor = vec4(c, 1.0);
