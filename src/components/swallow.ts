@@ -42,6 +42,7 @@ const WRIST = 0.45; // as a fraction of the span
 const OUTER = 0.72; // pivot of the tip section, as a fraction of the span
 const ROOT = -0.085; // span fraction buried in the body
 const ROOT_CHORD = 0.52;
+const WING_SPAN_SEGMENTS = 80, WING_CHORD_SEGMENTS = 12;
 const WING_CHORD_SCALE = 0.9; // shorten both leading and trailing reach without changing span
 const BODY_SCALE = new Vector3(0.88, 0.88, 0.86);
 const SHOULDER = new Vector3(0.2, 0.04, 0.08); // high on the chest, so the wing grows out of the shoulder
@@ -238,7 +239,7 @@ function wingHeight(s: number, v: number, top: boolean) {
 
 /** Closed upper/lower wing skin; both sides keep their own painted plumage. */
 function wingGeometry() {
-  const NS = 80, NC = 12;
+  const NS = WING_SPAN_SEGMENTS, NC = WING_CHORD_SEGMENTS;
   const position: number[] = [], coverSide: number[] = [];
   const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
   for (const top of [true, false]) {
@@ -379,16 +380,19 @@ function covertFeathersGeometry(box: Box) {
 
 /** A shallow closed feather cuff bridges the fixed body into the moving inner wing. */
 function shoulderGeometry(box: Box) {
-  const NS = 14, NC = 8, end = 0.14;
+  const end = 0.14, NC = WING_CHORD_SEGMENTS;
+  const NS = Math.ceil((end - ROOT) / (1 - ROOT) * WING_SPAN_SEGMENTS);
   const position: number[] = [], uv: number[] = [], coverSide: number[] = [];
   const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
   for (const top of [true, false]) {
     for (let i = 0; i <= NS; i++) {
-      const s = lerp(ROOT, end, i / NS);
+      // Use the main wing's exact lattice so its curved edges stay welded between vertices.
+      const s = lerp(ROOT, 1, i / WING_SPAN_SEGMENTS);
       const [le, te] = planform(s);
       const skin = wingWeights(s);
       for (let j = 0; j <= NC; j++) {
-        const v = j / NC, x = lerp(te, le, v), z = s * SPAN;
+        const v = (1 - Math.cos(Math.PI * j / NC)) / 2;
+        const x = lerp(te, le, v), z = s * SPAN;
         const arch = Math.sin(Math.PI * v);
         const surface = wingHeight(s, v, top);
         const thickness = (top ? 0.02 : -0.014) * arch * (1 - smoothstep(0.055, end, s));
@@ -916,11 +920,11 @@ export function mount(el: HTMLElement) {
       void main() {
         float up = vPos.y / max(length(vPos.yz), 1e-4); // -1 under the belly, 1 along the spine
         // Plumage belongs to the body: the crown/back boundary stays fixed through every
-        // wingbeat. Dark scapular plumage wraps down over the wing attachments, while
-        // the keel, chest and rump keep their pale underside independent of wing motion.
+        // wingbeat. Dark scapular plumage covers the upper attachment, while the
+        // pale axillary/body side meets the underwing without a deep dark shoulder band.
         float shoulderWrap = smoothstep(-0.46, -0.3, vPos.x)
           * (1.0 - smoothstep(0.18, 0.29, vPos.x));
-        float lower = 1.0 - edge(up - mix(0.42, -0.16, shoulderWrap));
+        float lower = 1.0 - edge(up - mix(0.42, 0.12, shoulderWrap));
         float collar = 0.279 - 0.078 * (up + 1.0) / 1.37;
         float white = (1.0 - edge(vPos.x - collar)) * lower;
         // A restrained painted keel shadow separates the rounded belly from the flat wings.

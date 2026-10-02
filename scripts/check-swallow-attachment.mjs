@@ -16,6 +16,18 @@ source+=`\nexport function checkPose(parts,beat){const {bird,wings,tail,feet}=pa
 const js=await transform(source,{loader:'ts',format:'esm'});
 const module=await import('data:text/javascript;base64,'+Buffer.from(js.code).toString('base64'));
 const wing=module.wingGeometry(), box=module.boxUVs(wing), cuff=module.shoulderGeometry(box);
+// Coincident boundary vertices also need the same tessellation, otherwise two
+// different polylines can still open small gaps between their sample stations.
+const wingPositions=wing.getAttribute('position');
+const cuffPositions=cuff.getAttribute('position');
+const vertexKey=(x,z)=>`${x.toFixed(6)},${z.toFixed(6)}`;
+const wingLattice=new Set();
+for(let i=0;i<wingPositions.count;i++)wingLattice.add(vertexKey(wingPositions.getX(i),wingPositions.getZ(i)));
+for(let i=0;i<cuffPositions.count;i++) {
+ const [le,te]=module.planform(cuffPositions.getZ(i)/module.SPAN);
+ if(cuffPositions.getZ(i)<.025 || Math.min(Math.abs(cuffPositions.getX(i)-le),Math.abs(cuffPositions.getX(i)-te))>1e-7)continue;
+ assert(wingLattice.has(vertexKey(cuffPositions.getX(i),cuffPositions.getZ(i))),'Cuff edge uses a different tessellation from the main wing');
+}
 const mat=new THREE.ShaderMaterial();
 const parts=module.buildSwallow(mat,mat,mat,new THREE.MeshBasicMaterial(),new THREE.MeshBasicMaterial(),wing,cuff,module.flightFeathersGeometry(box),module.covertFeathersGeometry(box),new THREE.BufferGeometry());
 const skinIndex=[],skinWeight=[],pos=cuff.getAttribute('position');
