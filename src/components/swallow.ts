@@ -386,7 +386,7 @@ function shoulderGeometry(box: Box) {
     for (let i = 0; i <= NS; i++) {
       const s = lerp(ROOT, end, i / NS);
       const [le, te] = planform(s);
-      const follow = smoothstep(ROOT, end, s);
+      const skin = wingWeights(s);
       for (let j = 0; j <= NC; j++) {
         const v = j / NC, x = lerp(te, le, v), z = s * SPAN;
         const arch = Math.sin(Math.PI * v);
@@ -395,8 +395,10 @@ function shoulderGeometry(box: Box) {
         position.push(x, surface + thickness, z);
         uv.push((x - box.x) / box.w, (z - box.z) / box.h);
         coverSide.push(top ? 1 : 0);
-        skinIndex.push(0, 2, 0, 0);
-        skinWeight.push(1 - follow, follow, 0, 0);
+        // A separate follow curve lets the cuff cut through the main wing mid-stroke.
+        // Matching weights keep their tapered boundaries coincident at every pose.
+        skinIndex.push(...skin.bones);
+        skinWeight.push(...skin.weights);
       }
     }
   }
