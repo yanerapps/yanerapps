@@ -13,7 +13,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       <div class="meta">
         <span>生效日期：2026 年 8 月 31 日</span>
         <span>&middot;</span>
-        <span>更新日期：2026 年 9 月 25 日</span>
+        <span>更新日期：2026 年 10 月 9 日</span>
       </div>
     </div>
 
@@ -25,8 +25,10 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
 
     <div class="card">
       <p><strong>一句话概括：</strong>GPS-Go 没有账号体系，我们也没有自己的服务器。你模拟过的位置、历史记录、
-      收藏地点、标签和路线都保存在你的设备上。只有在你使用特定功能时，数据才会发往三方：Google 地图与
-      Google Places（地图显示与地点搜索）、Geoapify（地点搜索）、Google AdMob（广告）。我们不出售你的个人信息。</p>
+      收藏地点、标签和路线都保存在你的设备上。只有在你使用特定功能时，数据才会发往几家第三方：Google 地图与
+      Google Places（地图显示与地点搜索）、Geoapify（地点搜索）、设备内置的地理编码服务（街道地址）、你分享进应用的
+      链接背后的地图服务，以及 Google AdMob（广告）。如果你购买订阅，购买与付款由 Google Play 处理，我们看不到你的
+      支付信息。我们不出售你的个人信息。</p>
     </div>
 
     <h2>1. 只存在你设备上的数据</h2>
@@ -42,8 +44,9 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     <h2>2. 设备的真实位置</h2>
     <p>
       GPS-Go 申请定位权限，用于在地图上显示你的真实位置（「定位」按钮），以及将自身注册为模拟位置提供者。
-      我们从不接收你的真实位置，应用也不会主动把它发往任何地方。唯一的例外来自搜索的工作方式：搜索地点时，当前
-      地图的中心点会随查询一起发出，用于优先返回附近结果；如果地图正跟随你的位置，这个点就是你的真实位置——见第 3 节。
+      我们从不接收你的真实位置，应用也不会主动把它发往任何地方。有两个例外来自功能的工作方式：搜索地点时，当前
+      地图的中心点会随查询一起发出，用于优先返回附近结果，如果地图正跟随你的位置，这个点就是你的真实位置；
+      另外，如果你选中的正是你实际所在的点，它的坐标会被发出，用于查询其街道地址——见第 3 节。
     </p>
 
     <h2>3. 会发往第三方的数据</h2>
@@ -75,6 +78,16 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
             <td>返回地点建议及其坐标</td>
           </tr>
           <tr>
+            <td>设备的地理编码服务（在大多数安卓设备上由 Google 运营）</td>
+            <td>你在地图上选中的点、你打开的收藏地点、你保存时的路线起点的坐标；分享链接不含坐标时，链接中的地点名称</td>
+            <td>显示该点的街道地址、建议名称，或查出分享地点的坐标</td>
+          </tr>
+          <tr>
+            <td>分享链接背后的地图服务（Google 地图、Apple 地图、Waze、OpenStreetMap 或 Yandex）</td>
+            <td>你分享进 GPS-Go 的链接及你的 IP 地址，发往该服务以及链接重定向到的任何页面</td>
+            <td>读取短链接所指向的位置</td>
+          </tr>
+          <tr>
             <td>Google AdMob 与 Google User Messaging Platform</td>
             <td>广告 ID（AAID）与应用集 ID、IP 地址（Google 可能据此估算大致位置）、设备与应用信息、广告互动、SDK 诊断信息、你的同意选择</td>
             <td>请求并展示激励视频广告、插屏广告及横幅广告，记录同意状态</td>
@@ -84,8 +97,13 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     </div>
 
     <p>
-      地点搜索优先走 Geoapify，必要时回落到 Google Places。两家都收不到你的位置历史、收藏地点或路线。
+      地点搜索优先走 Geoapify，必要时回落到 Google Places。两家搜索服务商都收不到你的位置历史、收藏地点或路线。
       Geoapify 声明，成功请求的日志一般保留不超过 24 小时。
+    </p>
+    <p>
+      地址查询通过安卓内置的地理编码服务进行，而不是我们选择的服务；在大多数设备上它由 Google 运营，适用 Google
+      隐私权政策。GPS-Go 从不批量发送你的收藏地点、历史记录或路线：每次查询只涉及你刚刚选中、打开或保存的那一个点。
+      分享链接只在你把链接分享进应用时才会被读取。
     </p>
     <p>
       当搜索结果来自 Google Places 时，按 Google 条款要求，其坐标会在搜索 30 天后从你的本地搜索历史中移除；
@@ -134,9 +152,31 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       <a href="https://support.google.com/admob/answer/6128543" rel="noopener" target="_blank">AdMob 如何使用数据</a>；
       Geoapify 的处理适用
       <a href="https://www.geoapify.com/privacy-policy/" rel="noopener" target="_blank">Geoapify 隐私政策</a>。
+      接收分享链接的地图服务按其自身的隐私政策处理该链接。
     </p>
 
-    <h2>5. 备份导出文件</h2>
+    <h2>5. 购买与订阅</h2>
+    <p>
+      GPS-Go 提供可选订阅，销售与计费完全由 Google Play 负责：Google Play 收款，你的付款方式与账单信息留在
+      Google。我们收不到你的银行卡号、账单地址或其他支付信息，GPS-Go 也没有接收购买记录的服务器。
+    </p>
+    <p>
+      发起购买时，GPS-Go 会告诉 Google Play 你选择的方案，并附上一个由应用在你设备上经单向哈希生成的标识符，
+      供 Google 识别欺诈。Google Play 会在 Play 管理中心向我们提供销售订单记录，例如订单号、方案、价格和日期，
+      我们只用于记账、退款和客服。
+    </p>
+    <p>
+      为了解锁你已付费的功能，应用会向 Google Play 查询你拥有的订阅，并把当前有效的那一项（Google Play 购买令牌、
+      方案及最近一次确认的时间）保存在设备的私有存储中，使付费功能在离线时还能继续使用一段时间。这份副本不会
+      纳入安卓云备份或设备间迁移，并会在 Google Play 不再报告有效订阅时删除。重装应用或换新设备后，应用会重新向
+      Google Play 查询；你也可以点按<strong>「恢复购买」</strong>。
+    </p>
+    <p>
+      取消订阅、退款及更换付款方式均由 Google Play 在你的 Google 账号下处理。Google 对支付数据的处理适用
+      <a href="https://payments.google.com/payments/apis-secure/u/0/get_legal_document?ldo=0&amp;ldt=privacynotice" rel="noopener" target="_blank">Google 支付隐私权声明</a>。
+    </p>
+
+    <h2>6. 备份导出文件</h2>
     <p>
       GPS-Go 可以把你的数据导出为文件，保存到你指定的位置。该文件以明文形式包含位置历史、收藏地点、标签与
       路线。它只在你主动要求时生成，不会上传到任何地方；一旦离开应用，保管责任就在你自己。请谨慎选择存放与
@@ -147,7 +187,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       管理，不由我们管理。
     </p>
 
-    <h2>6. 我们不做的事</h2>
+    <h2>7. 我们不做的事</h2>
     <ul>
       <li>没有账号、登录或用户画像</li>
       <li>没有我们运营的服务器，因此我们手上不存在你的数据副本</li>
@@ -156,27 +196,27 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       <li>不追踪他人——GPS-Go 只模拟你自己设备的位置</li>
     </ul>
 
-    <h2>7. 未成年人</h2>
+    <h2>8. 未成年人</h2>
     <p>
       GPS-Go 面向成年人。本应用不面向儿童，我们也不会在知情的情况下收集儿童数据。其 Google Play 目标受众
       仅设定为成年人。
     </p>
 
-    <h2>8. 数据留存与删除</h2>
+    <h2>9. 数据留存与删除</h2>
     <p>
-      由于数据都在你的设备上，其生命周期由你掌控。应用会按你设定的留存窗口自动清理过期历史，每条记录也都可以
-      在应用内单独或批量删除，卸载即全部清除。我们这边没有任何东西需要删除，因为我们本就不持有。
+      由于数据都在你的设备上，其生命周期由你掌控。应用会自动清理超出留存窗口的历史：免费版为 30 天，
+      Pro 版可自选窗口，包括永久保留。每条记录也都可以在应用内单独或批量删除，卸载即全部清除。我们这边没有任何东西需要删除，因为我们本就不持有。
     </p>
     <p>
-      因第 3 节所述请求而由 Google 或 Geoapify 持有的数据，适用它们各自的留存做法与政策（链接见第 4 节）。
+      因第 3 节所述请求而由 Google、Geoapify 或分享链接的地图服务持有的数据，适用该接收方各自的留存做法与政策。
     </p>
 
-    <h2>9. 安全</h2>
+    <h2>10. 安全</h2>
     <p>
       应用发起的所有网络请求均使用 HTTPS。本地数据存放在应用私有存储中，未 root 的设备上其他应用无法读取。
     </p>
 
-    <h2>10. 欧洲经济区、英国与瑞士用户的补充说明</h2>
+    <h2>11. 欧洲经济区、英国与瑞士用户的补充说明</h2>
     <p>
       本节提供欧盟与英国《通用数据保护条例》（GDPR）及瑞士《联邦数据保护法》要求披露的信息。
     </p>
@@ -184,8 +224,8 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     <h3>数据控制者</h3>
     <p>
       本政策所述处理活动的控制者为 Yaner Yang（以 Yaner Apps 名义发布），联系邮箱
-      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>。Google 与 Geoapify 对各自收到的数据是独立的控制者，
-      适用第 4 节链接的各自政策。
+      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>。Google、Geoapify、你设备地理编码服务的
+      运营方，以及分享链接背后的地图服务，对各自收到的数据是独立的控制者，适用各自的政策。
     </p>
 
     <h3>处理目的与法律依据</h3>
@@ -200,9 +240,14 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
         </thead>
         <tbody>
           <tr>
-            <td>显示地图、返回地点搜索结果</td>
-            <td>地图视口、搜索文本、地图中心点、IP 地址、设备与 SDK 信息</td>
+            <td>显示地图、返回地点搜索结果、查询街道地址、读取分享链接</td>
+            <td>地图视口、搜索文本、地图中心点、你选中、打开或保存的点的坐标、分享链接、IP 地址、设备与 SDK 信息</td>
             <td>提供你所请求的服务所必需（GDPR 第 6(1)(b) 条）</td>
+          </tr>
+          <tr>
+            <td>提供你已购买的订阅</td>
+            <td>你的 Google Play 购买状态与购买令牌、购买时附带的哈希标识符、Google Play 提供的订单记录</td>
+            <td>履行你订阅时订立的合同所必需（第 6(1)(b) 条）</td>
           </tr>
           <tr>
             <td>保障地图与搜索服务稳定</td>
@@ -221,7 +266,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
           </tr>
           <tr>
             <td>回复你的邮件</td>
-            <td>你的邮箱地址与邮件内容</td>
+            <td>你的邮箱地址、邮件内容，以及问题反馈为你自动填入的设备信息（设备型号、安卓版本、应用版本、套餐与语言），发送前可自行修改</td>
             <td>回复你的正当利益（第 6(1)(f) 条）；事项处理完毕即删除往来邮件，最迟不超过 12 个月</td>
           </tr>
         </tbody>
@@ -238,6 +283,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       Geoapify 在欧盟境内的数据中心处理请求。Google 可能在美国及其他国家处理数据，依据欧盟—美国数据隐私框架、
       其英国扩展、瑞士—美国数据隐私框架，并在需要时依据标准合同条款（见
       <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google 数据传输框架</a>）。
+      接收分享链接的地图服务可能在你所在国家以外处理该链接，并适用其自身的跨境传输保障措施。
       我们位于欧洲经济区之外，但第 3 节所述数据我们一概不接收。
     </p>
 
@@ -245,10 +291,10 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     <p>
       你有权访问、更正、删除你的个人数据，有权限制或反对对其处理，有权获得数据可携，并有权随时撤回同意，撤回不影响
       撤回前处理的合法性。你还有权向数据保护监管机构投诉，尤其是你居住或工作所在国的监管机构；在英国为信息专员办公室
-      （ICO），在瑞士为联邦数据保护与信息专员（FDPIC）。行使这些权利的方式见第 11 节。
+      （ICO），在瑞士为联邦数据保护与信息专员（FDPIC）。行使这些权利的方式见第 12 节。
     </p>
 
-    <h2>11. 你的权利</h2>
+    <h2>12. 你的权利</h2>
     <p>
       取决于你所在地区，你可能享有访问、更正、删除、转移个人数据或反对特定处理的权利。由于 GPS-Go 只在你的设备上
       存储数据，这些权利可直接在应用内行使。涉及 Google 持有的广告数据，请使用应用内的「隐私选项」页面以及
@@ -256,13 +302,13 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>，我们会在 30 天内回复。
     </p>
 
-    <h2>12. 政策变更</h2>
+    <h2>13. 政策变更</h2>
     <p>
       本政策如有变更，更新版本会发布在本页面并标注新的「最近更新」日期。涉及数据共享方式的实质性变更，也会在
       应用的版本更新说明中提示。
     </p>
 
-    <h2>13. 联系方式</h2>
+    <h2>14. 联系方式</h2>
     <p>
       Yaner Apps — <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
     </p>

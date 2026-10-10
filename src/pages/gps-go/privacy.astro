@@ -13,7 +13,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       <div class="meta">
         <span>Effective: 31 Aug 2026</span>
         <span>&middot;</span>
-        <span>Updated: 25 Sep 2026</span>
+        <span>Updated: 9 Oct 2026</span>
       </div>
     </div>
 
@@ -25,9 +25,11 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
 
     <div class="card">
       <p><strong>In short:</strong> GPS-Go has no user accounts and no servers of our own. Your simulated
-      locations, history, saved places, tags, and routes stay on your device. Three third parties receive
+      locations, history, saved places, tags, and routes stay on your device. A few third parties receive
       data when you use specific features: Google Maps and Google Places (map display and place search),
-      Geoapify (place search), and Google AdMob (advertising). We never sell your personal information.</p>
+      Geoapify (place search), your device's built-in geocoding service (street addresses), the map service
+      behind a link you share into the app, and Google AdMob (advertising). If you buy a subscription,
+      Google Play processes the purchase and payment; we never see your payment details. We never sell your personal information.</p>
     </div>
 
     <h2>1. Data that stays on your device</h2>
@@ -49,10 +51,11 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     <p>
       GPS-Go requests location permission so it can show where you actually are on the map (the "Locate"
       button) and so it can register itself as a mock location provider. We never receive your real
-      location, and the app never sends it anywhere on its own. One exception follows from how search
-      works: when you search for a place, the centre of the visible map is sent with the query to rank
-      nearby results, and if the map is following your position, that point is your real location
-      &mdash; see section 3.
+      location, and the app never sends it anywhere on its own. Two exceptions follow from how
+      features work: when you search for a place, the centre of the visible map is sent with the query to
+      rank nearby results, and if the map is following your position, that point is your real location;
+      and if you select the point where you actually are, its coordinates are sent to look up its street
+      address &mdash; see section 3.
     </p>
 
     <h2>3. Data sent to third parties</h2>
@@ -87,6 +90,16 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
             <td>To return place suggestions and their coordinates</td>
           </tr>
           <tr>
+            <td>Your device's geocoding service (operated by Google on most Android devices)</td>
+            <td>The coordinates of a point you select on the map, of a saved place when you open it, and of the start of a route when you save it; the place name in a shared link that carries no coordinates</td>
+            <td>To show a street address for that point, suggest a name, or find the coordinates of a shared place</td>
+          </tr>
+          <tr>
+            <td>The map service behind a shared link (Google Maps, Apple Maps, Waze, OpenStreetMap or Yandex)</td>
+            <td>The link you shared into GPS-Go and your IP address, sent to that service and to any page the link redirects to</td>
+            <td>To read the location a short link points to</td>
+          </tr>
+          <tr>
             <td>Google AdMob and the Google User Messaging Platform</td>
             <td>Your advertising ID (AAID) and app set ID, your IP address (from which Google may estimate a general location), device and app information, ad interactions, SDK diagnostics, and your consent choices</td>
             <td>To request and display rewarded video, interstitial, and banner ads, and to record your consent</td>
@@ -96,9 +109,15 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     </div>
 
     <p>
-      Place searches are routed to Geoapify where possible and fall back to Google Places. Neither provider
+      Place searches are routed to Geoapify where possible and fall back to Google Places. Neither search provider
       receives your location history, saved places, or routes. Geoapify states that it generally keeps logs
       of successful requests for no longer than 24 hours.
+    </p>
+    <p>
+      Address lookups go through the geocoding service built into Android, not a service we chose; on most
+      devices Google operates it, under the Google Privacy Policy. GPS-Go never sends your saved places,
+      history or routes as a batch: each lookup covers only the one point you just selected, opened or
+      saved. Shared links are read only when you share one into the app.
     </p>
     <p>
       When a search result comes from Google Places, its coordinates are removed from your local search
@@ -155,9 +174,37 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       <a href="https://support.google.com/admob/answer/6128543" rel="noopener" target="_blank">how Google uses data in AdMob</a>.
       Geoapify's handling is governed by the
       <a href="https://www.geoapify.com/privacy-policy/" rel="noopener" target="_blank">Geoapify Privacy Policy</a>.
+      A map service that receives a shared link handles it under its own privacy policy.
     </p>
 
-    <h2>5. Backup export files</h2>
+    <h2>5. Purchases and subscriptions</h2>
+    <p>
+      GPS-Go offers optional subscriptions. They are sold and billed entirely by Google Play: Google Play
+      takes the payment, and your payment method and billing details stay with Google. We never receive
+      your card number, billing address or other payment information, and GPS-Go has no server that
+      receives your purchases.
+    </p>
+    <p>
+      When you start a purchase, GPS-Go tells Google Play which plan you chose, along with an identifier
+      the app derives on your device with a one-way hash, which Google uses to help detect fraud. Google
+      Play gives us order records for our sales in the Play Console, such as the order number, plan, price
+      and date, which we use only for accounting, refunds and support.
+    </p>
+    <p>
+      To unlock what you paid for, the app asks Google Play which subscriptions you own and keeps a copy of
+      the active one (its Google Play purchase token, plan, and when it was last confirmed) in private
+      storage on your device, so paid features keep working for a while when you are offline. This copy is
+      excluded from Android cloud backup and device-to-device transfer, and is removed once Google Play no
+      longer reports an active subscription. After a reinstall or on a new device, the app checks with
+      Google Play again; you can also tap <strong>Restore purchases</strong>.
+    </p>
+    <p>
+      Cancellations, refunds, and changes of payment method are handled by Google Play under your Google
+      account. Google's handling of payment data is governed by the
+      <a href="https://payments.google.com/payments/apis-secure/u/0/get_legal_document?ldo=0&amp;ldt=privacynotice" rel="noopener" target="_blank">Google Payments Privacy Notice</a>.
+    </p>
+
+    <h2>6. Backup export files</h2>
     <p>
       GPS-Go can export your data as a file to a location you choose. That file contains your location
       history, saved places, tags, and routes in plain form. It is created only when you ask for it, it is
@@ -169,7 +216,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       managed by Google under your Google account, not by us.
     </p>
 
-    <h2>6. What we do not do</h2>
+    <h2>7. What we do not do</h2>
     <ul>
       <li>No user accounts, sign-in, or profiles</li>
       <li>No servers operated by us, and therefore no copy of your data held by us</li>
@@ -178,31 +225,31 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       <li>No tracking of other people &mdash; GPS-Go simulates only your own device's location</li>
     </ul>
 
-    <h2>7. Children</h2>
+    <h2>8. Children</h2>
     <p>
       GPS-Go is intended for adults. It is not directed to children, and we do not knowingly collect data
       from children. Its Google Play target audience is set to adults only.
     </p>
 
-    <h2>8. Data retention and deletion</h2>
+    <h2>9. Data retention and deletion</h2>
     <p>
       Because your data lives on your device, you control its lifetime. The app deletes history older than
-      the retention window you configure, and every record can be deleted individually or in bulk from
-      within the app. Uninstalling removes everything. There is nothing for us to delete on our side, since
+      its retention window: 30 days on the free plan, or the window you choose with Pro, including keeping
+      it indefinitely. Every record can be deleted individually or in bulk from within the app. Uninstalling removes everything. There is nothing for us to delete on our side, since
       we hold nothing.
     </p>
     <p>
-      Data held by Google or Geoapify as a result of the requests described in section 3 is subject to
-      their own retention practices and their own policies, linked in section 4.
+      Data held by Google, Geoapify or a shared-link map service as a result of the requests described in
+      section 3 is subject to that recipient's own retention practices and policies.
     </p>
 
-    <h2>9. Security</h2>
+    <h2>10. Security</h2>
     <p>
       All network requests made by the app use HTTPS. Local data is kept in the app's private storage,
       which other apps cannot read on a non-rooted device.
     </p>
 
-    <h2>10. Additional information for the EEA, UK and Switzerland</h2>
+    <h2>11. Additional information for the EEA, UK and Switzerland</h2>
     <p>
       This section gives the information required by the EU and UK General Data Protection Regulation and
       the Swiss Federal Act on Data Protection.
@@ -211,8 +258,9 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     <h3>Controller</h3>
     <p>
       The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
-      reachable at <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. Google and Geoapify act as
-      independent controllers for the data they receive, under their own policies linked in section 4.
+      reachable at <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. Google, Geoapify, the
+      operator of your device's geocoding service, and the map service behind a shared link act as
+      independent controllers for the data they receive, under their own policies.
     </p>
 
     <h3>Purposes and legal bases</h3>
@@ -227,9 +275,14 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
         </thead>
         <tbody>
           <tr>
-            <td>Showing the map and returning place search results</td>
-            <td>Map viewport, search text, map centre, IP address, device and SDK information</td>
+            <td>Showing the map, returning place search results, looking up street addresses, and reading shared links</td>
+            <td>Map viewport, search text, map centre, coordinates of a point you select, open or save, a shared link, IP address, device and SDK information</td>
             <td>Necessary to provide the service you ask for (Art. 6(1)(b) GDPR)</td>
+          </tr>
+          <tr>
+            <td>Providing a subscription you bought</td>
+            <td>Your Google Play purchase status and purchase token, the hashed identifier sent with a purchase, and the order records Google Play provides</td>
+            <td>Necessary to perform the contract you entered into when subscribing (Art. 6(1)(b))</td>
           </tr>
           <tr>
             <td>Keeping the map and search services reliable</td>
@@ -248,7 +301,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
           </tr>
           <tr>
             <td>Answering your emails</td>
-            <td>Your email address and message</td>
+            <td>Your email address, your message, and the device details a bug report fills in for you (device model, Android version, app version, plan and language), which you can edit before sending</td>
             <td>Legitimate interests in responding to you (Art. 6(1)(f)); we delete the correspondence once the matter is closed, and within 12 months at the latest</td>
           </tr>
         </tbody>
@@ -268,6 +321,8 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       and other countries, relying on the EU-U.S. Data Privacy Framework, its UK Extension and the
       Swiss-U.S. Data Privacy Framework, and on Standard Contractual Clauses where needed (see
       <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google's data transfer frameworks</a>).
+      A map service that receives a shared link may process it outside your country, under its own
+      transfer safeguards.
       We are based outside the EEA, but we receive none of the data described in section 3.
     </p>
 
@@ -278,10 +333,10 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       lawfulness of processing before the withdrawal. You also have the right to lodge a complaint with a
       data protection supervisory authority, in particular in the country where you live or work; in the
       UK this is the Information Commissioner's Office, and in Switzerland the Federal Data Protection and
-      Information Commissioner. Section 11 explains how to exercise these rights.
+      Information Commissioner. Section 12 explains how to exercise these rights.
     </p>
 
-    <h2>11. Your rights</h2>
+    <h2>12. Your rights</h2>
     <p>
       Depending on where you live, you may have rights to access, correct, delete, or port your personal
       data, or to object to certain processing. Since GPS-Go stores your data only on your device, you can
@@ -290,13 +345,13 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a> and we will respond within 30 days.
     </p>
 
-    <h2>12. Changes to this policy</h2>
+    <h2>13. Changes to this policy</h2>
     <p>
       If this policy changes, the updated version is published on this page with a new "last updated" date.
       Material changes affecting how data is shared will also be noted in the app's release notes.
     </p>
 
-    <h2>13. Contact</h2>
+    <h2>14. Contact</h2>
     <p>
       Yaner Apps &mdash; <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
     </p>
