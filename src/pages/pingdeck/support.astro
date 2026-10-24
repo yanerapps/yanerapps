@@ -1,0 +1,109 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Support — PingDeck';
+const description = 'Support and contact for PingDeck by Yaner Apps.';
+
+// One tap opens a mail draft with the report fields already laid out.
+const template =
+  'mailto:yanerapps@gmail.com?' +
+  new URLSearchParams({
+    subject: 'PingDeck: ',
+    body: [
+      'Device model: ',
+      'Android version: ',
+      'PingDeck version (Android Settings → Apps → PingDeck): ',
+      'Kind of host (ICMP, TCP port, HTTP/HTTPS URL): ',
+      '',
+      'What I did:',
+      '',
+      'What I expected:',
+      '',
+      'What happened instead:',
+      '',
+    ].join('\n'),
+  })
+    .toString()
+    .replace(/\+/g, '%20');
+---
+
+<Layout title={title} description={description} currentPath="/pingdeck/support">
+  <div class="prose">
+    <div class="prose-header">
+      <h1>Support</h1>
+      <p class="lede">Questions, bug reports, and privacy requests for PingDeck.</p>
+      <div class="meta">
+        <span>Updated: 23 Oct 2026</span>
+      </div>
+    </div>
+
+    <h2>Contact</h2>
+    <p>
+      Email <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. To help us reproduce a
+      problem, please include:
+    </p>
+    <ul>
+      <li>Your device model and Android version</li>
+      <li>The app version (Android Settings &rarr; Apps &rarr; PingDeck)</li>
+      <li>The kind of host involved: ICMP, a TCP port, or an HTTP/HTTPS URL</li>
+      <li>What you did, what you expected, and what happened instead</li>
+    </ul>
+    <p><a class="button" href={template}>Start an email with these fields</a></p>
+
+    <h2>Common questions</h2>
+
+    <h3>Monitoring stops when the screen is off or the app is in the background</h3>
+    <p>
+      PingDeck keeps monitoring through a notification while it runs, but some devices still stop
+      background apps to save battery. Go to <strong>Settings &rarr; Apps &rarr; PingDeck &rarr; Battery</strong>
+      (or <strong>App battery usage</strong>) and select <strong>Unrestricted</strong>. Allow notifications for
+      PingDeck too, so you can see that monitoring is running and get alerts.
+    </p>
+
+    <h3>Hosts on my local network fail, or a scan finds nothing</h3>
+    <p>
+      Android needs your permission before an app can reach devices on your local network. Tap
+      <strong>Allow local network access</strong> when PingDeck asks, or turn it on under
+      <strong>Settings &rarr; Apps &rarr; PingDeck &rarr; Permissions</strong>.
+    </p>
+
+    <h3>A host times out with ICMP but works in a browser</h3>
+    <p>
+      Many servers and networks block ICMP ping. Monitor the host with a TCP port instead
+      (for example <code>example.com:443</code>) or with its address as an <code>https://</code> URL.
+    </p>
+
+    <h3>Some hosts show "Not monitored (free limit)"</h3>
+    <p>
+      The free version monitors the first five enabled hosts in your list. You can keep more hosts saved
+      and enabled; the rest are monitored once you buy Pro, or for four hours after you watch a rewarded ad
+      from the upgrade screen.
+    </p>
+
+    <h3>I bought Pro but still see ads or limits</h3>
+    <p>
+      Open <strong>Settings &rarr; Restore purchase</strong> while online, signed in to the Google account you
+      bought with. On a new device or after reinstalling, PingDeck checks with Google Play the first time it
+      can.
+    </p>
+
+    <h3>How do I change my ad consent choice?</h3>
+    <p>
+      In the app, go to <strong>Settings &rarr; Privacy options</strong>. This entry appears where consent
+      applies. See the <a href="/pingdeck/privacy">privacy policy</a> for details.
+    </p>
+
+    <h3>How do I delete my data?</h3>
+    <p>
+      All data is stored on your device. Use <strong>More options &rarr; Clear all hosts and data</strong> in the
+      app, or uninstall PingDeck to remove everything.
+    </p>
+
+    <h2>Responsible use</h2>
+    <p>
+      Monitor only hosts and networks you own or have permission to test. Local network scans are limited
+      to private networks and to a modest rate, but probing other people's systems may still break their
+      terms or the law where you are. You are responsible for how you use PingDeck.
+    </p>
+  </div>
+</Layout>

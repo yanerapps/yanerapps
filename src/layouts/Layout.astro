@@ -26,7 +26,9 @@ const zhPath = enPath === '/' ? '/zh-hans' : '/zh-hans' + enPath;
 const local = (path: string) => (zh ? (path === '/' ? '/zh-hans' : '/zh-hans' + path) : path);
 const home = local('/');
 const privacy = local('/privacy');
-const support = local('/gps-go/support');
+// Support follows the app whose pages you are on; site-wide pages keep GPS-Go's.
+const app = enPath.match(/^\/(pingdeck|gps-go)\//)?.[1] ?? 'gps-go';
+const support = local(`/${app}/support`);
 const site = Astro.site || 'https://yanerapps.com';
 const canonicalUrl = new URL(currentPath, site).href;
 const enUrl = new URL(enPath, site).href;

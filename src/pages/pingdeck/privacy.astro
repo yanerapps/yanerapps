@@ -1,0 +1,345 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const title = 'Privacy Policy — PingDeck';
+const description = 'Privacy policy for PingDeck (com.yanerapps.pingdeck), an Android app by Yaner Apps that pings many hosts at once.';
+---
+
+<Layout title={title} description={description} currentPath="/pingdeck/privacy">
+  <div class="prose">
+    <div class="prose-header">
+      <h1>Privacy Policy</h1>
+      <p class="lede">PingDeck for Android (<code>com.yanerapps.pingdeck</code>)</p>
+      <div class="meta">
+        <span>Effective: from PingDeck&rsquo;s release on Google Play</span>
+        <span>&middot;</span>
+        <span>Updated: 23 Oct 2026</span>
+      </div>
+    </div>
+
+    <p>
+      This policy explains what PingDeck does with your data. PingDeck is made by Yaner Apps, an independent
+      developer studio ("we", "us"). It applies to the PingDeck Android application and to this website.
+    </p>
+
+    <div class="card">
+      <p><strong>In short:</strong> PingDeck has no user accounts and no servers of our own. Your host list,
+      settings and ping statistics stay on your device. PingDeck sends probes only to the hosts you add, and
+      requests only to the webhook and links you set up. The free version shows ads from Google AdMob; if you
+      buy Pro, Google Play processes the purchase and payment, and we never see your payment details. We never
+      sell your personal information.</p>
+    </div>
+
+    <h2>1. Data that stays on your device</h2>
+    <p>
+      The following is stored in the app's private storage and is never transmitted to us &mdash; we operate
+      no server and have no way to read it:
+    </p>
+    <ul>
+      <li>Your host list: addresses, host names, URLs, ports, descriptions and groups</li>
+      <li>App settings, including your custom URL commands and webhook address</li>
+      <li>Ping statistics and history. History is kept in memory while the app runs and is not saved to storage</li>
+      <li>Your Pro status and, if you watched a rewarded ad, when your Pro trial ends</li>
+    </ul>
+    <p>
+      You can delete hosts, reset statistics, or clear all hosts and data inside the app at any time.
+      Uninstalling PingDeck removes everything.
+    </p>
+
+    <h2>2. Network traffic you ask for</h2>
+    <p>
+      Monitoring means sending network traffic. PingDeck sends it only to destinations you choose:
+    </p>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Who receives it</th>
+            <th>What they see</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monitoring (ICMP ping, TCP connect, HTTP and HTTPS checks)</td>
+            <td>Each host you add</td>
+            <td>Your IP address and the probe itself. HTTP(S) checks send a HEAD (or GET) request with Android's standard user agent, which names your Android version and device model</td>
+          </tr>
+          <tr>
+            <td>Name lookups, including the optional reverse DNS lookup</td>
+            <td>The DNS servers your device or network is set to use</td>
+            <td>The host names and IP addresses being looked up</td>
+          </tr>
+          <tr>
+            <td>Webhook (Pro, off until you enter an address)</td>
+            <td>The web address you enter</td>
+            <td>A request when a host goes down or comes back up, carrying the host details your template includes (such as host name, IP address, description, group, status and counts)</td>
+          </tr>
+          <tr>
+            <td>Custom URL commands and "Open in browser"</td>
+            <td>The app that opens the link, usually your browser, and the site it visits</td>
+            <td>The link built from your template and the selected host's details, only when you tap the command</td>
+          </tr>
+          <tr>
+            <td>Local network discovery</td>
+            <td>Devices on the local network you choose to scan</td>
+            <td>ICMP and TCP probes, SSDP and mDNS discovery messages, and NetBIOS and reverse DNS name queries from your device</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Nothing here goes to us. Local network scan results stay on your device: PingDeck does not identify
+      devices by MAC address or model and does not upload what it finds. HTTP checks to <code>http://</code>
+      addresses and webhooks to <code>http://</code> addresses are not encrypted, because you chose a plain
+      HTTP address.
+    </p>
+
+    <h2>3. Data sent to third parties</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Recipient</th>
+            <th>What is sent</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google AdMob and the Google User Messaging Platform (free version only)</td>
+            <td>Your advertising ID (AAID) and app set ID, your IP address (from which Google may estimate a general location), device and app information, ad interactions, SDK diagnostics, and your consent choices</td>
+            <td>To request and display banner and rewarded ads, and to record your consent</td>
+          </tr>
+          <tr>
+            <td>Google Play Billing</td>
+            <td>Your purchase of Pro and a one-way hashed identifier derived on your device</td>
+            <td>To sell Pro, confirm that you own it, and help Google detect fraud</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Your host list, statistics and settings are never sent to Google or to any advertising service.
+    </p>
+
+    <h2>4. Advertising</h2>
+    <p>The free version of PingDeck shows ads supplied by Google AdMob:</p>
+    <ul>
+      <li><strong>Banner ads:</strong> One banner at the bottom of the screen. It is not shown in Settings, while the keyboard is open, or in very short windows, and it never covers app content.</li>
+      <li><strong>Rewarded ads:</strong> Never forced on you. One plays only after you tap a button offering four hours of Pro in exchange for watching it.</li>
+    </ul>
+    <p>
+      PingDeck shows no interstitial ads and no ads on a timer. Starting or stopping monitoring never
+      requires an ad, ads never appear in the notification or the home screen widget, and monitoring keeps
+      running while an ad plays. Once you buy Pro, PingDeck shows no ads and does not start the ad SDK.
+    </p>
+    <p>
+      We use Google AdMob only, with no other ad network or mediation layer, and we have not added any
+      analytics or crash-reporting SDK. The Google SDKs collect their own diagnostics, which we do not
+      receive.
+    </p>
+
+    <h3>Consent (EEA, UK, and Switzerland)</h3>
+    <p>
+      If you are in the European Economic Area, the United Kingdom, or Switzerland, PingDeck asks for your
+      consent before ads are requested, using Google's certified User Messaging Platform. You can review or
+      change your choice at any time under <strong>Settings &rarr; Privacy options</strong>. If you decline,
+      the app remains fully usable; Google may still show limited, non-personalised ads, and the rewarded
+      trial is not offered while ads cannot be requested.
+    </p>
+
+    <h3>US state privacy laws</h3>
+    <p>
+      We do not sell your personal information, and we do not share it for cross-context behavioural
+      advertising in exchange for money. Residents of US states with applicable privacy laws are shown a
+      notice with an opt-out choice, delivered through the same Privacy options screen.
+    </p>
+
+    <h3>Controlling the advertising ID</h3>
+    <p>
+      Android lets you reset or delete your advertising ID at any time under
+      <strong>Settings &rarr; Privacy &rarr; Ads</strong> (the exact path varies by device). Deleting it stops
+      personalised advertising system-wide.
+    </p>
+    <p>
+      Google's handling of ad data is governed by the
+      <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google Privacy Policy</a>; see also
+      <a href="https://support.google.com/admob/answer/6128543" rel="noopener" target="_blank">how Google uses data in AdMob</a>.
+    </p>
+
+    <h2>5. Buying Pro</h2>
+    <p>
+      PingDeck Pro is a one-time purchase sold and billed entirely by Google Play. Google Play takes the
+      payment, and your payment method and billing details stay with Google. We never receive your card
+      number, billing address or other payment information, and PingDeck has no server that receives your
+      purchases.
+    </p>
+    <p>
+      When you start a purchase, PingDeck tells Google Play which product you chose, along with an identifier
+      the app derives on your device with a one-way hash, which Google uses to help detect fraud. Google Play
+      gives us order records for our sales in the Play Console, such as the order number, product, price and
+      date, which we use only for accounting, refunds and support.
+    </p>
+    <p>
+      To unlock Pro, the app asks Google Play whether you own it and keeps a signed copy of the answer (the
+      Google Play purchase token and when it was last confirmed) in private storage, so Pro keeps working for
+      up to 30 days when you are offline. This copy, and the end time of a rewarded Pro trial, are excluded
+      from Android cloud backup and device-to-device transfer. After a reinstall or on a new device, the app
+      checks with Google Play again; you can also tap <strong>Restore purchase</strong>.
+    </p>
+    <p>
+      Refunds and changes of payment method are handled by Google Play under your Google account. Google's
+      handling of payment data is governed by the
+      <a href="https://payments.google.com/payments/apis-secure/u/0/get_legal_document?ldo=0&amp;ldt=privacynotice" rel="noopener" target="_blank">Google Payments Privacy Notice</a>.
+    </p>
+
+    <h2>6. Files you export</h2>
+    <p>
+      PingDeck can write files to places you choose: an exported host list, exported statistics, and with
+      Pro an automatic export folder and a ping log. These files contain host names, addresses and
+      measurements in plain text. They are created only when you ask for them, they are not uploaded
+      anywhere, and once they leave the app they are yours to protect. Sharing an export through Android's
+      share sheet sends it to the app you pick.
+    </p>
+    <p>
+      Android's own cloud backup may include your host list and settings if you have enabled it on your
+      device. That backup is managed by Google under your Google account, not by us.
+    </p>
+
+    <h2>7. Notifications and the widget</h2>
+    <p>
+      While monitoring runs, PingDeck shows an ongoing notification, and alerts when hosts go down or come
+      back. These, and the home screen widget, can show host names and how many hosts are reachable, so
+      anyone who can see your screen can see them. You can hide sensitive notification content on the lock
+      screen in Android's notification settings.
+    </p>
+
+    <h2>8. What we do not do</h2>
+    <ul>
+      <li>No user accounts, sign-in, or profiles</li>
+      <li>No servers operated by us, and therefore no copy of your data held by us</li>
+      <li>No analytics or crash-reporting SDKs added by us</li>
+      <li>No location permission and no use of your location</li>
+      <li>No sale of personal information</li>
+    </ul>
+
+    <h2>9. Children</h2>
+    <p>
+      PingDeck is intended for adults. It is not directed to children, and we do not knowingly collect data
+      from children. Its Google Play target audience is set to adults only.
+    </p>
+
+    <h2>10. Data retention and deletion</h2>
+    <p>
+      Because your data lives on your device, you control its lifetime. Ping history disappears when the
+      app's process ends; your host list and settings stay until you delete them or uninstall the app.
+      There is nothing for us to delete on our side, since we hold nothing.
+    </p>
+    <p>
+      Data held by Google as a result of the requests described in section 3, and anything the hosts, DNS
+      servers or webhook you chose receive, is subject to that recipient's own retention practices.
+    </p>
+
+    <h2>11. Security</h2>
+    <p>
+      Local data is kept in the app's private storage, which other apps cannot read on a non-rooted device.
+      The ad and billing SDKs talk to Google over HTTPS. Traffic to the hosts and webhook you choose is
+      encrypted only when you use an <code>https://</code> address; ICMP and TCP probes carry no content.
+    </p>
+
+    <h2>12. Additional information for the EEA, UK and Switzerland</h2>
+    <p>
+      This section gives the information required by the EU and UK General Data Protection Regulation and
+      the Swiss Federal Act on Data Protection.
+    </p>
+
+    <h3>Controller</h3>
+    <p>
+      The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
+      reachable at <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. Google acts as an independent
+      controller for the data it receives, under its own policies.
+    </p>
+
+    <h3>Purposes and legal bases</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Data</th>
+            <th>Legal basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Providing Pro you bought</td>
+            <td>Your Google Play purchase status and purchase token, the hashed identifier sent with a purchase, and the order records Google Play provides</td>
+            <td>Necessary to perform the contract you entered into when buying (Art. 6(1)(b) GDPR)</td>
+          </tr>
+          <tr>
+            <td>Personalised ads, and storing or reading ad identifiers on your device</td>
+            <td>Advertising ID, app set ID, IP address, ad interactions</td>
+            <td>Your consent (Art. 6(1)(a)), which you can withdraw at any time in Privacy options</td>
+          </tr>
+          <tr>
+            <td>Non-personalised ads, ad measurement and fraud prevention</td>
+            <td>IP address, device and app information, ad interactions</td>
+            <td>Legitimate interests in funding a free app and preventing ad fraud (Art. 6(1)(f)), and your consent where the law requires it for storage on your device</td>
+          </tr>
+          <tr>
+            <td>Answering your emails</td>
+            <td>Your email address and your message</td>
+            <td>Legitimate interests in responding to you (Art. 6(1)(f)); we delete the correspondence once the matter is closed, and within 12 months at the latest</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Data that stays on your device (section 1) and traffic to destinations you choose (section 2) are not
+      processed by us at all. You are not required to provide any personal data. If you decline consent you
+      see only limited ads. We make no decisions based solely on automated processing that have legal or
+      similarly significant effects on you; with your consent, Google may use ad data to personalise the ads
+      you see.
+    </p>
+
+    <h3>International transfers</h3>
+    <p>
+      Google may process data in the United States and other countries, relying on the EU-U.S. Data Privacy
+      Framework, its UK Extension and the Swiss-U.S. Data Privacy Framework, and on Standard Contractual
+      Clauses where needed (see
+      <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google's data transfer frameworks</a>).
+      We are based outside the EEA, but we receive none of the data described in section 3.
+    </p>
+
+    <h3>Your rights under the GDPR</h3>
+    <p>
+      You have the right to access, rectify and erase your personal data, to restrict or object to its
+      processing, to data portability, and to withdraw consent at any time without affecting the lawfulness
+      of processing before the withdrawal. You also have the right to lodge a complaint with a data
+      protection supervisory authority, in particular in the country where you live or work; in the UK this
+      is the Information Commissioner's Office, and in Switzerland the Federal Data Protection and
+      Information Commissioner. Section 13 explains how to exercise these rights.
+    </p>
+
+    <h2>13. Your rights</h2>
+    <p>
+      Depending on where you live, you may have rights to access, correct, delete, or port your personal
+      data, or to object to certain processing. Since PingDeck stores your data only on your device, you can
+      exercise these rights directly in the app. For anything related to advertising data held by Google, use
+      the Privacy options screen in the app and Google's own controls. If you need help, write to
+      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a> and we will respond within 30 days.
+    </p>
+
+    <h2>14. Changes to this policy</h2>
+    <p>
+      If this policy changes, the updated version is published on this page with a new "updated" date.
+      Material changes affecting how data is shared will also be noted in the app's release notes.
+    </p>
+
+    <h2>15. Contact</h2>
+    <p>
+      Yaner Apps &mdash; <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+    </p>
+  </div>
+</Layout>
