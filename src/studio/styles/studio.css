@@ -5,7 +5,10 @@
   --on-accent: #ffffff;
   --glow: rgb(194 59 34 / 0.14);
   --serif: 'IBM Plex Serif', ui-serif, Georgia, 'Times New Roman', serif;
-  --cjk-serif: 'Songti SC', 'Source Han Serif SC', 'Noto Serif SC', 'STSong', serif;
+  /* Chinese in the system's 黑体: PingFang on Apple devices, Microsoft YaHei on Windows, Noto Sans CJK on Android. */
+  --cjk-sans:
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Source Han Sans SC',
+    'Heiti SC', sans-serif;
 
   /* The swallow's sky: a muted daytime wash; dark mode turns it to dusk. swallow.ts reads these. */
   --sky-top: #9dbdd0;
