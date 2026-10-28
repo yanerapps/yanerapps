@@ -1,0 +1,169 @@
+---
+import AppIcon from './AppIcon.astro';
+
+const sinks = [
+  { name: 'GPS provider', detail: 'Apps that ask Android for satellite location' },
+  { name: 'Network provider', detail: 'Apps that ask for coarse, network location' },
+  { name: 'Fused location', detail: 'Apps built on Google Play services' },
+];
+---
+
+<section class="section how" id="how" aria-labelledby="how-title">
+  <div class="page">
+    <header class="section-head">
+      <p class="kicker reveal">03 · How it works</p>
+      <h2 class="reveal" id="how-title">One position, sent everywhere apps look.</h2>
+      <p class="lede reveal">
+        Android apps read location from more than one place. GPS-Go sends the same fix to all of them, so every app on
+        the phone agrees on where it is.
+      </p>
+    </header>
+
+    <div class="flow reveal" data-provider-flow>
+      <svg class="flow-wires" data-flow-wires aria-hidden="true"></svg>
+      <div class="flow-source" data-flow-source>
+        <AppIcon size={44} />
+        <p><strong>GPS-Go</strong><span class="readout">1 fix every 200 ms</span></p>
+      </div>
+      <ol class="flow-sinks" data-flow-sinks>
+        {
+          sinks.map((sink) => (
+            <li class="flow-node" data-flow-provider>
+              <strong>{sink.name}</strong>
+              <span>{sink.detail}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="flow-target" data-flow-target><strong>Your apps</strong><span>One consistent position</span></p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { connectProviders } from '../scripts/provider-diagram';
+  connectProviders();
+</script>
+
+<style>
+  .flow {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .flow-wires {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .flow-wires :global(path) {
+    fill: none;
+    stroke: color-mix(in oklab, var(--muted) 45%, var(--bg));
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .flow p,
+  .flow-node {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .flow strong {
+    font-weight: 620;
+  }
+
+  .flow span {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+
+  .flow-source,
+  .flow-target,
+  .flow-sinks {
+    position: relative;
+  }
+
+  .flow-source,
+  .flow-target {
+    padding: 1.5625rem;
+    border-radius: var(--radius-sheet);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .flow-source {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .flow-source :global(.app-icon) {
+    flex: none;
+  }
+
+  .flow-sinks {
+    display: grid;
+    grid-auto-rows: 1fr;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .flow-node {
+    align-content: center;
+    padding: 1.125rem 1rem;
+    border-radius: 1.25rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  @media (max-width: 860px) {
+    .flow {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      gap: 4rem;
+    }
+
+    .flow-source,
+    .flow-target {
+      width: min(100%, 20rem);
+    }
+
+    .flow-target {
+      text-align: center;
+    }
+
+    .flow-sinks {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .flow-node {
+      min-height: 5.5rem;
+      padding: 1rem 0.5rem;
+      text-align: center;
+    }
+
+    .flow-node span {
+      display: none;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .flow-node strong {
+      font-size: 0.8125rem;
+    }
+  }
+</style>

@@ -1,0 +1,212 @@
+---
+import { Image } from 'astro:assets';
+import { base, site } from '../data/site';
+import placesLight from '../assets/showcase/places-light.webp';
+import placesDark from '../assets/showcase/places-dark.webp';
+import mapLight from '../assets/showcase/map-light.webp';
+import mapDark from '../assets/showcase/map-dark.webp';
+import joystickLight from '../assets/showcase/joystick-light.webp';
+import joystickDark from '../assets/showcase/joystick-dark.webp';
+
+// The store feature graphic's three crops of real captures (doc/release/store/feature-graphic-variants),
+// laid out as they are there: cards in a 473 × 335 box, light or dark to match the site theme.
+const cards = [
+  {
+    kind: 'places',
+    light: placesLight,
+    dark: placesDark,
+    alt: 'The Places list: Golden Gate Bridge, Ferry Building, Union Square, Times Square, Shibuya Crossing, Eiffel Tower and Big Ben, each tagged by city.',
+    width: 200,
+  },
+  {
+    kind: 'map',
+    light: mapLight,
+    dark: mapDark,
+    alt: 'A route running around the Central Park Reservoir, with the search bar and the map controls.',
+    width: 310,
+  },
+  {
+    kind: 'joystick',
+    light: joystickLight,
+    dark: joystickDark,
+    alt: 'The floating joystick during the run: 6.3 mph, lap 1 of 1, steps, Details, Run and Pause.',
+    width: 236,
+  },
+];
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="page layout">
+    <div class="copy">
+      <h1 id="hero-title">Put your phone <em>anywhere.</em></h1>
+      <p class="lede">
+        GPS-Go sets the location your Android phone reports to apps. Teleport to places, simulate routes, or steer with a
+        joystick that floats over any app.
+      </p>
+      <div class="ctas">
+        {
+          site.playStoreUrl ? (
+            <a class="btn btn-primary" href={site.playStoreUrl} rel="noopener">Get it on Google Play</a>
+          ) : (
+            <span class="btn btn-primary btn-static">Coming soon to Google Play</span>
+          )
+        }
+        <a class="btn btn-quiet" href={`${base}/guide`}>Read the guide</a>
+      </div>
+      <p class="meta">Android {site.minAndroid} or later · No root · No account</p>
+    </div>
+
+    <div class="collage">
+      {
+        cards.map((c) => (
+          <div class:list={['card', c.kind]}>
+            <Image src={c.light} alt={c.alt} widths={[c.width, c.width * 2]} sizes={`${c.width}px`} class="shot shot-light" loading="eager" />
+            <Image src={c.dark} alt={c.alt} widths={[c.width, c.width * 2]} sizes={`${c.width}px`} class="shot shot-dark" />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow-x: clip;
+    padding-top: calc(var(--header-h) + clamp(2.5rem, 7vw, 5rem));
+    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  /* Faint grid that fades out toward the edges, plus a soft glow behind the cards. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 70% at 60% 30%, #000 30%, transparent 75%);
+  }
+
+  .glow {
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: 10%;
+    width: min(900px, 100vw);
+    height: 560px;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    filter: blur(20px);
+    pointer-events: none;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  /* background-clip: text paints only inside the box; the padding keeps descenders in it. */
+  h1 {
+    padding-bottom: 0.1em;
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    background: linear-gradient(var(--heading-from) 45%, var(--heading-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  h1 em {
+    display: block;
+    font-style: normal;
+    background: none;
+    -webkit-text-fill-color: var(--accent);
+  }
+
+  .lede {
+    margin-top: 18px;
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .meta {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--dim);
+  }
+
+  .collage {
+    --c: calc(100cqw / 473);
+    position: relative;
+    container-type: inline-size;
+    width: 100%;
+    max-width: 520px;
+    margin-inline: auto;
+    aspect-ratio: 473 / 335;
+  }
+
+  .card {
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid var(--line-2);
+    background: var(--panel);
+    box-shadow: var(--shadow);
+  }
+
+  .card :global(.shot) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .shot-dark,
+  :global([data-theme='dark']) .card .shot-light {
+    display: none !important;
+  }
+
+  :global([data-theme='dark']) .card .shot-dark {
+    display: block !important;
+  }
+
+  /* Card boxes in graphic pixels, relative to the collage's top-left. */
+  .places {
+    left: 0;
+    top: 0;
+    width: calc(200 * var(--c));
+    height: calc(329 * var(--c));
+    border-radius: calc(20 * var(--c));
+  }
+
+  .map {
+    left: calc(163 * var(--c));
+    top: calc(21 * var(--c));
+    width: calc(310 * var(--c));
+    height: calc(271.25 * var(--c));
+    border-radius: calc(21 * var(--c));
+  }
+
+  .joystick {
+    left: calc(90 * var(--c));
+    top: calc(147 * var(--c));
+    width: calc(236 * var(--c));
+    height: calc(188.11 * var(--c));
+    border-radius: calc(18.18 * var(--c));
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

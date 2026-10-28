@@ -1,0 +1,70 @@
+---
+import AppIcon from './AppIcon.astro';
+import { base, site } from '../data/site';
+
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent('GPS-Go')}`;
+---
+
+<section class="closing" id="get" aria-labelledby="get-title">
+  <div class="page">
+    <div class="band panel reveal">
+      <AppIcon size={52} class="closing-icon" />
+      <div class="text">
+        <h2 id="get-title">
+          {site.playStoreUrl ? 'GPS-Go is on Google Play.' : 'GPS-Go is coming soon to Google Play.'}
+        </h2>
+        <p>
+          Android {site.minAndroid} or later. Two switches in Developer options and you’re set:
+          {' '}read the <a href={`${base}/guide#setup`}>setup guide</a>, or <a href={mailto}>email the developer</a>.
+        </p>
+      </div>
+      {
+        site.playStoreUrl ? (
+          <a class="btn btn-primary" href={site.playStoreUrl} rel="noopener">Get it on Google Play</a>
+        ) : (
+          <span class="btn btn-primary btn-static">Coming soon</span>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .closing {
+    padding-block: calc(var(--section-space) / 2) var(--section-space);
+  }
+
+  .band {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px 24px;
+    padding: clamp(20px, 4vw, 32px);
+  }
+
+  .band :global(.closing-icon) {
+    border-radius: 12px;
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 2.6vw, 1.625rem);
+    letter-spacing: -0.02em;
+  }
+
+  .text p {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+
+  @media (max-width: 640px) {
+    .band {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .band > :last-child {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+  }
+</style>

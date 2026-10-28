@@ -1,0 +1,61 @@
+---
+import { base, site } from '../data/site';
+
+const year = new Date().getFullYear();
+const mailto = `mailto:${site.email}?subject=${encodeURIComponent('GPS-Go')}`;
+---
+
+<footer class="footer">
+  <div class="page footer-inner">
+    <p>© {year} <a href="/">{site.publisher}</a></p>
+    <ul>
+      <li><a href={`${base}/guide`}>Guide</a></li>
+      <li><a href={`${base}/faq`}>FAQ</a></li>
+      <li><a href={site.supportUrl}>Support</a></li>
+      <li><a href={site.privacyUrl}>Privacy policy</a></li>
+      <li><a href={mailto}>{site.email}</a></li>
+    </ul>
+    <p class="fineprint">
+      GPS-Go is a development and testing tool. You are responsible for complying with the terms of any third-party apps
+      you use it with.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: 28px;
+    color: var(--dim);
+    font-size: 13px;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 32px;
+  }
+
+  .footer ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer a {
+    color: var(--dim);
+  }
+
+  .footer a:hover {
+    color: var(--text);
+  }
+
+  .fineprint {
+    flex-basis: 100%;
+    max-width: 70ch;
+  }
+</style>

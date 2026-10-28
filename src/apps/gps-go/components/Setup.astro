@@ -1,0 +1,168 @@
+---
+import PhoneFrame from './PhoneFrame.astro';
+import Screenshot from './Screenshot.astro';
+import aboutLight from '../assets/screens/setup-about-light.webp';
+import aboutDark from '../assets/screens/setup-about-dark.webp';
+import developerLight from '../assets/screens/setup-developer-light.webp';
+import developerDark from '../assets/screens/setup-developer-dark.webp';
+import mockAppLight from '../assets/screens/setup-mock-app-light.webp';
+import mockAppDark from '../assets/screens/setup-mock-app-dark.webp';
+import allSetLight from '../assets/screens/setup-all-set-light.webp';
+import allSetDark from '../assets/screens/setup-all-set-dark.webp';
+---
+
+<section class="section" id="setup" aria-labelledby="setup-title">
+  <div class="page">
+    <header class="section-head">
+      <p class="kicker">01 · Setup</p>
+      <h2 class="heading" id="setup-title">Set up once. The app walks you through it.</h2>
+      <p class="lede">
+        Android lets an app simulate location only after you allow it in Developer options. GPS-Go checks each requirement
+        and opens the right settings page for you. Menu names vary a little between phone makers.
+      </p>
+    </header>
+
+    <ol class="steps">
+      <li class="step">
+        <div class="step-copy">
+          <span class="step-number readout" aria-hidden="true">1</span>
+          <h3>Turn on Developer options</h3>
+          <p>In Settings, open About phone and tap Build number seven times. Some phones keep it under Software information.</p>
+        </div>
+        <div class="step-shots">
+          <Screenshot
+            src={aboutLight}
+            dark={aboutDark}
+            alt="About phone in Android Settings: Android version 17, and below it the Build number row."
+            sizes="(min-width: 960px) 26rem, 90vw"
+            class="card-shot"
+          />
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-copy">
+          <span class="step-number readout" aria-hidden="true">2</span>
+          <h3>Choose GPS-Go as the mock location app</h3>
+          <p>
+            In Developer options, open Select mock location app and pick GPS-Go. The app’s setup step explains why and opens
+            Developer options for you.
+          </p>
+        </div>
+        <div class="step-shots">
+          <Screenshot
+            src={developerLight}
+            dark={developerDark}
+            alt="Developer options, Location section: Select mock location app, set to GPS-Go."
+            sizes="(min-width: 960px) 26rem, 90vw"
+            class="card-shot"
+          />
+          <PhoneFrame
+            class="step-phone"
+            image={mockAppLight}
+            dark={mockAppDark}
+            alt="GPS-Go setup, step 2 of 6, Mock Location App: why it is required and how to enable it in Developer options. The step shows Granted."
+            sizes="(min-width: 960px) 12rem, 48vw"
+          />
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-copy">
+          <span class="step-number readout" aria-hidden="true">3</span>
+          <h3>Allow location and the overlay</h3>
+          <p>
+            Location is needed to run the mock, and display over other apps powers the floating joystick. Notifications and
+            unrestricted battery use are recommended.
+          </p>
+        </div>
+        <div class="step-shots">
+          <PhoneFrame
+            class="step-phone"
+            image={allSetLight}
+            dark={allSetDark}
+            alt="GPS-Go setup summary, All set: mock location app, display over other apps and location permission are required and granted, notification access and battery optimization are recommended and set."
+            sizes="(min-width: 960px) 12rem, 48vw"
+          />
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps {
+    display: grid;
+    gap: clamp(3rem, 7vw, 5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  .step-copy {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    gap: 0.4rem 1rem;
+    align-items: start;
+  }
+
+  .step-number {
+    grid-row: span 2;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 1.125rem;
+  }
+
+  .step-copy h3 {
+    font-size: var(--step-1);
+    line-height: 1.25;
+    margin-top: 0.4rem;
+  }
+
+  .step-copy p {
+    color: var(--muted);
+    max-width: 30rem;
+  }
+
+  .step-shots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-shots :global(picture) {
+    flex: 1 1 15rem;
+    max-width: 26rem;
+  }
+
+  .step-shots :global(.card-shot) {
+    width: 100%;
+    border-radius: var(--radius-sheet);
+    box-shadow:
+      0 0 0 1px var(--line-2),
+      0 30px 60px -30px var(--phone-shadow);
+  }
+
+  .step-shots :global(.step-phone) {
+    flex: none;
+    width: min(12rem, 48vw);
+  }
+
+  @media (max-width: 860px) {
+    .step {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

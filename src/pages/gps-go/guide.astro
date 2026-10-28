@@ -1,0 +1,116 @@
+---
+import Base from '../../apps/gps-go/layouts/Base.astro';
+import Header from '../../apps/gps-go/components/Header.astro';
+import Setup from '../../apps/gps-go/components/Setup.astro';
+import Tour from '../../apps/gps-go/components/Tour.astro';
+import { pointChapters, routeChapters } from '../../apps/gps-go/data/tour';
+import Anatomy from '../../apps/gps-go/components/Anatomy.astro';
+import Library from '../../apps/gps-go/components/Library.astro';
+import Realism from '../../apps/gps-go/components/Realism.astro';
+import Closing from '../../apps/gps-go/components/Closing.astro';
+import Footer from '../../apps/gps-go/components/Footer.astro';
+
+const contents = [
+  { href: '#setup', label: 'Setup' },
+  { href: '#points', label: 'Mock a place' },
+  { href: '#joystick', label: 'The joystick' },
+  { href: '#routes', label: 'Routes' },
+  { href: '#library', label: 'Places, routes and history' },
+  { href: '#realism', label: 'Realism' },
+];
+---
+
+<Base
+  title="How to use GPS-Go: setup, routes and the floating joystick"
+  description="Set GPS-Go up as the mock location app, then pick a spot, draw and run routes, steer with the floating joystick, and make the location data look real."
+>
+  <Header />
+  <main id="main">
+    <header class="page page-start guide-head">
+      <p class="kicker">Guide</p>
+      <h1 class="heading">How to use GPS-Go.</h1>
+      <p class="lede">
+        Everything from the one-time setup to mocking a place, steering the joystick, running routes and making the data look real.
+      </p>
+      <nav aria-label="On this page">
+        <ol>
+          {contents.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+        </ol>
+      </nav>
+    </header>
+    <Setup />
+    <Tour
+      id="points"
+      kicker="02 · Mock a place"
+      title="Pick a spot, and every app is there."
+      lede="Every screen here was captured from GPS-Go. Scroll through, or pick a numbered part to see what it does."
+      chapters={pointChapters}
+    />
+    <Anatomy />
+    <Tour
+      id="routes"
+      kicker="04 · Routes"
+      title="Draw it, run it, step off it."
+      lede="Draw a route or import one, play it back at the pace you choose, and leave it with the joystick whenever you need to."
+      chapters={routeChapters}
+    />
+    <Library />
+    <Realism />
+    <Closing />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .guide-head {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: part;
+  }
+
+  li {
+    counter-increment: part;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    padding: 0.4rem 1.1rem 0.4rem 0.45rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    color: var(--text);
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: border-color 0.18s ease;
+  }
+
+  a::before {
+    content: counter(part);
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.9rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--panel-2);
+    color: var(--accent);
+    font-size: var(--step--1);
+    font-weight: 600;
+  }
+
+  a:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+</style>

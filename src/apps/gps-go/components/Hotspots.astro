@@ -1,0 +1,82 @@
+---
+import type { Rect } from '../data/tour';
+
+interface Props {
+  rects: readonly Rect[];
+  /** Pointer shortcut only: keyboard users reach the same spots through the labelled buttons. */
+  class?: string;
+}
+
+const { rects, class: className } = Astro.props;
+const clamp = (v: number) => Math.min(96, Math.max(4, v));
+---
+
+<div class:list={['spots', className]} data-spots data-rects={JSON.stringify(rects)} aria-hidden="true">
+  <span class="spot-light" data-light></span>
+  {
+    rects.map((r, i) => (
+      <span class="spot-marker" data-marker={i} style={`left:${clamp(r[0] + r[2])}%;top:${clamp(r[1])}%`}>
+        {i + 1}
+      </span>
+    ))
+  }
+</div>
+
+<style>
+  .spots {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    border-radius: inherit;
+    container-type: size;
+  }
+
+  /* Moved with translate from a fixed origin, so highlight changes never count as layout shift. */
+  .spot-light {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-radius: 3cqi;
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 0 200vmax rgb(4 6 24 / 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      translate 0.45s var(--ease),
+      width 0.45s var(--ease),
+      height 0.45s var(--ease),
+      opacity 0.2s ease;
+  }
+
+  .spot-light[data-jump] {
+    transition: opacity 0.2s ease;
+  }
+
+  .spot-marker {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: max(1.25rem, 7cqi);
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: max(0.6875rem, 3.4cqi);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 0 0 3px rgb(17 22 63 / 0.55);
+    cursor: pointer;
+    transition:
+      background-color 0.18s ease,
+      scale 0.25s cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .spot-marker[data-active] {
+    background: var(--accent);
+    scale: 1.12;
+  }
+</style>

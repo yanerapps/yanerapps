@@ -1,0 +1,199 @@
+---
+import Screenshot from './Screenshot.astro';
+import placesLight from '../assets/screens/list-places-light.webp';
+import placesDark from '../assets/screens/list-places-dark.webp';
+import routesLight from '../assets/screens/list-routes-light.webp';
+import routesDark from '../assets/screens/list-routes-dark.webp';
+import historyLight from '../assets/screens/list-history-light.webp';
+import historyDark from '../assets/screens/list-history-dark.webp';
+import widgetsLight from '../assets/screens/widgets-light.webp';
+import widgetsDark from '../assets/screens/widgets-dark.webp';
+import summaryLight from '../assets/screens/summary-light.webp';
+import summaryDark from '../assets/screens/summary-dark.webp';
+
+const lists = [
+  {
+    image: placesLight,
+    dark: placesDark,
+    name: 'Places',
+    detail: 'Points you saved, with coordinates and tags.',
+    alt: 'Places list, 8 places: Golden Gate Bridge, Ferry Building, Union Square, Times Square, Shibuya Crossing, Eiffel Tower and Big Ben, each with coordinates and a city tag.',
+  },
+  {
+    image: routesLight,
+    dark: routesDark,
+    name: 'Routes',
+    detail: 'Drawn by hand or imported from GPX, with their length.',
+    alt: 'Routes list, 6 routes: Ferry Building to Coit Tower, Lombard Street switchbacks, Across the Golden Gate Bridge, Central Park Reservoir loop, Champs-Élysées and Giza Pyramids to Panorama Point.',
+  },
+  {
+    image: historyLight,
+    dark: historyDark,
+    name: 'History',
+    detail: 'Every place you mocked and every route you ran, by day.',
+    alt: 'History list grouped by day: today Big Ben, a shared point and the Eiffel Tower; on Sun, Oct 25 three runs of Central Park Reservoir loop and one of Ferry Building to Coit Tower.',
+  },
+];
+
+const extras = [
+  'Share a place into GPS-Go from Google Maps, Apple Maps, Waze and other map apps.',
+  'Import routes from GPX files, and export any saved route as GPX.',
+  'Back up places, routes, history and tags to a single file.',
+];
+---
+
+<section class="section" id="library" aria-labelledby="library-title">
+  <div class="page">
+    <header class="section-head">
+      <p class="kicker">05 · Library</p>
+      <h2 id="library-title">Everything you mock is there next time.</h2>
+      <p class="lede">
+        Visits and route runs land in History on their own. Keep the ones you reuse as Places and Routes, tag them, and
+        search across them.
+      </p>
+    </header>
+
+    <div class="lists">
+      {
+        lists.map((l) => (
+          <figure class="list">
+            <Screenshot src={l.image} dark={l.dark} alt={l.alt} sizes="(min-width: 960px) 22rem, (min-width: 640px) 45vw, 88vw" />
+            <figcaption>
+              <strong>{l.name}</strong>
+              <span>{l.detail}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+    <div class="more">
+      <figure class="list">
+        <Screenshot
+          src={widgetsLight}
+          dark={widgetsDark}
+          alt="A GPS-Go Place shortcuts widget on the home screen with Ferry Building, Union Square and Golden Gate Bridge."
+          sizes="(min-width: 960px) 26rem, 88vw"
+        />
+        <figcaption>
+          <strong>Home-screen widgets</strong>
+          <span>Start a saved place or route without opening the app.</span>
+        </figcaption>
+      </figure>
+      <figure class="list">
+        <Screenshot
+          src={summaryLight}
+          dark={summaryDark}
+          alt="Mocking stopped: 159 m at 0.9 km/h average, 10 minutes 44 seconds, 211 steps with a 75 cm stride, and 1 teleport covering 340.5 km."
+          sizes="(min-width: 960px) 22rem, 88vw"
+        />
+        <figcaption>
+          <strong>Session summary</strong>
+          <span>After a session of a minute or more: distance, time, steps and teleports.</span>
+        </figcaption>
+      </figure>
+      <ul class="extras">
+        {extras.map((e) => <li>{e}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lists {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.5vw, 2rem);
+    align-items: start;
+  }
+
+  .list {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .list:nth-child(2) {
+    margin-top: clamp(1.5rem, 4vw, 3.5rem);
+  }
+
+  .list:nth-child(3) {
+    margin-top: clamp(3rem, 8vw, 7rem);
+  }
+
+  .list :global(img) {
+    width: 100%;
+    border-radius: var(--radius-sheet);
+    box-shadow:
+      0 0 0 1px var(--line-2),
+      0 30px 60px -30px var(--phone-shadow);
+  }
+
+  .list figcaption {
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .list strong {
+    font-weight: 620;
+  }
+
+  .list span {
+    color: var(--muted);
+  }
+
+  .more {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(1rem, 2.5vw, 2rem);
+    align-items: start;
+    margin-top: clamp(4rem, 8vw, 6rem);
+  }
+
+  .extras {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .extras li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--muted);
+  }
+
+  .extras li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+  }
+
+  @media (max-width: 960px) {
+    .more {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .extras {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .lists,
+    .more {
+      grid-template-columns: 1fr;
+      max-width: 26rem;
+    }
+
+    .list:nth-child(n) {
+      margin-top: 0;
+    }
+  }
+</style>

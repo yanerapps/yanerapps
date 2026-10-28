@@ -1,0 +1,516 @@
+---
+import UiIcon from './UiIcon.astro';
+import { base } from '../data/site';
+
+// Each card draws a small, theme-aware copy of the app's own UI; labels follow the app's strings.
+const cards = [
+  {
+    art: 'pick',
+    title: 'Pick any spot',
+    body: 'Tap the map, search for a place, type coordinates or paste a map link. Then teleport there, or travel there at a set speed.',
+    formats: ['48.8584, 2.2945', '48°51′30″N 2°17′40″E', 'geo: links', 'map links', 'place search'],
+    guide: 'tour-pick',
+    wide: true,
+  },
+  {
+    art: 'route',
+    title: 'Routes, played back exactly',
+    body: 'Draw a loop, import a GPX track or take a place shared from another map app. Pick Walk, Run, Bike or your own speed, then steer off with the joystick and rejoin where you left.',
+    guide: 'tour-run',
+  },
+  {
+    art: 'joystick',
+    title: 'A joystick over any app',
+    body: 'A floating stick or D-pad stays on top of the app you’re using. After a jump it shows the distance and an estimated travel time at a reference speed you choose.',
+    guide: 'joystick',
+  },
+  {
+    art: 'library',
+    title: 'Places, routes and history',
+    body: 'Every visit and route run lands in History. Keep the ones you reuse as Places and Routes, tag them, and reach them from the app, the joystick or a home-screen widget.',
+    guide: 'library',
+    wide: true,
+  },
+];
+
+const places = [
+  { name: 'Golden Gate Bridge', at: '37.81993, -122.47826' },
+  { name: 'Statue of Liberty', at: '40.68925, -74.04450' },
+  { name: 'Eiffel Tower', at: '48.85837, 2.29448' },
+];
+
+const more = [
+  'GPS jitter and speed variation',
+  'Light, dark or system theme',
+  'Metric or imperial units',
+  'Backup to a single file',
+  'History that expires on a schedule',
+  'Overlay size and opacity',
+  'Satellite map',
+  'Keeps running after you swipe the app away',
+  'Resumes after a reboot',
+  'Seven languages',
+];
+---
+
+<section class="section" id="features" aria-labelledby="features-title">
+  <div class="page">
+    <header class="section-head center">
+      <p class="kicker reveal">02 · Features</p>
+      <h2 class="reveal" id="features-title">Every way to move, in one app.</h2>
+      <p class="lede reveal">
+        Jump to a point, play back a route or steer by hand, and keep what you reuse. Everything else stays out of your
+        way.
+      </p>
+    </header>
+
+    <div class="grid">
+      {
+        cards.map((c) => (
+          <article class:list={['card', 'reveal', { wide: c.wide }]}>
+            <div class="art" aria-hidden="true">
+              {c.art === 'pick' && (
+                <div class="pick">
+                  <div class="mock">
+                    <p class="field">
+                      <UiIcon name="search" size={15} />
+                      <span>48.8584, 2.2945</span>
+                    </p>
+                    <p class="row">
+                      <span class="row-icon">
+                        <UiIcon name="pin" size={15} />
+                      </span>
+                      <span class="row-text">
+                        <b>48.8584, 2.2945</b>
+                        <span>Tap to try</span>
+                      </span>
+                    </p>
+                    <p class="row">
+                      <span class="row-icon">
+                        <UiIcon name="pin" size={15} />
+                      </span>
+                      <span class="row-text">
+                        <b>48°51′30″N 2°17′40″E</b>
+                        <span>Tap to try</span>
+                      </span>
+                    </p>
+                  </div>
+                  <div class="mock sheet">
+                    <p class="sheet-title">Eiffel Tower</p>
+                    <span class="tag">Sample</span>
+                    <p class="mono muted">48.858370, 2.294481</p>
+                    <span class="btn-mock">Teleport here</span>
+                    <span class="btn-mock outline">Travel here</span>
+                  </div>
+                </div>
+              )}
+              {c.art === 'route' && (
+                <div class="mock">
+                  <p class="sheet-title">Champ de Mars loop</p>
+                  <span class="tag">Paris</span>
+                  <p class="muted">2.0 km · ~28 min</p>
+                  <p class="segments">
+                    <span class="on">Walk</span>
+                    <span>Run</span>
+                    <span>Bike</span>
+                  </p>
+                  <span class="btn-mock">▶ Start route</span>
+                </div>
+              )}
+              {c.art === 'joystick' && (
+                <div class="mock overlay">
+                  <span class="pad">
+                    <span class="knob" />
+                  </span>
+                  <div class="overlay-side">
+                    <p class="kv">
+                      <span>Speed</span>
+                      <b>4.3 km/h</b>
+                    </p>
+                    <p class="kv">
+                      <span>Time</span>
+                      <b>05:45</b>
+                    </p>
+                    <p class="kv">
+                      <span>Steps</span>
+                      <b>35</b>
+                    </p>
+                    <span class="select">Walk ▾</span>
+                    <span class="btn-mock outline">Stop moving</span>
+                  </div>
+                  <p class="travel-line">Travel 78:49:04 left</p>
+                </div>
+              )}
+              {c.art === 'library' && (
+                <div class="mock list">
+                  <p class="segments">
+                    <span>History</span>
+                    <span class="on">Places</span>
+                    <span>Routes</span>
+                  </p>
+                  {places.map((p) => (
+                    <p class="row">
+                      <span class="row-icon">
+                        <UiIcon name="pin" size={15} />
+                      </span>
+                      <span class="row-text">
+                        <b>{p.name}</b>
+                        <span class="mono">{p.at}</span>
+                      </span>
+                      <span class="tag">Sample</span>
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+            <h3>{c.title}</h3>
+            <p>{c.body}</p>
+            {c.formats && (
+              <ul class="formats" aria-label="Accepted input">
+                {c.formats.map((f) => (
+                  <li>{f}</li>
+                ))}
+              </ul>
+            )}
+            <a class="more-link" href={`${base}/guide#${c.guide}`}>
+              Learn more<span class="visually-hidden"> about {c.title.toLowerCase()}</span> →
+            </a>
+          </article>
+        ))
+      }
+      <article class="card rest reveal">
+        <h3>And the rest</h3>
+        <ul>
+          {more.map((m) => <li>{m}</li>)}
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(var(--panel), color-mix(in srgb, var(--panel) 70%, var(--bg)));
+  }
+
+  .wide {
+    grid-column: span 2;
+  }
+
+  .card h3 {
+    margin: 22px 0 8px;
+    font-size: 19px;
+  }
+
+  .card > p {
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+
+  .more-link {
+    margin-top: auto;
+    padding-top: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* Card art: every mock panel shares one surface. */
+  .art {
+    display: grid;
+    place-items: center;
+    min-height: 13.5rem;
+    padding: 16px;
+    border-radius: 12px;
+    background:
+      radial-gradient(90% 80% at 50% 0%, color-mix(in srgb, var(--accent) 8%, transparent), transparent),
+      var(--panel-2);
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+
+  .mock {
+    display: grid;
+    gap: 8px;
+    width: min(100%, 17rem);
+    padding: 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    text-align: left;
+  }
+
+  .mock p {
+    margin: 0;
+  }
+
+  .mock b {
+    font-weight: 600;
+  }
+
+  .mono {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .muted,
+  .kv span {
+    color: var(--muted);
+  }
+
+  .sheet-title {
+    font-weight: 650;
+    font-size: 14px;
+  }
+
+  .tag {
+    justify-self: start;
+    padding: 1px 8px;
+    border-radius: 6px;
+    background: var(--panel-2);
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .btn-mock {
+    display: block;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .btn-mock.outline {
+    border: 1px solid var(--line-2);
+    background: transparent;
+    color: var(--text);
+  }
+
+  .segments {
+    display: flex;
+    gap: 4px;
+  }
+
+  .segments span {
+    flex: 1;
+    padding: 5px 0;
+    border-radius: 999px;
+    background: var(--panel-2);
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .segments .on {
+    background: color-mix(in srgb, var(--accent) 22%, var(--panel));
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .kv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    white-space: nowrap;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .row-icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: var(--panel-2);
+    color: var(--accent);
+  }
+
+  .row-text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .row-text span {
+    color: var(--dim);
+    font-size: 11.5px;
+  }
+
+  .field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: var(--panel-2);
+  }
+
+  .field span::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    margin-left: 1px;
+    background: var(--accent);
+    vertical-align: -0.15em;
+  }
+
+  /* Pick: the search panel and the place sheet side by side. */
+  .pick {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .pick .sheet {
+    width: min(100%, 13rem);
+  }
+
+  /* Joystick: the overlay laid on its side so it fits the card. */
+  .overlay {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+  }
+
+  .pad {
+    display: grid;
+    place-items: center;
+    width: 5.25rem;
+    aspect-ratio: 1;
+    border: 1px solid var(--line-2);
+    border-radius: 50%;
+    background: var(--panel-2);
+  }
+
+  .knob {
+    width: 2rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--accent);
+    translate: 18% -38%;
+  }
+
+  .travel-line {
+    grid-column: 1 / -1;
+    padding-top: 6px;
+    border-top: 1px solid var(--line);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .overlay-side {
+    display: grid;
+    gap: 8px;
+  }
+
+  .select {
+    padding: 5px 10px;
+    border: 1px solid var(--line-2);
+    border-radius: 8px;
+  }
+
+  .list {
+    width: min(100%, 26rem);
+  }
+
+  .formats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .formats li {
+    padding: 3px 9px;
+    border: 1px solid var(--line-2);
+    border-radius: 7px;
+    background: var(--panel);
+    font: 12px var(--mono);
+  }
+
+  .rest {
+    grid-column: 1 / -1;
+  }
+
+  .rest h3 {
+    margin-top: 0;
+  }
+
+  .rest ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rest li {
+    padding: 6px 12px;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-pill);
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .wide {
+      grid-column: auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pick {
+      flex-direction: column;
+    }
+
+    .pick .mock {
+      width: 100%;
+    }
+  }
+</style>

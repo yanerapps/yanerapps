@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+import SeoHead from '../../../lib/SeoHead.astro';
+import ThemeBoot from '../../../lib/ThemeBoot.astro';
+import { cleanPath } from '../../../lib/paths';
+import { base, site } from '../data/site';
+
+interface Props {
+  /** Leave out on the home page: it keeps the site title and carries the app's structured data. */
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+const home = Astro.props.title === undefined;
+const canonical = new URL(cleanPath(Astro.url.pathname), Astro.site).href;
+const ogImage = `${base}/og.png`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: site.name,
+  operatingSystem: `Android ${site.minAndroid} or later`,
+  applicationCategory: 'DeveloperApplication',
+  description: site.description,
+  url: canonical,
+  image: new URL(ogImage, Astro.site).href,
+  publisher: { '@type': 'Organization', name: site.publisher, url: site.publisherUrl },
+  ...(site.playStoreUrl && { installUrl: site.playStoreUrl }),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeBoot />
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+    </script>
+    <SeoHead
+      title={title}
+      description={description}
+      siteName={site.name}
+      image={ogImage}
+      imageSize={{ width: 1200, height: 630 }}
+      imageAlt="GPS-Go on a phone: a route drawn around the Champ de Mars in Paris, with the floating joystick."
+    />
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={`${base}/apple-touch-icon.png`} />
+    <meta name="theme-color" content="#f6f7f9" />
+    <script is:inline>
+      document.querySelector('meta[name="theme-color"]').content =
+        document.documentElement.dataset.theme === 'dark' ? '#08090b' : '#f6f7f9';
+    </script>
+    {home && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <slot />
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('in');
+            observer.unobserve(entry.target);
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      for (const el of document.querySelectorAll('.reveal')) observer.observe(el);
+    </script>
+  </body>
+</html>

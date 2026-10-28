@@ -9,3 +9,4 @@ scripts/fonts/
 .DS_Store
 *.local
 .npm
+scripts/gps-go/captures/

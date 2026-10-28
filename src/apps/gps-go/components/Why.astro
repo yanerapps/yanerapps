@@ -1,0 +1,168 @@
+---
+const cases = [
+  {
+    who: 'Building and testing location features',
+    without: 'Drive across town to check one screen, then drive back after every fix.',
+    with: 'Every app on the phone is already there.',
+  },
+  {
+    who: 'Recording demos and screenshots',
+    without: 'Your own street sits in the corner of every screenshot and screen recording.',
+    with: 'Your real address never reaches the screen.',
+  },
+  {
+    who: 'Testing fitness and navigation apps',
+    without: 'Walk last week’s loop again to reproduce one bug from a recorded run.',
+    with: 'The same run plays back, lap after lap, from your desk.',
+  },
+];
+---
+
+<section class="section" id="why" aria-labelledby="why-title">
+  <div class="page">
+    <header class="section-head">
+      <p class="kicker reveal">01 · Why</p>
+      <h2 class="reveal" id="why-title">Your phone only knows where it is.</h2>
+      <p class="lede reveal">
+        A lot of work needs it somewhere else: a feature that only shows up in one city, a demo that shouldn’t give away
+        your street, a recorded run you want to play again. GPS-Go moves the location Android reports and leaves you
+        where you are.
+      </p>
+    </header>
+
+    <div class="compare panel reveal">
+      <div class="row head" aria-hidden="true">
+        <span></span>
+        <span>Without GPS-Go</span>
+        <span>With GPS-Go</span>
+      </div>
+      {
+        cases.map((c) => (
+          <div class="row">
+            <h3>{c.who}</h3>
+            <p class="without">
+              <span class="tag">Without GPS-Go</span>
+              {c.without}
+            </p>
+            <p class="with">
+              <span class="tag">With GPS-Go</span>
+              {c.with}
+            </p>
+          </div>
+        ))
+      }
+      <div class="stats">
+        <div>
+          <p class="big">0 km</p>
+          <p>travelled to test a place across town</p>
+        </div>
+        <div>
+          <p class="big">0</p>
+          <p>real addresses in your screenshots</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .compare {
+    padding: clamp(16px, 3vw, 24px);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    padding-block: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  .row.head {
+    padding-top: 0;
+    border-top: 0;
+    font: 12px var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .row h3 {
+    font-size: 16px;
+  }
+
+  .row p {
+    font-size: 14.5px;
+  }
+
+  .without {
+    color: var(--dim);
+  }
+
+  .with {
+    color: var(--text);
+  }
+
+  .with::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    vertical-align: 0.1em;
+  }
+
+  .tag {
+    display: none;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 6px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .stats p {
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+
+  .stats .big {
+    font: 700 clamp(36px, 5vw, 48px) / 1.1 var(--display);
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  @media (max-width: 760px) {
+    .row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .row.head {
+      display: none;
+    }
+
+    .row:nth-child(2) {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .tag {
+      display: block;
+      font: 11px var(--mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .with::before {
+      display: none;
+    }
+  }
+</style>

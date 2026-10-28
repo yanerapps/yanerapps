@@ -1,0 +1,309 @@
+---
+import Screenshot from './Screenshot.astro';
+import PhoneFrame from './PhoneFrame.astro';
+import Hotspots from './Hotspots.astro';
+import type { Chapter } from '../data/tour';
+
+interface Props {
+  id: string;
+  kicker: string;
+  title: string;
+  lede: string;
+  chapters: readonly Chapter[];
+}
+
+const { id, kicker, title, lede, chapters } = Astro.props;
+---
+
+<section class="section" id={id} aria-labelledby={`${id}-title`}>
+  <div class="page">
+    <header class="section-head">
+      <p class="kicker">{kicker}</p>
+      <h2 id={`${id}-title`}>{title}</h2>
+      <p class="lede">{lede}</p>
+    </header>
+
+    <div class="tour" data-tour>
+      <ol class="chapters" data-chapters>
+        {
+          chapters.map((c, ci) => (
+            <li class="chapter" id={`tour-${c.id}`} data-chapter={ci}>
+              <span class="station" aria-hidden="true" />
+              <h3>{c.title}</h3>
+              <p class="chapter-body">{c.body}</p>
+              <div class="chapter-shot">
+                <PhoneFrame image={c.image} dark={c.dark} alt={c.alt} sizes="(min-width: 1024px) 1px, (min-width: 400px) 288px, 72vw">
+                  <Hotspots rects={c.hotspots.map((h) => h.rect)} />
+                </PhoneFrame>
+              </div>
+              <ol class="callouts">
+                {c.hotspots.map((h, hi) => (
+                  <li data-callout={hi}>
+                    <button type="button" class="callout" data-spot={hi} aria-pressed="false">
+                      <span class="callout-key" aria-hidden="true">
+                        {hi + 1}
+                      </span>
+                      <span class="callout-text">
+                        <strong>{h.title}</strong>
+                        <span>{h.body}</span>
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="tour-stage">
+        <div class="tour-sticky">
+          <PhoneFrame class="tour-phone">
+            {
+              chapters.map((c, ci) => (
+                <div class="tour-frame" data-frame={ci} data-shown={ci === 0 ? '' : undefined} aria-hidden={ci === 0 ? 'false' : 'true'}>
+                  <Screenshot src={c.image} dark={c.dark} alt={c.alt} sizes="(min-width: 1024px) 340px, 1px" />
+                  <Hotspots rects={c.hotspots.map((h) => h.rect)} />
+                </div>
+              ))
+            }
+          </PhoneFrame>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initTour } from '../scripts/tour';
+  initTour();
+</script>
+
+<style>
+  .tour {
+    --phone-w: min(21.5rem, 27vw, calc((100svh - var(--header-h) - 4rem) / 2.32));
+    --progress: 0;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(3rem, 8vw, 8rem);
+  }
+
+  .chapters {
+    position: relative;
+    margin: 0;
+    padding: 0 0 0 2.75rem;
+    list-style: none;
+  }
+
+  /* The route rail: periwinkle ahead, muted where you have been, green dot where you are. */
+  .chapters::before,
+  .chapters::after {
+    content: '';
+    position: absolute;
+    left: 0.45rem;
+    top: 0.6rem;
+    bottom: 0;
+    width: 3px;
+    border-radius: 3px;
+  }
+
+  .chapters::before {
+    background: var(--accent);
+    opacity: 0.55;
+  }
+
+  .chapters::after {
+    background: var(--accent-soft);
+    transform-origin: top;
+    transform: scaleY(var(--progress));
+  }
+
+  .station {
+    position: absolute;
+    left: calc(-2.75rem + 0.45rem - 5px);
+    top: 0.55rem;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 3px solid var(--accent);
+    z-index: 1;
+    transition:
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+  }
+
+  .chapter[data-passed] .station {
+    border-color: var(--accent-soft);
+  }
+
+  .chapter[data-active] .station {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 22%, transparent);
+  }
+
+  .chapter {
+    position: relative;
+    padding-bottom: clamp(5rem, 22svh, 12rem);
+  }
+
+  .chapter:last-child {
+    padding-bottom: 0;
+  }
+
+  .chapter-body {
+    margin-top: 0.9rem;
+    color: var(--muted);
+    max-width: var(--measure);
+  }
+
+  .callouts {
+    display: grid;
+    gap: 0.25rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+    max-width: 30rem;
+  }
+
+  .callouts li {
+    padding-block: clamp(0.5rem, 5svh, 2.75rem);
+  }
+
+  .callout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .callout:hover {
+    background: color-mix(in oklab, var(--panel-2) 70%, transparent);
+  }
+
+  .callout[data-lit] {
+    background: var(--panel-2);
+    border-color: var(--line-2);
+  }
+
+  .callout-key {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    transition: background-color 0.2s ease;
+  }
+
+  .callout[data-lit] .callout-key {
+    background: var(--accent);
+  }
+
+  .callout-text {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .callout-text strong {
+    font-weight: 620;
+  }
+
+  .callout-text span {
+    color: var(--muted);
+  }
+
+  .chapter-shot {
+    display: none;
+  }
+
+  .tour-stage {
+    width: var(--phone-w);
+  }
+
+  .tour-sticky {
+    position: sticky;
+    top: calc((100svh + var(--header-h) - var(--phone-w) * 2.3) / 2);
+  }
+
+  .tour-frame {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    scale: 1.025;
+    border-radius: inherit;
+    transition:
+      opacity 0.32s cubic-bezier(0.2, 0, 0, 1),
+      scale 0.5s var(--ease);
+  }
+
+  .tour-frame[data-shown] {
+    opacity: 1;
+    scale: 1;
+  }
+
+  .tour-frame :global(picture),
+  .tour-frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 1023px) {
+    .tour {
+      grid-template-columns: 1fr;
+    }
+
+    .tour-stage,
+    .chapters::before,
+    .chapters::after,
+    .station {
+      display: none;
+    }
+
+    .chapters {
+      padding-left: 0;
+      display: grid;
+      gap: clamp(4rem, 12vw, 6rem);
+    }
+
+    .chapter {
+      padding-bottom: 0;
+    }
+
+    .chapter-shot {
+      display: block;
+      width: min(18rem, 72vw);
+      margin: 2rem auto 0;
+    }
+
+    .callouts li {
+      padding-block: 0;
+    }
+  }
+
+  :global(html:not(.js)) .tour-stage {
+    display: none;
+  }
+
+  :global(html:not(.js)) .chapter-shot {
+    display: block;
+    width: min(20rem, 78vw);
+    margin-top: 2rem;
+  }
+</style>

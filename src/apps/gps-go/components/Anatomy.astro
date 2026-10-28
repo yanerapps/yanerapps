@@ -1,0 +1,252 @@
+---
+import Screenshot from './Screenshot.astro';
+import Hotspots from './Hotspots.astro';
+import { overlayImage, parts } from '../data/anatomy';
+
+const initial = parts.findIndex((p) => p.id === 'stick');
+// The overlay window's corner radius in the 1080-px-wide captures.
+const PANEL_RADIUS_PX = 63;
+const panelRadius = (w: number, h: number) =>
+  `--panel-radius: ${((PANEL_RADIUS_PX / w) * 100).toFixed(2)}% / ${((PANEL_RADIUS_PX / h) * 100).toFixed(2)}%`;
+---
+
+<section class="section" id="joystick" aria-labelledby="joystick-title">
+  <div class="page">
+    <header class="section-head">
+      <p class="kicker">03 · The joystick</p>
+      <h2 id="joystick-title">The joystick, piece by piece.</h2>
+      <p class="lede">
+        It floats over the app you are testing, so you can move, jump and pause without switching apps. Pick a part to
+        see what it does.
+      </p>
+    </header>
+
+    <div class="anatomy" data-anatomy data-initial={initial}>
+      <div class="anatomy-figure" style={panelRadius(overlayImage.image.width, overlayImage.image.height)}>
+        <Screenshot src={overlayImage.image} dark={overlayImage.dark} alt={overlayImage.alt} sizes="(min-width: 860px) 26rem, 70vw" />
+        <Hotspots rects={parts.map((p) => p.rect)} />
+      </div>
+
+      <div class="anatomy-side">
+        <ol class="parts">
+          {
+            parts.map((p, i) => (
+              <li>
+                <button type="button" class="part" data-part={i} aria-pressed={i === initial ? 'true' : 'false'} aria-controls={`part-${p.id}`}>
+                  <span class="part-key" aria-hidden="true">
+                    {i + 1}
+                  </span>
+                  {p.title}
+                </button>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="details">
+          {
+            parts.map((p, i) => (
+              <article class="detail" id={`part-${p.id}`} data-detail={i} data-open={i === initial ? '' : undefined}>
+                <h3>{p.title}</h3>
+                <p>{p.body}</p>
+                {p.fragment && (
+                  <figure
+                    class:list={['fragment', `fragment-${p.id}`, { 'fragment-panel': p.fragment.panel }]}
+                    style={p.fragment.panel ? panelRadius(p.fragment.image.width, p.fragment.image.height) : undefined}
+                  >
+                    <Screenshot src={p.fragment.image} dark={p.fragment.dark} alt={p.fragment.alt} sizes="20rem" />
+                    <figcaption>{p.fragment.caption}</figcaption>
+                  </figure>
+                )}
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initAnatomy } from '../scripts/anatomy';
+  initAnatomy();
+</script>
+
+<style>
+  .anatomy {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(2.5rem, 7vw, 7rem);
+    align-items: start;
+  }
+
+  .anatomy-figure {
+    position: relative;
+    container-type: inline-size;
+    width: clamp(18rem, 32vw, 26rem);
+    border-radius: var(--panel-radius);
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px var(--line-2),
+      0 30px 60px -30px var(--phone-shadow);
+  }
+
+  .anatomy-figure :global(img) {
+    width: 100%;
+  }
+
+  .anatomy-side {
+    display: grid;
+    gap: 2.5rem;
+    align-content: start;
+  }
+
+  .parts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .part {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-pill);
+    background: none;
+    text-align: left;
+    font-weight: 560;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .part:hover {
+    border-color: color-mix(in oklab, var(--accent) 55%, transparent);
+  }
+
+  .part[aria-pressed='true'] {
+    background: var(--panel-2);
+    border-color: var(--accent);
+  }
+
+  .part-key {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .part[aria-pressed='true'] .part-key {
+    background: var(--accent);
+  }
+
+  .details {
+    min-height: 22rem;
+  }
+
+  .detail {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 32rem;
+  }
+
+  .detail p {
+    color: var(--muted);
+  }
+
+  :global(.js) .detail:not([data-open]) {
+    display: none;
+  }
+
+  /* The detail drops in from the list above it. */
+  :global(.js) .detail[data-open] {
+    animation: detail-in 0.4s var(--ease);
+  }
+
+  @keyframes detail-in {
+    from {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+
+  :global(html:not(.js)) .detail + .detail {
+    margin-top: 2.5rem;
+  }
+
+  .fragment {
+    margin: 0.75rem 0 0;
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+
+  .fragment :global(img) {
+    width: min(20rem, 100%);
+    border-radius: 1rem;
+    box-shadow: 0 0 0 1px var(--line-2);
+  }
+
+  .fragment-panel :global(img) {
+    width: min(16rem, 100%);
+    border-radius: var(--panel-radius);
+  }
+
+  .fragment-collapse :global(img),
+  .fragment-readout :global(img) {
+    width: min(14rem, 100%);
+  }
+
+  .fragment figcaption {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+
+  /* Narrow screens: the list sits beside the screenshot so a tap and its highlight stay in view. */
+  @media (max-width: 860px) {
+    .anatomy {
+      gap: 2rem 1rem;
+    }
+
+    .anatomy-side {
+      display: contents;
+    }
+
+    .anatomy-figure {
+      width: min(46vw, 17rem);
+    }
+
+    .parts {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+
+    .part {
+      min-height: 2.75rem;
+      padding: 0.35rem 0.7rem 0.35rem 0.4rem;
+      gap: 0.55rem;
+      font-size: 0.9375rem;
+      line-height: 1.2;
+    }
+
+    .details {
+      grid-column: 1 / -1;
+      min-height: 0;
+    }
+  }
+</style>

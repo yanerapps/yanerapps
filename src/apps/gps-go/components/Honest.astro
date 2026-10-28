@@ -1,0 +1,140 @@
+---
+import { site } from '../data/site';
+
+const zeros = [
+  ['Accounts', 'install it and go'],
+  ['Background location requests', 'foreground location only'],
+  ['GPS-Go servers', 'your data stays on the phone'],
+  ['Interruptions to a running session', 'no limit or ad ever stops one'],
+];
+---
+
+<section class="section" id="honest" aria-labelledby="honest-title">
+  <div class="page">
+    <header class="section-head">
+      <p class="kicker reveal">04 · Honest</p>
+      <h2 class="reveal" id="honest-title">No root. No account. Nothing hidden.</h2>
+      <p class="lede reveal">
+        GPS-Go uses the mock location setting Android provides for developers. It doesn’t root your phone, change other
+        apps or hide itself.
+      </p>
+    </header>
+
+    <div class="layout">
+      <ul class="points reveal">
+        <li>
+          Places, routes, history and settings are stored on your phone. Place searches are sent to our search
+          providers.
+        </li>
+        <li>The free version shows ads from Google AdMob, with consent where required.</li>
+        <li>
+          Apps that check can tell a location is simulated, and some refuse it. If an app can’t find your location, it
+          may be rejecting simulated locations.
+        </li>
+        <li>
+          GPS-Go is made for development and testing. Using it with other apps and services may break their terms, and
+          that’s yours to check.
+        </li>
+        <li>How GPS-Go handles data is set out in the <a href={site.privacyUrl}>privacy policy</a>.</li>
+      </ul>
+      <ul class="zeros reveal">
+        {
+          zeros.map(([label, why]) => (
+            <li>
+              <span class="zero">0</span>
+              <span class="label">{label}</span>
+              <span class="why">{why}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+  }
+
+  .points {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .points li {
+    position: relative;
+    padding-left: 28px;
+    color: var(--muted);
+  }
+
+  .points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.3em;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    box-shadow: inset 0 0 0 1.5px var(--accent);
+  }
+
+  .zeros {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--line);
+  }
+
+  .zeros li {
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+    background: var(--panel);
+  }
+
+  .zero {
+    font: 700 clamp(44px, 6vw, 60px) / 1 var(--display);
+    letter-spacing: -0.04em;
+    background: linear-gradient(var(--heading-from) 40%, var(--heading-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .label {
+    margin-top: 6px;
+    font-weight: 600;
+    font-size: 14.5px;
+  }
+
+  .why {
+    color: var(--dim);
+    font-size: 13px;
+  }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .zeros {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
