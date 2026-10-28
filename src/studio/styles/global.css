@@ -133,18 +133,6 @@ body {
   outline-offset: 3px;
 }
 
-/* CJK reads with looser leading and no negative tracking */
-:lang(zh) .prose p,
-:lang(zh) .prose li,
-:lang(zh) .manifesto-body p {
-  line-height: 1.8;
-}
-
-.hero h1:lang(zh) {
-  letter-spacing: 0;
-  line-height: 1.05;
-}
-
 /* ---- layout ---- */
 
 .wrap {
@@ -255,8 +243,7 @@ nav.site-nav a {
   nav.site-nav {
     gap: 0.75rem;
   }
-  nav.site-nav a,
-  nav.site-nav a.lang-switch {
+  nav.site-nav a {
     letter-spacing: 0.02em;
   }
 }
@@ -458,18 +445,9 @@ main.wrap {
   height: 100%;
 }
 
-/* The studio motto, 逐风而行 / Ride the Wind: a Songti line on the Chinese pages, a Newsreader italic
-   on the English ones. It signs the sky and the footer. */
+/* The studio motto, Ride the Wind, in Newsreader italic. It signs the sky and the footer. */
 .motto {
   text-transform: none;
-}
-
-.motto:lang(zh) {
-  font-family: var(--font-cjk);
-  letter-spacing: 0.25em;
-}
-
-.motto:lang(en) {
   font-family: var(--font-serif);
   font-style: italic;
   letter-spacing: 0.02em;
@@ -484,13 +462,9 @@ main.wrap {
   margin: 0;
   white-space: nowrap; /* one line, even if the frame has no height yet */
   line-height: 1;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   color: var(--text-main);
   opacity: 0.85;
-}
-
-.sky-inscription:lang(en) {
-  font-size: 1.15rem;
 }
 
 @media (max-width: 479px) {
@@ -730,21 +704,6 @@ html:not(.js) .sky-frame {
   flex-wrap: wrap;
 }
 
-nav.site-nav a.lang-switch {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.15rem 0.65rem;
-  border: 1px solid var(--border-hairline);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--text-main);
-  background: var(--surface);
-  transition: all 0.15s ease;
-}
-
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -767,12 +726,6 @@ nav.site-nav a.lang-switch {
 
 html:not(.js) .theme-toggle {
   display: none;
-}
-
-nav.site-nav a.lang-switch:hover {
-  background: var(--text-main);
-  color: var(--bg);
-  border-color: var(--text-main);
 }
 
 .prose h2 {
@@ -975,7 +928,6 @@ html.js .reveal.is-visible {
   }
   header.site,
   footer.site,
-  .lang-switch,
   .skip,
   .sky-frame {
     display: none !important;

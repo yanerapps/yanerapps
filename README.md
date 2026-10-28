@@ -1,6 +1,6 @@
 # yanerapps.com
 
-The **Yaner Apps** site: the studio home page in English and Simplified Chinese, each app's privacy policy and support page, and GPS-Go's product site under `/gps-go`. Built with [Astro](https://astro.build), fully static.
+The **Yaner Apps** site: the studio home page, each app's privacy policy and support page, and GPS-Go's product site under `/gps-go`. Built with [Astro](https://astro.build), fully static.
 
 ## Develop
 
@@ -16,20 +16,20 @@ npm test              # node --test
 npm run build         # check, then a static build in dist/
 ```
 
-Every commit passes `check`, `lint`, `format:check`, `test` and `build`. The tooling matches the PingDeck product site, with one difference: Prettier leaves `.astro` files alone, because `prettier-plugin-astro` pads inline elements with whitespace and that puts visible spaces around links in Chinese text.
+Every commit passes `check`, `lint`, `format:check`, `test` and `build`. The tooling matches the PingDeck product site, with one difference: Prettier leaves `.astro` files alone, because `prettier-plugin-astro` pads inline elements with whitespace, which changes how text around links renders.
 
 ## Architecture
 
 | Path                   | What lives there                                                                                                                                              |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `src/pages/`           | Routes only. `/x` is English and `/zh-hans/x` its Chinese counterpart. `/<app>/privacy` and `/<app>/support` exist for every app                              |
+| `src/pages/`           | Routes only. `/<app>/privacy` and `/<app>/support` exist for every app                                                                                        |
 | `src/studio/`          | The studio's look: `layouts/Layout.astro`, `styles/global.css`, and the swallow in `components/`                                                              |
 | `src/apps/registry.ts` | The studio's name, email and URL, and each app's name and Play listing, written once and read by every page                                                   |
 | `src/apps/<app>/`      | An app's own product site: components, data, layout, scripts, styles and images                                                                               |
 | `src/lib/`             | What both looks share: `SeoHead.astro` (title, description, canonical, Open Graph), `ThemeBoot.astro` and `theme.ts`, `paths.ts` (with its tests) and `at.ts` |
 
 - **URLs drop trailing slashes.** `trailingSlash: 'never'` and `build.format: 'file'` here, `html_handling: drop-trailing-slash` on Cloudflare. Write every link without one; `cleanPath()` in `src/lib/paths.ts` gives a page its published path.
-- **Language** comes from the path: the studio layout reads it with `isZh()` and pairs pages with `localize()`. App product sites are English only and carry no `zh-hans` counterpart; the Chinese home page links to GPS-Go's with `hreflang="en"`.
+- **English only.** There are no translated pages; `public/_redirects` sends the former `/zh-hans/*` and `/zh` addresses to their English pages.
 - **Theme**: `ThemeBoot.astro` sets `data-theme` on `<html>` before first paint, and `initTheme()` in `src/lib/theme.ts` wires every `[data-theme-toggle]`. Only a choice that differs from the system theme is stored (`localStorage` key `theme`), so it carries across the studio and the app pages, and switching back to the system theme follows it again.
 - **Navigation** is plain page loads; there is no client router.
 - `compressHTML` is off: Astro 7's compressor drops the space where a line break comes before an inline element.

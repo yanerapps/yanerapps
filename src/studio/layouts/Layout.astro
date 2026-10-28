@@ -6,7 +6,7 @@ import '../styles/global.css';
 
 import SeoHead from '../../lib/SeoHead.astro';
 import ThemeBoot from '../../lib/ThemeBoot.astro';
-import { cleanPath, isZh, localize } from '../../lib/paths';
+import { cleanPath } from '../../lib/paths';
 import { appIds, appPaths } from '../../apps/registry';
 
 interface Props {
@@ -19,22 +19,14 @@ const {
   description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.',
 } = Astro.props;
 
-// Every page has a counterpart: /x <-> /zh-hans/x, with the English page at the unprefixed path.
 const currentPath = cleanPath(Astro.url.pathname);
-const zh = isZh(currentPath);
-const lang = zh ? 'zh-Hans' : 'en';
-const enPath = localize(currentPath, false);
-const zhPath = localize(currentPath, true);
-const local = (path: string) => localize(path, zh);
-const home = local('/');
-const privacy = local('/privacy');
 // Support follows the app whose pages you are on; site-wide pages keep GPS-Go's.
-const app = appIds.find((id) => enPath.startsWith(`/${id}/`)) ?? 'gps-go';
-const support = local(appPaths(app).support);
+const app = appIds.find((id) => currentPath.startsWith(`/${id}/`)) ?? 'gps-go';
+const support = appPaths(app).support;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,11 +35,6 @@ const support = local(appPaths(app).support);
       description={description}
       image="/og.png"
       imageSize={{ width: 1200, height: 630 }}
-      alternates={[
-        { hreflang: 'en', path: enPath },
-        { hreflang: 'zh-Hans', path: zhPath },
-        { hreflang: 'x-default', path: enPath },
-      ]}
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f1ea" />
@@ -56,20 +43,17 @@ const support = local(appPaths(app).support);
   </head>
 
   <body>
-    <a class="skip" href="#main">{zh ? '跳到正文' : 'Skip to content'}</a>
+    <a class="skip" href="#main">Skip to content</a>
 
     <header class="site">
       <div class="wrap">
-        <a class="brand-container" href={home} aria-label={zh ? 'Yaner Apps 首页' : 'Yaner Apps home'}>
+        <a class="brand-container" href="/" aria-label="Yaner Apps home">
           <span class="brand-name">Yaner Apps</span>
         </a>
-        <nav class="site-nav" aria-label={zh ? '站点导航' : 'Site navigation'}>
-          <a href={privacy} aria-current={currentPath.endsWith('/privacy') ? 'page' : undefined}>{zh ? '隐私' : 'Privacy'}</a>
-          <a href={support} aria-current={currentPath.endsWith('/support') ? 'page' : undefined}>{zh ? '支持' : 'Support'}</a>
-          {zh
-            ? <a class="lang-switch" href={enPath} hreflang="en" lang="en" aria-label="English">EN</a>
-            : <a class="lang-switch" href={zhPath} hreflang="zh-Hans" lang="zh-Hans" aria-label="中文">ZH</a>}
-          <button class="theme-toggle" type="button" data-theme-toggle aria-label={zh ? '切换深浅色' : 'Toggle dark mode'}>
+        <nav class="site-nav" aria-label="Site navigation">
+          <a href="/privacy" aria-current={currentPath.endsWith('/privacy') ? 'page' : undefined}>Privacy</a>
+          <a href={support} aria-current={currentPath.endsWith('/support') ? 'page' : undefined}>Support</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
             <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
               <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5" />
               <path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor" />
@@ -85,16 +69,14 @@ const support = local(appPaths(app).support);
 
     <footer class="site">
       <div class="wrap">
-        <span><span class="motto">{zh ? '逐风而行' : 'Ride the Wind'}</span> &middot; &copy; 2026 Yaner Apps</span>
+        <span><span class="motto">Ride the Wind</span> &middot; &copy; 2026 Yaner Apps</span>
         <div class="footer-links">
-          <a href={home}>{zh ? '首页' : 'Home'}</a>
-          <a href={privacy}>{zh ? '隐私政策' : 'Privacy Policy'}</a>
-          <a href={support}>{zh ? '支持' : 'Support'}</a>
+          <a href="/">Home</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href={support}>Support</a>
         </div>
         <p class="colophon">
-          {zh
-            ? '静态站点 · 无追踪 · 字体自托管 · 燕子由代码绘制'
-            : 'Static site · No tracking · Self-hosted fonts · Swallow drawn in code'}
+          Static site · No tracking · Self-hosted fonts · Swallow drawn in code
         </p>
       </div>
     </footer>
@@ -113,7 +95,7 @@ const support = local(appPaths(app).support);
           if (heads.length < 4) return;
           const nav = document.createElement('nav');
           nav.className = 'toc';
-          nav.setAttribute('aria-label', document.documentElement.lang.indexOf('zh') === 0 ? '目录' : 'Contents');
+          nav.setAttribute('aria-label', 'Contents');
           heads.forEach(function (h) {
             const text = h.textContent.replace(/^\d+\.\s*/, '').trim();
             if (!h.id) h.id = text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');

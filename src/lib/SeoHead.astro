@@ -9,11 +9,9 @@ interface Props {
   imageAlt?: string;
   imageSize?: { width: number; height: number };
   siteName?: string;
-  /** Other-language versions of this page, by hreflang. */
-  alternates?: { hreflang: string; path: string }[];
 }
 
-const { title, description, image, imageAlt, imageSize, siteName, alternates = [] } = Astro.props;
+const { title, description, image, imageAlt, imageSize, siteName } = Astro.props;
 const site = Astro.site ?? 'https://yanerapps.com';
 const canonical = new URL(cleanPath(Astro.url.pathname), site).href;
 const imageUrl = new URL(image, site).href;
@@ -22,7 +20,6 @@ const imageUrl = new URL(image, site).href;
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
-{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={new URL(a.path, site).href} />)}
 <meta property="og:type" content="website" />
 {siteName && <meta property="og:site_name" content={siteName} />}
 <meta property="og:title" content={title} />
