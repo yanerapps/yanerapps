@@ -20,13 +20,12 @@
   --shadow: 0 1px 2px rgb(12 13 16 / 0.06), 0 16px 48px -16px rgb(12 13 16 / 0.18);
   --phone-shadow: rgb(12 13 16 / 0.22);
 
+  /* Inter and IBM Plex Mono, self-hosted (Shell.astro); system faces stand in while they load. */
   --sans:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto,
+    'Inter Variable', -apple-system, BlinkMacSystemFont, system-ui, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-  --display:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
-  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --display: var(--sans);
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 
   --step--1: 0.875rem;

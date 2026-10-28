@@ -4,7 +4,7 @@
   --accent: #c23b22;
   --on-accent: #ffffff;
   --glow: rgb(194 59 34 / 0.14);
-  --serif: ui-serif, 'New York', Georgia, 'Times New Roman', serif;
+  --serif: 'IBM Plex Serif', ui-serif, Georgia, 'Times New Roman', serif;
   --cjk-serif: 'Songti SC', 'Source Han Serif SC', 'Noto Serif SC', 'STSong', serif;
 
   /* The swallow's sky: a muted daytime wash; dark mode turns it to dusk. swallow.ts reads these. */
