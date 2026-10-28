@@ -92,11 +92,11 @@ export function mountWingDebug(wing: typeof WING, camera: typeof CAMERA, repaint
   const outputs = new Map<Key, HTMLElement>();
   const show = (key: Key) => {
     const v = values[key];
-    const input = inputs.get(key)!;
+    const input = inputs.get(key) as HTMLInputElement;
     if (typeof v === 'boolean') input.checked = v;
     else {
       input.value = String(v);
-      outputs.get(key)!.textContent = v.toFixed(3);
+      (outputs.get(key) as HTMLElement).textContent = v.toFixed(3);
     }
   };
 

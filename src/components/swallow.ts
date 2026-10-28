@@ -48,6 +48,8 @@ const BODY_SCALE = new Vector3(0.88, 0.88, 0.86);
 const SHOULDER = new Vector3(0.2, 0.04, 0.08); // high on the chest, so the wing grows out of the shoulder
 // Flight feathers, innermost first, by the span fraction where each tip meets the trailing edge.
 const TIPS = Array.from({ length: 16 }, (_, k) => 0.1 + 0.9 * ((k + 1) / 16) ** 1.15);
+/** Reads an index the caller already keeps in range. */
+const at = <T>(list: readonly T[], i: number) => list[i] as T;
 const X_AXIS = new Vector3(1, 0, 0);
 
 // Everything that shapes the wingbeat, in one place. The dev-only panel in swallow-debug.ts edits
@@ -144,8 +146,8 @@ const CHORD_PROFILE: readonly ProfileStation[] = [
 function profile(s: number, stations: readonly ProfileStation[]) {
   const u = clamp01(s);
   for (let i = 1; i < stations.length; i++) {
-    const [a, va, da] = stations[i - 1];
-    const [b, vb, db] = stations[i];
+    const [a, va, da] = at(stations, i - 1);
+    const [b, vb, db] = at(stations, i);
     if (u > b) continue;
     const h = b - a;
     const t = (u - a) / h;
@@ -153,15 +155,16 @@ function profile(s: number, stations: readonly ProfileStation[]) {
     return (2 * t3 - 3 * t2 + 1) * va + (t3 - 2 * t2 + t) * h * da
       + (-2 * t3 + 3 * t2) * vb + (t3 - t2) * h * db;
   }
-  return stations[stations.length - 1][1];
+  return at(stations, stations.length - 1)[1];
 }
 const leading = (s: number) => WING_CHORD_SCALE * profile(s, LEADING_PROFILE);
 const chord = (s: number) => WING_CHORD_SCALE * profile(s, CHORD_PROFILE);
 function trailing(s: number) {
   let notch = 0;
   for (let k = 3; k < TIPS.length; k++) {
-    if (s > TIPS[k - 1] && s < TIPS[k]) { // scalloped between feather tips
-      const u = (s - TIPS[k - 1]) / (TIPS[k] - TIPS[k - 1]);
+    const lo = at(TIPS, k - 1), hi = at(TIPS, k);
+    if (s > lo && s < hi) { // scalloped between feather tips
+      const u = (s - lo) / (hi - lo);
       notch = Math.min(0.006 + 0.004 * smoothstep(0.3, 0.7, s), chord(s) * 0.1)
         * Math.sin(Math.PI * u) ** 1.2;
     }
@@ -209,7 +212,7 @@ function sheet(box: Box, ppu: number) {
   const canvas = document.createElement('canvas');
   canvas.width = Math.ceil(box.w * ppu);
   canvas.height = Math.ceil(box.h * ppu);
-  const ctx = canvas.getContext('2d')!;
+  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
   ctx.setTransform(ppu, 0, 0, -ppu, -box.x * ppu, canvas.height + box.z * ppu);
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
@@ -223,8 +226,8 @@ function wingWeights(s: number) {
   const hand = smoothstep(WRIST - 0.075, WRIST + 0.075, s);
   const outer = smoothstep(OUTER - 0.065, OUTER + 0.065, s);
   const weights = [1 - arm, arm * (1 - swung) * (1 - hand), arm * swung * (1 - hand), arm * hand * (1 - outer), arm * hand * outer];
-  const bones = [0, 1, 2, 3, 4].sort((a, b) => weights[b] - weights[a]).slice(0, 4);
-  return { bones, weights: bones.map((b) => weights[b]) };
+  const bones = [0, 1, 2, 3, 4].sort((a, b) => at(weights, b) - at(weights, a)).slice(0, 4);
+  return { bones, weights: bones.map((b) => at(weights, b)) };
 }
 
 /** Shallow airfoil: a rounded, fuller forewing tapering into a fine trailing edge. */
@@ -461,7 +464,7 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
   ctx.fillRect(box.x, box.z, box.w, box.h);
   ctx.lineJoin = 'round';
   const feather = (k: number) => {
-    const s = TIPS[k];
+    const s = at(TIPS, k);
     const root = featherRoot(s);
     const tx = trailing(s);
     const tz = s * SPAN;
@@ -779,7 +782,7 @@ function respawn(s: Streak, x: number) {
 }
 
 export function mount(el: HTMLElement) {
-  const canvas = el.querySelector('canvas')!;
+  const canvas = el.querySelector('canvas') as HTMLCanvasElement;
   let renderer: WebGLRenderer;
   try {
     renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -894,11 +897,10 @@ export function mount(el: HTMLElement) {
   const tailSkin = new MeshBasicMaterial({ map: tailSheet.texture, side: DoubleSide });
   const feetSkin = new MeshBasicMaterial();
   // A dark crown and back frame the warm white belly, with the orange throat cut off by a dark breast band.
+  const plumageColors = { back: { value: new Color() }, belly: { value: new Color() }, face: { value: new Color() } };
   const plumage = new ShaderMaterial({
     uniforms: {
-      back: { value: new Color() },
-      belly: { value: new Color() },
-      face: { value: new Color() },
+      ...plumageColors,
       bodyScale: { value: BODY_SCALE.clone() },
       lightDirection,
     },
@@ -945,8 +947,9 @@ export function mount(el: HTMLElement) {
   const { bird, wings, tail, feet } = buildSwallow(plumage, feather, coverSkin, tailSkin, feetSkin, wingGeo, coverGeo, flightGeo, covertGeo, tailGeo);
   flight.add(bird);
 
+  const windUniforms = { color: { value: new Color() }, opacity: { value: 1 } };
   const wind = new ShaderMaterial({
-    uniforms: { color: { value: new Color() }, opacity: { value: 1 } },
+    uniforms: windUniforms,
     vertexShader: /* glsl */ `
       attribute float strength;
       varying float vStrength;
@@ -1118,13 +1121,13 @@ export function mount(el: HTMLElement) {
     paintWing(upper.ctx, upper.box, p, true);
     paintTail(tailSheet.ctx, tailSheet.box, p);
     for (const { texture } of [lower, upper, tailSheet]) texture.needsUpdate = true;
-    plumage.uniforms.back.value.set(p.back);
-    plumage.uniforms.belly.value.set(p.belly);
-    plumage.uniforms.face.value.set(p.face);
+    plumageColors.back.value.set(p.back);
+    plumageColors.belly.value.set(p.belly);
+    plumageColors.face.value.set(p.face);
     feetSkin.color.set(shade(p.rib, -0.08));
     const [r = 255, g = 255, b = 255, a = 1] = (cs.getPropertyValue('--sky-wind').match(/[\d.]+/g) ?? []).map(Number);
-    wind.uniforms.color.value.setRGB(r / 255, g / 255, b / 255, SRGBColorSpace);
-    wind.uniforms.opacity.value = a;
+    windUniforms.color.value.setRGB(r / 255, g / 255, b / 255, SRGBColorSpace);
+    windUniforms.opacity.value = a;
     dirty = true;
   }
   applyTheme();
@@ -1159,7 +1162,7 @@ export function mount(el: HTMLElement) {
   sizer.observe(el);
 
   const watcher = new IntersectionObserver((entries) => {
-    visible = entries[entries.length - 1].isIntersecting;
+    visible = at(entries, entries.length - 1).isIntersecting;
     if (visible && !raf) {
       last = performance.now();
       raf = requestAnimationFrame(frame);

@@ -62,15 +62,17 @@ const zhUrl = new URL(zhPath, site).href;
 
     <script is:inline>
       (function () {
-        var d = document.documentElement;
+        const d = document.documentElement;
         d.classList.add('js');
         try {
-          var t = localStorage.getItem('theme');
+          const t = localStorage.getItem('theme');
           if (t) d.dataset.theme = t;
-        } catch (e) {}
+        } catch {
+          // Without storage the page follows the system theme.
+        }
         // Client-side navigation replaces <html>'s attributes with the next page's; carry these over.
         document.addEventListener('astro:before-swap', function (e) {
-          var n = e.newDocument.documentElement;
+          const n = e.newDocument.documentElement;
           n.classList.add('js');
           if (d.dataset.theme) n.dataset.theme = d.dataset.theme;
         });
@@ -127,13 +129,15 @@ const zhUrl = new URL(zhPath, site).href;
     <script is:inline>
       document.addEventListener('click', function (ev) {
         if (!ev.target.closest('.theme-toggle')) return;
-        var d = document.documentElement;
-        var sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        var next = (d.dataset.theme || sys) === 'dark' ? 'light' : 'dark';
+        const d = document.documentElement;
+        const sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const next = (d.dataset.theme || sys) === 'dark' ? 'light' : 'dark';
         try {
           if (next === sys) localStorage.removeItem('theme');
           else localStorage.setItem('theme', next);
-        } catch (e) {}
+        } catch {
+          // Without storage the choice lasts until the next page.
+        }
         if (next === sys) delete d.dataset.theme;
         else d.dataset.theme = next;
       });
@@ -143,21 +147,21 @@ const zhUrl = new URL(zhPath, site).href;
     <script is:inline>
       (function () {
         function toc() {
-          var prose = document.querySelector('.prose');
-          var heads = prose ? prose.querySelectorAll('h2') : [];
+          const prose = document.querySelector('.prose');
+          const heads = prose ? prose.querySelectorAll('h2') : [];
           if (heads.length < 4) return;
-          var nav = document.createElement('nav');
+          const nav = document.createElement('nav');
           nav.className = 'toc';
           nav.setAttribute('aria-label', document.documentElement.lang.indexOf('zh') === 0 ? '目录' : 'Contents');
           heads.forEach(function (h) {
-            var text = h.textContent.replace(/^\d+\.\s*/, '').trim();
+            const text = h.textContent.replace(/^\d+\.\s*/, '').trim();
             if (!h.id) h.id = text.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '');
-            var a = document.createElement('a');
+            const a = document.createElement('a');
             a.href = '#' + h.id;
             a.textContent = text;
             nav.appendChild(a);
           });
-          var rail = document.createElement('div');
+          const rail = document.createElement('div');
           rail.className = 'toc-rail';
           rail.appendChild(nav);
           prose.prepend(rail);
@@ -170,21 +174,21 @@ const zhUrl = new URL(zhPath, site).href;
     <!-- Scroll reveal: runs on load and again for each page swapped in by client-side navigation -->
     <script is:inline>
       (function () {
-        var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         function reveal() {
-          var items = document.querySelectorAll('.reveal:not(.is-visible)');
+          const items = document.querySelectorAll('.reveal:not(.is-visible)');
           if (reduced || !('IntersectionObserver' in window)) {
             items.forEach(function (el) {
               el.classList.add('is-visible');
             });
             return;
           }
-          var seen = 0;
-          var io = new IntersectionObserver(
+          let seen = 0;
+          const io = new IntersectionObserver(
             function (entries) {
               entries.forEach(function (entry) {
                 if (!entry.isIntersecting) return;
-                var el = entry.target;
+                const el = entry.target;
                 el.style.transitionDelay = Math.min(seen++ % 4, 3) * 60 + 'ms';
                 el.classList.add('is-visible');
                 io.unobserve(el);
