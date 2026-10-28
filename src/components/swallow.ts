@@ -42,7 +42,8 @@ const WRIST = 0.45; // as a fraction of the span
 const OUTER = 0.72; // pivot of the tip section, as a fraction of the span
 const ROOT = -0.085; // span fraction buried in the body
 const ROOT_CHORD = 0.52;
-const WING_SPAN_SEGMENTS = 80, WING_CHORD_SEGMENTS = 12;
+const WING_SPAN_SEGMENTS = 80,
+  WING_CHORD_SEGMENTS = 12;
 const WING_CHORD_SCALE = 0.9; // shorten both leading and trailing reach without changing span
 const BODY_SCALE = new Vector3(0.88, 0.88, 0.86);
 const SHOULDER = new Vector3(0.2, 0.04, 0.08); // high on the chest, so the wing grows out of the shoulder
@@ -108,17 +109,18 @@ export const CAMERA = {
 /** Quintic easing starts and stops with zero velocity and acceleration. */
 const cinematicEase = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
 export function cameraView(progress: number, settings = CAMERA) {
-  const low = Math.max(0, settings.lowHold), high = Math.max(0, settings.highHold);
+  const low = Math.max(0, settings.lowHold),
+    high = Math.max(0, settings.highHold);
   const move = Math.max(0.1, settings.transition);
   const duration = low + high + 2 * move;
-  const time = ((progress % 1 + 1) % 1) * duration;
+  const time = (((progress % 1) + 1) % 1) * duration;
   let blend = 0;
   if (time >= low && time < low + move) blend = cinematicEase((time - low) / move);
   else if (time >= low + move && time < low + move + high) blend = 1;
   else if (time >= low + move + high) blend = 1 - cinematicEase((time - low - move - high) / move);
   return {
-    elevation: lerp(settings.lowElevation, settings.highElevation, blend) * Math.PI / 180,
-    azimuth: lerp(settings.lowAzimuth, settings.highAzimuth, blend) * Math.PI / 180,
+    elevation: (lerp(settings.lowElevation, settings.highElevation, blend) * Math.PI) / 180,
+    azimuth: (lerp(settings.lowAzimuth, settings.highAzimuth, blend) * Math.PI) / 180,
     distance: lerp(settings.lowDistance, settings.highDistance, blend),
     duration,
   };
@@ -135,12 +137,19 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 type ProfileStation = readonly [span: number, value: number, slope: number];
 // Cubic tangents join the shoulder, elbow, wrist and swept hand without angular seams.
 const LEADING_PROFILE: readonly ProfileStation[] = [
-  [0, 0, 0.15], [0.24, 0.055, 0.08], [WRIST, 0.08, 0],
-  [OUTER, -0.025, -0.65], [1, -0.25, -0.8],
+  [0, 0, 0.15],
+  [0.24, 0.055, 0.08],
+  [WRIST, 0.08, 0],
+  [OUTER, -0.025, -0.65],
+  [1, -0.25, -0.8],
 ];
 const CHORD_PROFILE: readonly ProfileStation[] = [
-  [0, ROOT_CHORD, 0], [0.24, 0.475, -0.25], [WRIST, 0.375, -0.55],
-  [OUTER, 0.21, -0.6], [0.9, 0.085, -0.68], [1, 0, -0.95],
+  [0, ROOT_CHORD, 0],
+  [0.24, 0.475, -0.25],
+  [WRIST, 0.375, -0.55],
+  [OUTER, 0.21, -0.6],
+  [0.9, 0.085, -0.68],
+  [1, 0, -0.95],
 ];
 
 function profile(s: number, stations: readonly ProfileStation[]) {
@@ -151,9 +160,14 @@ function profile(s: number, stations: readonly ProfileStation[]) {
     if (u > b) continue;
     const h = b - a;
     const t = (u - a) / h;
-    const t2 = t * t, t3 = t2 * t;
-    return (2 * t3 - 3 * t2 + 1) * va + (t3 - 2 * t2 + t) * h * da
-      + (-2 * t3 + 3 * t2) * vb + (t3 - t2) * h * db;
+    const t2 = t * t,
+      t3 = t2 * t;
+    return (
+      (2 * t3 - 3 * t2 + 1) * va +
+      (t3 - 2 * t2 + t) * h * da +
+      (-2 * t3 + 3 * t2) * vb +
+      (t3 - t2) * h * db
+    );
   }
   return at(stations, stations.length - 1)[1];
 }
@@ -162,11 +176,14 @@ const chord = (s: number) => WING_CHORD_SCALE * profile(s, CHORD_PROFILE);
 function trailing(s: number) {
   let notch = 0;
   for (let k = 3; k < TIPS.length; k++) {
-    const lo = at(TIPS, k - 1), hi = at(TIPS, k);
-    if (s > lo && s < hi) { // scalloped between feather tips
+    const lo = at(TIPS, k - 1),
+      hi = at(TIPS, k);
+    if (s > lo && s < hi) {
+      // scalloped between feather tips
       const u = (s - lo) / (hi - lo);
-      notch = Math.min(0.006 + 0.004 * smoothstep(0.3, 0.7, s), chord(s) * 0.1)
-        * Math.sin(Math.PI * u) ** 1.2;
+      notch =
+        Math.min(0.006 + 0.004 * smoothstep(0.3, 0.7, s), chord(s) * 0.1) *
+        Math.sin(Math.PI * u) ** 1.2;
     }
   }
   return leading(s) - chord(s) + notch;
@@ -177,9 +194,10 @@ const planform = (s: number): [number, number] => [leading(s), trailing(s)];
 
 /** Secondaries follow the forearm; primaries spread from the hand beyond the wrist. */
 function featherRoot(s: number) {
-  const station = s <= WRIST
-    ? lerp(0.025, WRIST - 0.065, smoothstep(0.1, WRIST, s))
-    : lerp(WRIST - 0.065, 0.6, (s - WRIST) / (1 - WRIST));
+  const station =
+    s <= WRIST
+      ? lerp(0.025, WRIST - 0.065, smoothstep(0.1, WRIST, s))
+      : lerp(WRIST - 0.065, 0.6, (s - WRIST) / (1 - WRIST));
   return {
     x: leading(station) - chord(station) * 0.2 + WING.rootOffsetX,
     z: station * SPAN + WING.rootOffsetZ,
@@ -191,7 +209,10 @@ type Box = { x: number; z: number; w: number; h: number };
 /** uv from the (x, z) bounding box, so a canvas painted in bird units maps 1:1 onto the surface. */
 function boxUVs(geometry: BufferGeometry): Box {
   const p = geometry.getAttribute('position');
-  let x0 = Infinity, x1 = -Infinity, z0 = Infinity, z1 = -Infinity;
+  let x0 = Infinity,
+    x1 = -Infinity,
+    z0 = Infinity,
+    z1 = -Infinity;
   for (let i = 0; i < p.count; i++) {
     x0 = Math.min(x0, p.getX(i));
     x1 = Math.max(x1, p.getX(i));
@@ -225,7 +246,13 @@ function wingWeights(s: number) {
   const swung = smoothstep(-0.01, 0.065, s);
   const hand = smoothstep(WRIST - 0.075, WRIST + 0.075, s);
   const outer = smoothstep(OUTER - 0.065, OUTER + 0.065, s);
-  const weights = [1 - arm, arm * (1 - swung) * (1 - hand), arm * swung * (1 - hand), arm * hand * (1 - outer), arm * hand * outer];
+  const weights = [
+    1 - arm,
+    arm * (1 - swung) * (1 - hand),
+    arm * swung * (1 - hand),
+    arm * hand * (1 - outer),
+    arm * hand * outer,
+  ];
   const bones = [0, 1, 2, 3, 4].sort((a, b) => at(weights, b) - at(weights, a)).slice(0, 4);
   return { bones, weights: bones.map((b) => at(weights, b)) };
 }
@@ -235,23 +262,27 @@ function wingHeight(s: number, v: number, top: boolean) {
   const width = leading(s) - trailing(s);
   const arch = Math.max(0, Math.sin(Math.PI * v));
   const camber = lerp(0.09, 0.035, clamp01(s)) * width * arch * smoothstep(0, 0.2, s);
-  const thickness = 0.026 * width / (ROOT_CHORD * WING_CHORD_SCALE)
-    * (1 - clamp01(s)) ** 0.35 * arch ** 0.65;
+  const thickness =
+    ((0.026 * width) / (ROOT_CHORD * WING_CHORD_SCALE)) * (1 - clamp01(s)) ** 0.35 * arch ** 0.65;
   return camber + (top ? thickness : -0.7 * thickness);
 }
 
 /** Closed upper/lower wing skin; both sides keep their own painted plumage. */
 function wingGeometry() {
-  const NS = WING_SPAN_SEGMENTS, NC = WING_CHORD_SEGMENTS;
-  const position: number[] = [], coverSide: number[] = [];
-  const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
+  const NS = WING_SPAN_SEGMENTS,
+    NC = WING_CHORD_SEGMENTS;
+  const position: number[] = [],
+    coverSide: number[] = [];
+  const skinIndex: number[] = [],
+    skinWeight: number[] = [],
+    index: number[] = [];
   for (const top of [true, false]) {
     for (let i = 0; i <= NS; i++) {
       const s = lerp(ROOT, 1, i / NS);
       const [le, te] = planform(s);
       const skin = wingWeights(s);
       for (let j = 0; j <= NC; j++) {
-        const v = (1 - Math.cos(Math.PI * j / NC)) / 2;
+        const v = (1 - Math.cos((Math.PI * j) / NC)) / 2;
         position.push(lerp(te, le, v), wingHeight(s, v, top), s * SPAN);
         coverSide.push(top ? 1 : 0);
         skinIndex.push(...skin.bones);
@@ -262,9 +293,17 @@ function wingGeometry() {
   const offset = (NS + 1) * (NC + 1);
   for (let i = 0; i < NS; i++) {
     for (let j = 0; j < NC; j++) {
-      const a = i * (NC + 1) + j, b = a + NC + 1;
+      const a = i * (NC + 1) + j,
+        b = a + NC + 1;
       index.push(a, b, a + 1, b, b + 1, a + 1);
-      index.push(offset + a, offset + a + 1, offset + b, offset + b, offset + a + 1, offset + b + 1);
+      index.push(
+        offset + a,
+        offset + a + 1,
+        offset + b,
+        offset + b,
+        offset + a + 1,
+        offset + b + 1,
+      );
     }
   }
   // The leading/trailing edges and tip meet; only the buried root needs a cap.
@@ -283,15 +322,23 @@ type FeatherBlade = { rx: number; rz: number; tx: number; tz: number; width: num
 
 /** Closed curved vanes sit on both sides of the airfoil and share its bone deformation. */
 function featherLayerGeometry(box: Box, blades: FeatherBlade[]) {
-  const NT = 12, NW = 4;
-  const position: number[] = [], uv: number[] = [], coverSide: number[] = [];
-  const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
+  const NT = 12,
+    NW = 4;
+  const position: number[] = [],
+    uv: number[] = [],
+    coverSide: number[] = [];
+  const skinIndex: number[] = [],
+    skinWeight: number[] = [],
+    index: number[] = [];
   for (const upper of [true, false]) {
     const sign = upper ? 1 : -1;
     for (const blade of blades) {
       const start = position.length / 3;
-      const dx = blade.tx - blade.rx, dz = blade.tz - blade.rz;
-      const len = Math.hypot(dx, dz), nx = -dz / len, nz = dx / len;
+      const dx = blade.tx - blade.rx,
+        dz = blade.tz - blade.rz;
+      const len = Math.hypot(dx, dz),
+        nx = -dz / len,
+        nz = dx / len;
       for (const outside of [true, false]) {
         for (let i = 0; i <= NT; i++) {
           const t = i / NT;
@@ -300,7 +347,8 @@ function featherLayerGeometry(box: Box, blades: FeatherBlade[]) {
             const q = j / NW;
             const across = lerp(-0.42, 0.62, q) * blade.width * fan;
             const z = Math.min(SPAN, Math.max(ROOT * SPAN, blade.rz + dz * t + nz * across));
-            const span = z / SPAN, [le, te] = planform(span);
+            const span = z / SPAN,
+              [le, te] = planform(span);
             const x = Math.min(le, Math.max(te, blade.rx + dx * t + nx * across));
             const v = clamp01((x - te) / Math.max(0.000001, le - te));
             // The underside of each vane sinks into the wing; its convex outer face
@@ -322,21 +370,32 @@ function featherLayerGeometry(box: Box, blades: FeatherBlade[]) {
       };
       for (let i = 0; i < NT; i++) {
         for (let j = 0; j < NW; j++) {
-          const a = i * (NW + 1) + j, b = a + NW + 1;
+          const a = i * (NW + 1) + j,
+            b = a + NW + 1;
           // The vane cross-axis points aft, reversing the wing grid winding.
-          tri(a, a + 1, b); tri(b, a + 1, b + 1);
-          tri(count + a, count + b, count + a + 1); tri(count + b, count + b + 1, count + a + 1);
+          tri(a, a + 1, b);
+          tri(b, a + 1, b + 1);
+          tri(count + a, count + b, count + a + 1);
+          tri(count + b, count + b + 1, count + a + 1);
         }
         for (const j of [0, NW]) {
-          const a = i * (NW + 1) + j, b = a + NW + 1;
-          if (j === 0) { tri(a, b, count + a); tri(b, count + b, count + a); }
-          else { tri(a, count + a, b); tri(b, count + a, count + b); }
+          const a = i * (NW + 1) + j,
+            b = a + NW + 1;
+          if (j === 0) {
+            tri(a, b, count + a);
+            tri(b, count + b, count + a);
+          } else {
+            tri(a, count + a, b);
+            tri(b, count + a, count + b);
+          }
         }
       }
       for (let j = 0; j < NW; j++) {
-        tri(j, count + j, j + 1); tri(j + 1, count + j, count + j + 1);
+        tri(j, count + j, j + 1);
+        tri(j + 1, count + j, count + j + 1);
         const a = NT * (NW + 1) + j;
-        tri(a, a + 1, count + a); tri(a + 1, count + a + 1, count + a);
+        tri(a, a + 1, count + a);
+        tri(a + 1, count + a + 1, count + a);
       }
     }
   }
@@ -352,14 +411,20 @@ function featherLayerGeometry(box: Box, blades: FeatherBlade[]) {
 }
 
 function flightFeathersGeometry(box: Box) {
-  return featherLayerGeometry(box, TIPS.map((span, k) => {
-    const root = featherRoot(span);
-    return {
-      rx: root.x, rz: root.z, tx: trailing(span), tz: span * SPAN,
-      width: WING_CHORD_SCALE * 0.14 * (1 - 0.43 * span),
-      lift: 0.004 + 0.00025 * (TIPS.length - 1 - k),
-    };
-  }));
+  return featherLayerGeometry(
+    box,
+    TIPS.map((span, k) => {
+      const root = featherRoot(span);
+      return {
+        rx: root.x,
+        rz: root.z,
+        tx: trailing(span),
+        tz: span * SPAN,
+        width: WING_CHORD_SCALE * 0.14 * (1 - 0.43 * span),
+        lift: 0.004 + 0.00025 * (TIPS.length - 1 - k),
+      };
+    }),
+  );
 }
 
 /** Two low-profile rows overlap the long vanes without enlarging the silhouette. */
@@ -367,14 +432,18 @@ function covertFeathersGeometry(box: Box) {
   const blades: FeatherBlade[] = [];
   TIPS.slice(0, 11).forEach((span) => {
     const root = featherRoot(span);
-    const dx = trailing(span) - root.x, dz = span * SPAN - root.z;
+    const dx = trailing(span) - root.x,
+      dz = span * SPAN - root.z;
     for (const row of [0, 1]) {
       const begin = row === 0 ? 0.01 : 0.12;
       const end = row === 0 ? 0.24 : 0.37;
       blades.push({
-        rx: root.x + dx * begin, rz: root.z + dz * begin,
-        tx: root.x + dx * end, tz: root.z + dz * end,
-        width: 0.055 * (1 - 0.3 * span), lift: row === 0 ? 0.012 : 0.009,
+        rx: root.x + dx * begin,
+        rz: root.z + dz * begin,
+        tx: root.x + dx * end,
+        tz: root.z + dz * end,
+        width: 0.055 * (1 - 0.3 * span),
+        lift: row === 0 ? 0.012 : 0.009,
       });
     }
   });
@@ -383,10 +452,15 @@ function covertFeathersGeometry(box: Box) {
 
 /** A shallow closed feather cuff bridges the fixed body into the moving inner wing. */
 function shoulderGeometry(box: Box) {
-  const end = 0.14, NC = WING_CHORD_SEGMENTS;
-  const NS = Math.ceil((end - ROOT) / (1 - ROOT) * WING_SPAN_SEGMENTS);
-  const position: number[] = [], uv: number[] = [], coverSide: number[] = [];
-  const skinIndex: number[] = [], skinWeight: number[] = [], index: number[] = [];
+  const end = 0.14,
+    NC = WING_CHORD_SEGMENTS;
+  const NS = Math.ceil(((end - ROOT) / (1 - ROOT)) * WING_SPAN_SEGMENTS);
+  const position: number[] = [],
+    uv: number[] = [],
+    coverSide: number[] = [];
+  const skinIndex: number[] = [],
+    skinWeight: number[] = [],
+    index: number[] = [];
   for (const top of [true, false]) {
     for (let i = 0; i <= NS; i++) {
       // Use the main wing's exact lattice so its curved edges stay welded between vertices.
@@ -394,8 +468,9 @@ function shoulderGeometry(box: Box) {
       const [le, te] = planform(s);
       const skin = wingWeights(s);
       for (let j = 0; j <= NC; j++) {
-        const v = (1 - Math.cos(Math.PI * j / NC)) / 2;
-        const x = lerp(te, le, v), z = s * SPAN;
+        const v = (1 - Math.cos((Math.PI * j) / NC)) / 2;
+        const x = lerp(te, le, v),
+          z = s * SPAN;
         const arch = Math.sin(Math.PI * v);
         const surface = wingHeight(s, v, top);
         const thickness = (top ? 0.02 : -0.014) * arch * (1 - smoothstep(0.055, end, s));
@@ -412,9 +487,17 @@ function shoulderGeometry(box: Box) {
   const offset = (NS + 1) * (NC + 1);
   for (let i = 0; i < NS; i++) {
     for (let j = 0; j < NC; j++) {
-      const a = i * (NC + 1) + j, b = a + NC + 1;
+      const a = i * (NC + 1) + j,
+        b = a + NC + 1;
       index.push(a, b, a + 1, b, b + 1, a + 1); // upper surface faces up
-      index.push(offset + a, offset + a + 1, offset + b, offset + b, offset + a + 1, offset + b + 1);
+      index.push(
+        offset + a,
+        offset + a + 1,
+        offset + b,
+        offset + b,
+        offset + a + 1,
+        offset + b + 1,
+      );
     }
   }
   // Close the buried inner end; the outer end and both edges taper onto the wing surface.
@@ -443,13 +526,23 @@ function tailShape() {
   return tail;
 }
 
-type Palette = { back: string; belly: string; face: string; sheen: string; gloss: string; rib: string; line: string };
+type Palette = {
+  back: string;
+  belly: string;
+  face: string;
+  sheen: string;
+  gloss: string;
+  rib: string;
+  line: string;
+};
 
 function shade(color: string, dl: number) {
   const c = new Color(color);
   const hsl = { h: 0, s: 0, l: 0 };
   c.getHSL(hsl, SRGBColorSpace);
-  return c.setHSL(hsl.h, hsl.s, Math.min(1, Math.max(0, hsl.l + dl)), SRGBColorSpace).getStyle(SRGBColorSpace);
+  return c
+    .setHSL(hsl.h, hsl.s, Math.min(1, Math.max(0, hsl.l + dl)), SRGBColorSpace)
+    .getStyle(SRGBColorSpace);
 }
 
 /** Blend in display color space for restrained, neutral painted feather tones. */
@@ -471,8 +564,10 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
     const len = Math.hypot(tx - root.x, tz - root.z);
     return { s, root, tx, tz, ux: (tx - root.x) / len, uz: (tz - root.z) / len, len };
   };
-  const along = (f: ReturnType<typeof feather>, t: number): [number, number] =>
-    [f.root.x + f.ux * f.len * t, f.root.z + f.uz * f.len * t];
+  const along = (f: ReturnType<typeof feather>, t: number): [number, number] => [
+    f.root.x + f.ux * f.len * t,
+    f.root.z + f.uz * f.len * t,
+  ];
 
   // Paint from the outermost feather inward, preserving overlaps across the wrist. The short
   // secondaries point back from the forearm; the longer primaries fan outward from the hand.
@@ -486,7 +581,12 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
     ctx.beginPath();
     ctx.moveTo(rx + nx * w * 0.1, rz + nz * w * 0.1);
     ctx.quadraticCurveTo(mx + nx * w * 0.62, mz + nz * w * 0.62, f.tx, f.tz);
-    ctx.quadraticCurveTo(mx - nx * w * 0.42, mz - nz * w * 0.42, rx - nx * w * 0.1, rz - nz * w * 0.1);
+    ctx.quadraticCurveTo(
+      mx - nx * w * 0.42,
+      mz - nz * w * 0.42,
+      rx - nx * w * 0.1,
+      rz - nz * w * 0.1,
+    );
     ctx.closePath();
     const vane = ctx.createLinearGradient(f.root.x, f.root.z, f.tx, f.tz);
     const dark = shade(p.back, -0.02 * (k % 2) - 0.03 * f.s);
@@ -506,14 +606,18 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
     ctx.lineWidth = 0.004;
     ctx.strokeStyle = upper ? shade(p.back, -0.05) : shade(p.back, 0.06);
     ctx.stroke();
-    if (k >= 4 && k % 3 !== 0) { // sparse, varied shaft accents leave the vanes as the main structure
+    if (k >= 4 && k % 3 !== 0) {
+      // sparse, varied shaft accents leave the vanes as the main structure
       ctx.beginPath();
       for (let i = 0; i <= 8; i++) {
         const t = 0.59 + 0.28 * (i / 8) - 0.025 * (k % 3);
         const a = (1 - t) * (1 - t);
         const b = 2 * (1 - t) * t;
         const c = t * t;
-        ctx.lineTo(a * (rx + nx * w * 0.1) + b * (mx + nx * w * 0.5) + c * f.tx, a * (rz + nz * w * 0.1) + b * (mz + nz * w * 0.5) + c * f.tz);
+        ctx.lineTo(
+          a * (rx + nx * w * 0.1) + b * (mx + nx * w * 0.5) + c * f.tx,
+          a * (rz + nz * w * 0.1) + b * (mz + nz * w * 0.5) + c * f.tz,
+        );
       }
       ctx.lineWidth = 0.005 * (1 - 0.4 * f.s);
       ctx.strokeStyle = upper ? mixPaint(p.back, p.gloss, 0.55) : mixPaint(p.back, p.rib, 0.3);
@@ -539,7 +643,12 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
       const bz = s * SPAN;
       const root = featherRoot(Math.max(0.1, s));
       const len = Math.max(0.001, Math.hypot(bx - root.x, bz - root.z));
-      ctx.quadraticCurveTo((px + bx) / 2 + ((bx - root.x) / len) * 0.03, (pz + bz) / 2 + ((bz - root.z) / len) * 0.03, bx, bz);
+      ctx.quadraticCurveTo(
+        (px + bx) / 2 + ((bx - root.x) / len) * 0.03,
+        (pz + bz) / 2 + ((bz - root.z) / len) * 0.03,
+        bx,
+        bz,
+      );
       px = bx;
       pz = bz;
     }
@@ -573,7 +682,8 @@ function paintWing(ctx: CanvasRenderingContext2D, box: Box, p: Palette, upper: b
   ctx.lineWidth = 0.0025;
   for (let k = 0; k < 11; k++) {
     const f = feather(k);
-    const nx = -f.uz, nz = f.ux;
+    const nx = -f.uz,
+      nz = f.ux;
     for (const t of [0.17, 0.29]) {
       const [x, z] = along(f, t);
       const width = 0.022 * (1 - 0.3 * f.s);
@@ -600,7 +710,13 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
   ctx.lineJoin = 'round';
   // Five feathers per side: dark margins frame continuous cream centers that narrow
   // from the rump into fine points, including the long outer streamers.
-  const tips: [number, number][] = [[-1.08, 0.34], [-0.87, 0.245], [-0.72, 0.18], [-0.55, 0.11], [-0.38, 0.05]];
+  const tips: [number, number][] = [
+    [-1.08, 0.34],
+    [-0.87, 0.245],
+    [-0.72, 0.18],
+    [-0.55, 0.11],
+    [-0.38, 0.05],
+  ];
   for (const side of [1, -1]) {
     tips.forEach(([tx, z0], i) => {
       const tz = side * z0;
@@ -611,7 +727,10 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
       const nz = ux;
       const w = i === 0 ? 0.068 : 0.15 - 0.01 * i;
       const whiteWidth = i === 0 ? 0.16 : 0.27;
-      const at = (t: number, k: number): [number, number] => [ux * len * t + nx * w * k, uz * len * t + nz * w * k];
+      const at = (t: number, k: number): [number, number] => [
+        ux * len * t + nx * w * k,
+        uz * len * t + nz * w * k,
+      ];
       ctx.beginPath();
       ctx.moveTo(...at(0.05, 0.1));
       ctx.quadraticCurveTo(...at(0.5, 0.5), tx, tz);
@@ -647,7 +766,9 @@ function paintTail(ctx: CanvasRenderingContext2D, box: Box, p: Palette) {
   ctx.fillStyle = p.belly;
   ctx.fill();
   ctx.beginPath(); // outline the edge
-  tailShape().getPoints(12).forEach((pt, i) => (i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y)));
+  tailShape()
+    .getPoints(12)
+    .forEach((pt, i) => (i ? ctx.lineTo(pt.x, pt.y) : ctx.moveTo(pt.x, pt.y)));
   ctx.closePath();
   ctx.lineWidth = 0.009;
   ctx.strokeStyle = p.line;
@@ -664,14 +785,26 @@ function phase(beat: number) {
 /** Flatten the back, keep a shallow breast keel and blend into a compact head. */
 function bodyGeometry() {
   const outline = [
-    [0, -0.56], [0.025, -0.51], [0.052, -0.42], [0.086, -0.28], [0.139, -0.108], [0.169, 0.045],
-    [0.163, 0.162], [0.126, 0.252], [0.095, 0.306], [0.098, 0.378], [0.078, 0.441],
-    [0.03, 0.495], [0, 0.522],
+    [0, -0.56],
+    [0.025, -0.51],
+    [0.052, -0.42],
+    [0.086, -0.28],
+    [0.139, -0.108],
+    [0.169, 0.045],
+    [0.163, 0.162],
+    [0.126, 0.252],
+    [0.095, 0.306],
+    [0.098, 0.378],
+    [0.078, 0.441],
+    [0.03, 0.495],
+    [0, 0.522],
   ].map(([r, x]) => new Vector2(r, x));
   const geometry = new LatheGeometry(outline, 24).rotateZ(-Math.PI / 2);
   const positions = geometry.getAttribute('position');
   for (let i = 0; i < positions.count; i++) {
-    const x = positions.getX(i), y = positions.getY(i), z = positions.getZ(i);
+    const x = positions.getX(i),
+      y = positions.getY(i),
+      z = positions.getZ(i);
     const head = smoothstep(0.27, 0.37, x);
     const keel = 0.012 * Math.exp(-(((x - 0.06) / 0.21) ** 2)) * Math.max(0, -y / 0.155);
     const height = y >= 0 ? lerp(0.74, 0.72, head) : lerp(1.04, 0.86, head);
@@ -682,7 +815,18 @@ function bodyGeometry() {
   return geometry;
 }
 
-function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSkin: ShaderMaterial, tailSkin: MeshBasicMaterial, feetSkin: MeshBasicMaterial, wingGeo: BufferGeometry, coverGeo: BufferGeometry, flightGeo: BufferGeometry, covertGeo: BufferGeometry, tailGeo: BufferGeometry) {
+function buildSwallow(
+  plumage: ShaderMaterial,
+  feather: ShaderMaterial,
+  coverSkin: ShaderMaterial,
+  tailSkin: MeshBasicMaterial,
+  feetSkin: MeshBasicMaterial,
+  wingGeo: BufferGeometry,
+  coverGeo: BufferGeometry,
+  flightGeo: BufferGeometry,
+  covertGeo: BufferGeometry,
+  tailGeo: BufferGeometry,
+) {
   const bird = new Group();
   bird.rotation.order = 'YZX'; // roll about the body axis first, then pitch
 
@@ -696,7 +840,10 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSki
     eye.scale.copy(BODY_SCALE);
     bird.add(eye);
   }
-  const beak = new Mesh(new ConeGeometry(0.024, 0.085, 4).rotateZ(-Math.PI / 2).scale(1, 0.45, 1), dark);
+  const beak = new Mesh(
+    new ConeGeometry(0.024, 0.085, 4).rotateZ(-Math.PI / 2).scale(1, 0.45, 1),
+    dark,
+  );
   beak.position.set(0.529, -0.022, 0).multiply(BODY_SCALE);
   beak.scale.copy(BODY_SCALE);
   bird.add(beak);
@@ -768,7 +915,15 @@ function buildSwallow(plumage: ShaderMaterial, feather: ShaderMaterial, coverSki
   return { bird, wings, tail, feet };
 }
 
-type Streak = { x: number; y: number; z: number; len: number; width: number; strength: number; gusty: boolean };
+type Streak = {
+  x: number;
+  y: number;
+  z: number;
+  len: number;
+  width: number;
+  strength: number;
+  gusty: boolean;
+};
 
 function respawn(s: Streak, x: number) {
   s.x = x;
@@ -825,7 +980,10 @@ export function mount(el: HTMLElement) {
     px = aimX = nx;
     py = aimY = ny;
   };
-  const onLeave = () => { aimX = 0; aimY = 0; };
+  const onLeave = () => {
+    aimX = 0;
+    aimY = 0;
+  };
   if (!reduced) {
     window.addEventListener('pointermove', onPointer, { passive: true });
     document.documentElement.addEventListener('mouseleave', onLeave);
@@ -843,7 +1001,9 @@ export function mount(el: HTMLElement) {
     else cameraProgress = reduced ? 0 : CAMERA.phase;
     const az = view.azimuth + (playback ? 0.04 * leanX : 0);
     const elev = view.elevation + (playback ? 0.025 * leanY + 0.015 * scrolled : 0);
-    camera.position.set(Math.sin(az) * Math.cos(elev), Math.sin(elev), Math.cos(az) * Math.cos(elev)).multiplyScalar(view.distance);
+    camera.position
+      .set(Math.sin(az) * Math.cos(elev), Math.sin(elev), Math.cos(az) * Math.cos(elev))
+      .multiplyScalar(view.distance);
     camera.lookAt(0, 0, 0);
     camera.updateMatrixWorld();
     lightDirection.value.copy(worldLight).transformDirection(camera.matrixWorldInverse);
@@ -856,7 +1016,8 @@ export function mount(el: HTMLElement) {
   const lower = sheet(boxUVs(wingGeo), ppu);
   const upper = sheet(lower.box, ppu);
   const tailSheet = sheet(boxUVs(tailGeo), ppu);
-  for (const { texture } of [lower, upper, tailSheet]) texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  for (const { texture } of [lower, upper, tailSheet])
+    texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
   const feather = new ShaderMaterial({
     uniforms: { upper: { value: upper.texture }, lower: { value: lower.texture }, lightDirection },
@@ -897,7 +1058,11 @@ export function mount(el: HTMLElement) {
   const tailSkin = new MeshBasicMaterial({ map: tailSheet.texture, side: DoubleSide });
   const feetSkin = new MeshBasicMaterial();
   // A dark crown and back frame the warm white belly, with the orange throat cut off by a dark breast band.
-  const plumageColors = { back: { value: new Color() }, belly: { value: new Color() }, face: { value: new Color() } };
+  const plumageColors = {
+    back: { value: new Color() },
+    belly: { value: new Color() },
+    face: { value: new Color() },
+  };
   const plumage = new ShaderMaterial({
     uniforms: {
       ...plumageColors,
@@ -944,7 +1109,18 @@ export function mount(el: HTMLElement) {
         #include <colorspace_fragment>
       }`,
   });
-  const { bird, wings, tail, feet } = buildSwallow(plumage, feather, coverSkin, tailSkin, feetSkin, wingGeo, coverGeo, flightGeo, covertGeo, tailGeo);
+  const { bird, wings, tail, feet } = buildSwallow(
+    plumage,
+    feather,
+    coverSkin,
+    tailSkin,
+    feetSkin,
+    wingGeo,
+    coverGeo,
+    flightGeo,
+    covertGeo,
+    tailGeo,
+  );
   flight.add(bird);
 
   const windUniforms = { color: { value: new Color() }, opacity: { value: 1 } };
@@ -978,7 +1154,9 @@ export function mount(el: HTMLElement) {
   const strength = new InstancedBufferAttribute(new Float32Array(count), 1);
   streaks.geometry.setAttribute('strength', strength);
   flight.add(streaks);
-  const pool = Array.from({ length: count }, () => respawn({} as Streak, lerp(-WIND_X, WIND_X, Math.random())));
+  const pool = Array.from({ length: count }, () =>
+    respawn({} as Streak, lerp(-WIND_X, WIND_X, Math.random())),
+  );
   const face = new Quaternion();
   const eye = new Vector3();
   const m4 = new Matrix4();
@@ -1030,12 +1208,23 @@ export function mount(el: HTMLElement) {
       // fore-aft motion shares the parent phase so adjacent sections do not counter-swing.
       w.shoulder.rotation.x = -(W.dihedral + W.flap * env * Math.cos(arm));
       w.shoulder.rotation.z = -W.twistRoot * down; // pronation
-      w.sweeper.rotation.y = -(0.04 * W.glideSweep + env * (W.sweepRoot * sweep(arm) - W.reachRoot * reach(arm)));
-      w.wrist.rotation.x = 0.04 - W.fold * fold - W.whipMid * W.flap * env * (Math.cos(hand) - Math.cos(arm));
-      w.wrist.rotation.y = -(0.08 * W.glideSweep + env * (W.sweepMid * sweep(arm) - W.reachMid * reach(arm)) + W.foldSweep * fold);
+      w.sweeper.rotation.y = -(
+        0.04 * W.glideSweep +
+        env * (W.sweepRoot * sweep(arm) - W.reachRoot * reach(arm))
+      );
+      w.wrist.rotation.x =
+        0.04 - W.fold * fold - W.whipMid * W.flap * env * (Math.cos(hand) - Math.cos(arm));
+      w.wrist.rotation.y = -(
+        0.08 * W.glideSweep +
+        env * (W.sweepMid * sweep(arm) - W.reachMid * reach(arm)) +
+        W.foldSweep * fold
+      );
       w.wrist.rotation.z = -W.twistMid * env * Math.sin(hand); // leading edge pitches down through the power stroke
       w.outer.rotation.x = -W.whipTip * W.flap * env * (Math.cos(tip) - Math.cos(hand));
-      w.outer.rotation.y = -(0.03 * W.glideSweep + env * (W.sweepTip * sweep(hand) - W.reachTip * reach(hand)));
+      w.outer.rotation.y = -(
+        0.03 * W.glideSweep +
+        env * (W.sweepTip * sweep(hand) - W.reachTip * reach(hand))
+      );
       w.outer.rotation.z = -W.twistTip * env * Math.sin(tip);
     });
     feet.visible = W.feet;
@@ -1044,7 +1233,11 @@ export function mount(el: HTMLElement) {
     tail.rotation.x = flutter * 1.5;
     tail.rotation.z = -0.06 * env;
     // Holds its height: only a gust lifts it, and each downstroke throws the body up a touch.
-    bird.position.set(0.1 * Math.sin(t * 0.31) - 0.22 * gust, 0.06 * gust - WING.bob * env * Math.cos(arm), 0.06 * Math.sin(t * 0.23));
+    bird.position.set(
+      0.1 * Math.sin(t * 0.31) - 0.22 * gust,
+      0.06 * gust - WING.bob * env * Math.cos(arm),
+      0.06 * Math.sin(t * 0.23),
+    );
     bird.rotation.z = 0.08 + 0.05 * env + WING.pitch * down; // a little nose-up while flapping, more through each power stroke
     bird.rotation.x = BANK + 0.22 * gust * Math.sin((t - gustAt) * 7) + 0.04 * Math.sin(t * 0.5);
   }
@@ -1093,7 +1286,8 @@ export function mount(el: HTMLElement) {
     raf = requestAnimationFrame(frame);
   }
 
-  let vaneRootX = WING.rootOffsetX, vaneRootZ = WING.rootOffsetZ;
+  let vaneRootX = WING.rootOffsetX,
+    vaneRootZ = WING.rootOffsetZ;
   function applyTheme() {
     const cs = getComputedStyle(document.documentElement);
     const css = (name: string) => cs.getPropertyValue(name).trim();
@@ -1108,7 +1302,10 @@ export function mount(el: HTMLElement) {
       line: shade(back, -0.12),
     };
     if (vaneRootX !== WING.rootOffsetX || vaneRootZ !== WING.rootOffsetZ) {
-      for (const [target, make] of [[flightGeo, flightFeathersGeometry], [covertGeo, covertFeathersGeometry]] as const) {
+      for (const [target, make] of [
+        [flightGeo, flightFeathersGeometry],
+        [covertGeo, covertFeathersGeometry],
+      ] as const) {
         const updated = make(lower.box);
         target.dispose(); // release old GPU attributes before a live form rebuild
         target.copy(updated);
@@ -1125,7 +1322,9 @@ export function mount(el: HTMLElement) {
     plumageColors.belly.value.set(p.belly);
     plumageColors.face.value.set(p.face);
     feetSkin.color.set(shade(p.rib, -0.08));
-    const [r = 255, g = 255, b = 255, a = 1] = (cs.getPropertyValue('--sky-wind').match(/[\d.]+/g) ?? []).map(Number);
+    const [r = 255, g = 255, b = 255, a = 1] = (
+      cs.getPropertyValue('--sky-wind').match(/[\d.]+/g) ?? []
+    ).map(Number);
     windUniforms.color.value.setRGB(r / 255, g / 255, b / 255, SRGBColorSpace);
     windUniforms.opacity.value = a;
     dirty = true;
@@ -1139,10 +1338,12 @@ export function mount(el: HTMLElement) {
   // Development only: `?wing` in the URL opens a panel of live sliders for the WING parameters.
   // Vite drops this branch, and the module behind it, from production builds.
   if (import.meta.env.DEV && new URLSearchParams(location.search).has('wing')) {
-    import('./swallow-debug').then((m) => m.mountWingDebug(WING, CAMERA, () => {
-      applyTheme();
-      aimCamera(0);
-    }));
+    import('./swallow-debug').then((m) =>
+      m.mountWingDebug(WING, CAMERA, () => {
+        applyTheme();
+        aimCamera(0);
+      }),
+    );
   }
 
   function resize() {
@@ -1187,7 +1388,9 @@ export function mount(el: HTMLElement) {
     scene.traverse((object) => {
       if (object instanceof Mesh) {
         geometries.add(object.geometry);
-        for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
+        for (const material of Array.isArray(object.material)
+          ? object.material
+          : [object.material]) {
           materials.add(material as ShaderMaterial | MeshBasicMaterial);
         }
       }

@@ -14,16 +14,15 @@ async function fetchInstrumentSans() {
   const cached = existsSync(fontDir) ? await readdir(fontDir) : [];
   if (cached.some((f) => f.endsWith('.ttf'))) return;
   // An old UA makes Google Fonts serve TTF URLs instead of woff2.
-  const css = await fetch(
-    'https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@450;550',
-    { headers: { 'User-Agent': 'Mozilla/4.0' } }
-  ).then((r) => r.text());
+  const css = await fetch('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@450;550', {
+    headers: { 'User-Agent': 'Mozilla/4.0' },
+  }).then((r) => r.text());
   const urls = [...css.matchAll(/url\((https:[^)]+\.ttf)\)/g)].map((m) => m[1]);
   await Promise.all(
     urls.map(async (url, i) => {
       const buf = Buffer.from(await fetch(url).then((r) => r.arrayBuffer()));
       await writeFile(path.join(fontDir, `instrument-sans-${i}.ttf`), buf);
-    })
+    }),
   );
 }
 
