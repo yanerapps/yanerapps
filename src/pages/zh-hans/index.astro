@@ -1,7 +1,7 @@
 ---
 import Layout from '../../studio/layouts/Layout.astro';
 import SwallowSky from '../../studio/components/SwallowSky.astro';
-import { mailto, studio } from '../../apps/registry';
+import { appPaths, apps, mailto, studio } from '../../apps/registry';
 
 const title = 'Yaner Apps — 认真做好用的 App';
 const description = 'Yaner Apps 认真做好用的 App，作品有 GPS-Go——一款免 root 的安卓定位模拟工具。';
@@ -53,8 +53,13 @@ const description = 'Yaner Apps 认真做好用的 App，作品有 GPS-Go——�
         <li>悬浮摇杆，可选圆盘摇杆或十字方向键</li>
         <li>无需账号——地点、路线和历史都只存在你的设备上</li>
       </ul>
-      <div class="reveal">
-        <span class="status-pill">即将上线</span>
+      <div class="product-actions reveal">
+        <a class="button" href={appPaths('gps-go').home} hreflang="en">产品介绍（英文）</a>
+        {
+          apps['gps-go'].playStoreUrl && (
+            <a class="button" href={apps['gps-go'].playStoreUrl} rel="noopener">在 Google Play 下载</a>
+          )
+        }
       </div>
     </div>
   </section>

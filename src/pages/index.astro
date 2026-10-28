@@ -1,7 +1,7 @@
 ---
 import Layout from '../studio/layouts/Layout.astro';
 import SwallowSky from '../studio/components/SwallowSky.astro';
-import { mailto, studio } from '../apps/registry';
+import { appPaths, apps, mailto, studio } from '../apps/registry';
 
 const title = 'Yaner Apps — We make quality apps.';
 const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.';
@@ -55,8 +55,13 @@ const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root l
         <li>Floating joystick with rocker and D-pad controls</li>
         <li>No account needed &mdash; your places, routes and history stay on your device</li>
       </ul>
-      <div class="reveal">
-        <span class="status-pill">In preparation for release</span>
+      <div class="product-actions reveal">
+        <a class="button" href={appPaths('gps-go').home}>See how it works</a>
+        {
+          apps['gps-go'].playStoreUrl && (
+            <a class="button" href={apps['gps-go'].playStoreUrl} rel="noopener">Get it on Google Play</a>
+          )
+        }
       </div>
     </div>
   </section>

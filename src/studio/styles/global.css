@@ -549,18 +549,10 @@ html:not(.js) .sky-frame {
   color: var(--text-main);
 }
 
-.status-pill {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-sub);
-  background: var(--surface);
-  border: 1px solid var(--border-hairline);
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
+.product-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 /* ---- contact section ---- */
