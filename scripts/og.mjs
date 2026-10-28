@@ -40,7 +40,7 @@ const svg = `
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
   <rect width="1200" height="630" fill="#fbfaf7"/>
   <text x="1005" y="470" text-anchor="middle" font-size="560"
-    font-family="Songti SC, Hiragino Mincho ProN, Noto Serif CJK SC, SimSun, serif"
+    font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Noto Sans CJK SC, sans-serif"
     fill="#26324d" opacity="0.08">燕</text>
   <text x="96" y="310" font-family="Instrument Sans, Helvetica, sans-serif"
     font-size="96" font-weight="550" letter-spacing="-3" fill="#18191c">We make quality apps.</text>
