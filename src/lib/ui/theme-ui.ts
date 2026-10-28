@@ -1,4 +1,4 @@
-import { initTheme } from '../../../lib/theme';
+import { initTheme } from '../theme';
 
 const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
 initTheme((theme) => {

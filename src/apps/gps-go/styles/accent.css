@@ -1,0 +1,12 @@
+/* GPS-Go's accent: the launcher icon's pin green, darkened until it reads as text on the light page. */
+:root {
+  --accent: #3f7a1a;
+  --on-accent: #ffffff;
+  --glow: rgb(106 148 50 / 0.16);
+}
+
+:root[data-theme='dark'] {
+  --accent: #8cc152;
+  --on-accent: #0c1405;
+  --glow: rgb(140 193 82 / 0.16);
+}

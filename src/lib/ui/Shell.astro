@@ -1,0 +1,61 @@
+---
+import './global.css';
+import SeoHead from '../SeoHead.astro';
+import ThemeBoot from '../ThemeBoot.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+  imageAlt?: string;
+  siteName?: string;
+  favicon: string;
+  appleTouchIcon?: string;
+}
+
+const { title, description, image, imageAlt, siteName, favicon, appleTouchIcon } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeBoot />
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+    </script>
+    <SeoHead
+      title={title}
+      description={description}
+      image={image}
+      imageSize={{ width: 1200, height: 630 }}
+      {...imageAlt && { imageAlt }}
+      {...siteName && { siteName }}
+    />
+    <link rel="icon" href={favicon} type="image/svg+xml" />
+    {appleTouchIcon && <link rel="apple-touch-icon" href={appleTouchIcon} />}
+    <meta name="theme-color" content="#f6f7f9" />
+    <script is:inline>
+      document.querySelector('meta[name="theme-color"]').content =
+        document.documentElement.dataset.theme === 'dark' ? '#08090b' : '#f6f7f9';
+    </script>
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('in');
+            observer.unobserve(entry.target);
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      for (const el of document.querySelectorAll('.reveal')) observer.observe(el);
+    </script>
+  </body>
+</html>

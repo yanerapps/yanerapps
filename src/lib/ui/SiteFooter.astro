@@ -1,0 +1,68 @@
+---
+import { studio } from '../../apps/registry';
+
+interface Props {
+  links: { href: string; label: string }[];
+}
+
+const { links } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="page footer-inner">
+    <p><slot name="owner">© {year} <a href="/">{studio.name}</a></slot></p>
+    <ul>
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href}>{l.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="fineprint"><slot name="fineprint" /></p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--line);
+    padding-block: 28px;
+    color: var(--dim);
+    font-size: 13px;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 32px;
+  }
+
+  .footer ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer a {
+    color: var(--dim);
+  }
+
+  .footer a:hover {
+    color: var(--text);
+  }
+
+  .fineprint:empty {
+    display: none;
+  }
+
+  .fineprint {
+    flex-basis: 100%;
+    max-width: 70ch;
+  }
+</style>
