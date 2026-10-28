@@ -19,8 +19,6 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "@fontsource-variable/instrument-sans": "^5.2.5",
-    "@fontsource-variable/newsreader": "^5.2.5",
     "astro": "^7.4.3",
     "three": "^0.186.1"
   },

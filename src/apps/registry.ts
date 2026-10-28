@@ -11,6 +11,19 @@ export const apps = {
     // null turns every Play call to action back into "Coming soon to Google Play".
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.yanerapps.gpsgo' as
       string | null,
+
+    /** Shown on the studio home page; an app without one is not listed there yet. */
+    showcase: {
+      icon: '/gps-go/favicon.svg',
+      tagline: 'A no-root location simulator',
+      summary:
+        'Pick a point on the map, mock device coordinates, and control movement with a floating joystick overlay. Built for developers and QA testing location-based apps.',
+      highlights: [
+        'Jump to any coordinate or saved place, or replay a route or GPX track at walking, running or cycling speed',
+        'Floating joystick with rocker and D-pad controls',
+        'No account needed — your places, routes and history stay on your device',
+      ],
+    },
   },
   pingdeck: { name: 'PingDeck' },
 } as const;

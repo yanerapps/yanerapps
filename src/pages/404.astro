@@ -3,11 +3,42 @@ import Layout from '../studio/layouts/Layout.astro';
 ---
 
 <Layout title="Page not found — Yaner Apps" description="There is no page at this address.">
-  <section class="lost">
+  <section class="lost page page-start">
     <span class="lost-glyph" aria-hidden="true">燕</span>
-    <p class="gallery-label"><span class="num">404</span> / Not found</p>
-    <h1>This nest is empty.</h1>
-    <p>There is nothing at this address. Whatever you were looking for has moved on with the wind.</p>
-    <p><a class="button" href="/">Back to the home page</a></p>
+    <p class="kicker">404 · Not found</p>
+    <h1 class="heading">This nest is empty.</h1>
+    <p class="lede">There is nothing at this address. Whatever you were looking for has moved on with the wind.</p>
+    <p><a class="btn btn-primary" href="/">Back to the home page</a></p>
   </section>
 </Layout>
+
+<style>
+  /* An empty nest under a faint 燕. */
+  .lost {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    min-height: 70vh;
+    padding-bottom: var(--section-space);
+  }
+
+  .lost-glyph {
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: calc(var(--header-h) + 1rem);
+    font-family: var(--cjk-serif);
+    font-size: clamp(14rem, 40vw, 24rem);
+    line-height: 1;
+    color: var(--text);
+    opacity: 0.06;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  h1 {
+    font-size: var(--step-5);
+  }
+</style>

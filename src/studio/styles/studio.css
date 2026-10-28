@@ -1,0 +1,254 @@
+/* The studio pages on the shared look (src/lib/ui/global.css): a vermilion seal-red accent, the
+   swallow's sky, and long documents (privacy policies, support pages). */
+:root {
+  --accent: #c23b22;
+  --on-accent: #ffffff;
+  --glow: rgb(194 59 34 / 0.14);
+  --serif: ui-serif, 'New York', Georgia, 'Times New Roman', serif;
+  --cjk-serif: 'Songti SC', 'Source Han Serif SC', 'Noto Serif SC', 'STSong', serif;
+
+  /* The swallow's sky: a muted daytime wash; dark mode turns it to dusk. swallow.ts reads these. */
+  --sky-top: #9dbdd0;
+  --sky-mid: #bfd3dc;
+  --sky-bottom: #e2e9e5;
+  --swallow-back: #283b54;
+  --swallow-belly: #f5f2e9;
+  --swallow-face: #db663b;
+  --swallow-rib: #776460;
+  --swallow-gloss: #6089a3;
+  --swallow-sheen: #3a8c9a;
+  --sky-wind: rgba(252, 251, 247, 0.6);
+  --sky-ink: #15140f;
+}
+
+:root[data-theme='dark'] {
+  --accent: #e8664a;
+  --on-accent: #1a0703;
+  --glow: rgb(232 102 74 / 0.16);
+  --sky-top: #1a2439;
+  --sky-mid: #37476a;
+  --sky-bottom: #6e5650;
+  --swallow-back: #405872;
+  --swallow-belly: #ece9df;
+  --swallow-face: #e18058;
+  --swallow-rib: #a28b83;
+  --swallow-gloss: #7eabbd;
+  --swallow-sheen: #58a8b6;
+  --sky-wind: rgba(237, 232, 222, 0.16);
+  --sky-ink: #ede8de;
+}
+
+/* The studio motto, Ride the Wind. It signs the sky and the footer. */
+.motto {
+  font-family: var(--serif);
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+/* ---- long documents: privacy policies and support pages ---- */
+
+.prose {
+  position: relative;
+  width: min(100% - 2 * var(--gutter), 46rem);
+  margin-inline: auto;
+  padding-top: calc(var(--header-h) + clamp(3rem, 8vw, 6rem));
+  padding-bottom: calc(var(--section-space) / 2);
+  color: var(--muted);
+}
+
+.prose-header {
+  display: grid;
+  gap: 0.75rem;
+  padding-bottom: 2rem;
+  margin-bottom: 2.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.prose h1 {
+  font-size: var(--step-4);
+  padding-bottom: 0.1em;
+  background: linear-gradient(var(--heading-from) 40%, var(--heading-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.prose .lede {
+  color: var(--muted);
+}
+
+.prose .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font: 12.5px/20px var(--mono);
+  color: var(--dim);
+}
+
+.prose h2 {
+  margin: 2.75rem 0 0.85rem;
+  font-size: var(--step-2);
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+.prose h3 {
+  margin: 1.75rem 0 0.6rem;
+  font-size: var(--step-1);
+  color: var(--text);
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 1rem;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25rem;
+}
+
+.prose li {
+  margin-bottom: 0.4rem;
+}
+
+.prose li::marker {
+  color: var(--dim);
+}
+
+.prose strong {
+  color: var(--text);
+  font-weight: 650;
+}
+
+.prose a.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 11px 18px;
+  border-radius: 12px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  box-shadow: 0 8px 28px -8px var(--glow);
+}
+
+.prose a.button:hover {
+  color: var(--btn-text);
+  transform: translateY(-1px);
+}
+
+.prose .card {
+  margin: 1.5rem 0;
+  padding: 18px 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.prose .card p:last-child {
+  margin-bottom: 0;
+}
+
+.prose code {
+  font-size: 0.88em;
+  padding: 0.1em 0.4em;
+  border-radius: 6px;
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.table-scroll {
+  overflow-x: auto;
+  margin: 1.5rem 0 1.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.prose thead th {
+  padding: 0.75rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+  font: 12px/1.4 var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.prose tbody td {
+  padding: 0.8rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.prose tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* A sticky contents list in the margin beside long documents, wide screens only (Layout.astro builds it). */
+.toc-rail {
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  .toc-rail {
+    display: block;
+    position: absolute;
+    top: calc(var(--header-h) + clamp(3rem, 8vw, 6rem));
+    bottom: 0;
+    right: 100%;
+    width: 13rem;
+    margin-right: 2.5rem;
+  }
+
+  .toc {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+    display: grid;
+    gap: 0.55rem;
+    padding-left: 1rem;
+    border-left: 1px solid var(--line);
+  }
+
+  .toc a {
+    font: 12px/1.4 var(--mono);
+    color: var(--dim);
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    color: var(--text);
+  }
+}
+
+@media print {
+  .header,
+  .footer,
+  .skip-link,
+  .toc-rail {
+    display: none !important;
+  }
+
+  .prose {
+    width: auto;
+    padding: 0;
+  }
+
+  .prose a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+  }
+}

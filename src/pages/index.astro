@@ -1,84 +1,342 @@
 ---
 import Layout from '../studio/layouts/Layout.astro';
 import SwallowSky from '../studio/components/SwallowSky.astro';
-import { appPaths, apps, mailto, studio } from '../apps/registry';
+import { appIds, appPaths, apps, mailto, studio } from '../apps/registry';
 
 const title = 'Yaner Apps — We make quality apps.';
 const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.';
+const showcased = appIds.flatMap((id) => {
+  const app = apps[id];
+  return 'showcase' in app ? [{ id, ...app, ...app.showcase }] : [];
+});
 ---
 
 <Layout title={title} description={description}>
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1 class="reveal">
-      We make <br />
-      <span class="accent">quality apps</span>
-    </h1>
-    <div class="hero-bottom reveal">
-      <p>An independent software studio.</p>
-      <div class="hero-tag">[Est. 2026]</div>
-    </div>
-  </section>
-
-  <!-- Section 01: Manifesto -->
-  <section class="gallery-section" aria-label="Manifesto">
-    <div class="gallery-label reveal"><span class="num">01</span> / Manifesto</div>
-    <div class="gallery-content">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="page layout">
+      <div class="copy">
+        <h1 id="hero-title">We make <em>quality apps.</em></h1>
+        <p class="lede">
+          An independent software studio. We build a few small, focused apps and look after each one until it deserves
+          its place on your phone.
+        </p>
+        <div class="ctas">
+          <a class="btn btn-primary" href="#apps">See what we built</a>
+          <a class="btn btn-quiet" href="#contact">Get in touch</a>
+        </div>
+        <p class="meta">Est. 2026 · Independent · No dark patterns</p>
+      </div>
       <SwallowSky inscription="Ride the Wind" />
-      <div class="manifesto-origin reveal">
-        <span class="cjk" lang="zh">燕儿</span> (Yaner) means &ldquo;little swallow.&rdquo;
-      </div>
-      <div class="manifesto-body">
-        <p class="reveal">
-          A swallow builds its nest one beakful of earth at a time &mdash;
-          patiently, deliberately, and exactly where it means to live. We build
-          software the same way.
+    </div>
+  </section>
+
+  <section class="section" id="manifesto" aria-labelledby="manifesto-title">
+    <div class="page">
+      <header class="section-head">
+        <p class="kicker reveal">01 · Manifesto</p>
+        <h2 class="reveal" id="manifesto-title">Built one beakful at a time.</h2>
+      </header>
+      <div class="manifesto">
+        <p class="origin reveal">
+          <span class="cjk" lang="zh">燕儿</span> (Yaner) means &ldquo;little swallow.&rdquo;
         </p>
-        <p class="reveal">
-          Zero dark patterns. Zero synthetic urgency. Small and focused is our strength: each tool cared for until it deserves to exist.
-        </p>
+        <div class="manifesto-body">
+          <p class="reveal">
+            A swallow builds its nest one beakful of earth at a time &mdash; patiently, deliberately, and exactly where
+            it means to live. We build software the same way.
+          </p>
+          <p class="reveal">
+            Zero dark patterns. Zero synthetic urgency. Small and focused is our strength: each tool cared for until it
+            deserves to exist.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Section 02: Featured Product -->
-  <section class="gallery-section" aria-label="Featured Product">
-    <div class="gallery-label reveal"><span class="num">02</span> / Apps</div>
-    <div class="gallery-content">
-      <div class="product-heading reveal">GPS-Go</div>
-      <div class="product-role reveal">A no-root location simulator</div>
-      <p class="product-desc reveal">
-        Pick a point on the map, mock device coordinates, and control movement with a floating joystick overlay. Built for developers and QA testing location-based apps.
-      </p>
-      <ul class="gallery-features reveal">
-        <li>Jump to any coordinate or saved place, or replay a route or GPX track at walking, running or cycling speed</li>
-        <li>Floating joystick with rocker and D-pad controls</li>
-        <li>No account needed &mdash; your places, routes and history stay on your device</li>
-      </ul>
-      <div class="product-actions reveal">
-        <a class="button" href={appPaths('gps-go').home}>See how it works</a>
+  <section class="section" id="apps" aria-labelledby="apps-title">
+    <div class="page">
+      <header class="section-head">
+        <p class="kicker reveal">02 · Apps</p>
+        <h2 class="reveal" id="apps-title">Small tools, cared for.</h2>
+      </header>
+      <div class="apps">
         {
-          apps['gps-go'].playStoreUrl && (
-            <a class="button" href={apps['gps-go'].playStoreUrl} rel="noopener">Get it on Google Play</a>
-          )
+          showcased.map((app) => (
+            <article class="app panel reveal">
+              <div class="app-head">
+                <img class="app-icon" src={app.icon} alt="" width="56" height="56" />
+                <div>
+                  <h3>{app.name}</h3>
+                  <p class="app-tagline">{app.tagline}</p>
+                </div>
+              </div>
+              <p class="app-summary">{app.summary}</p>
+              <ul class="app-highlights">
+                {app.highlights.map((h) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+              <div class="ctas">
+                <a class="btn btn-primary" href={appPaths(app.id).home}>See how it works</a>
+                {app.playStoreUrl && (
+                  <a class="btn btn-quiet" href={app.playStoreUrl} rel="noopener">Get it on Google Play</a>
+                )}
+              </div>
+            </article>
+          ))
         }
       </div>
     </div>
   </section>
 
-  <!-- Section 03: Contact -->
-  <section class="gallery-section" aria-label="Contact">
-    <div class="gallery-label reveal"><span class="num">03</span> / Contact</div>
-    <div class="gallery-content">
-      <div class="reveal">
-        <a href={mailto()} class="contact-action">
-          {studio.email}
-        </a>
-        <p class="contact-sub">
-          Questions, feedback, and support inquiries. The
-          <a href="/gps-go/support">support page</a> lists what to include.
-        </p>
+  <section class="closing" id="contact" aria-labelledby="contact-title">
+    <div class="page">
+      <div class="band panel reveal">
+        <div class="text">
+          <h2 id="contact-title">Questions, feedback or support?</h2>
+          <p>
+            Write to <a href={mailto()}>{studio.email}</a>. The <a href={appPaths('gps-go').support}>support page</a> lists
+            what to include in a bug report.
+          </p>
+        </div>
+        <a class="btn btn-primary" href={mailto()}>Email us</a>
       </div>
     </div>
   </section>
 </Layout>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow-x: clip;
+    padding-top: calc(var(--header-h) + clamp(2.5rem, 7vw, 5rem));
+    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  /* Faint grid that fades out toward the edges, plus a soft glow behind the sky. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 70% at 60% 30%, #000 30%, transparent 75%);
+  }
+
+  .glow {
+    position: absolute;
+    z-index: -1;
+    right: 0;
+    top: 10%;
+    width: min(900px, 100vw);
+    height: 560px;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    filter: blur(20px);
+    pointer-events: none;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  /* background-clip: text paints only inside the box; the padding keeps descenders in it. */
+  h1 {
+    padding-bottom: 0.1em;
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    background: linear-gradient(var(--heading-from) 45%, var(--heading-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  h1 em {
+    display: block;
+    font-style: normal;
+    background: none;
+    -webkit-text-fill-color: var(--accent);
+  }
+
+  .lede {
+    margin-top: 18px;
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .meta {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--dim);
+  }
+
+  .manifesto {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .origin {
+    font-size: var(--step-2);
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .cjk {
+    font-family: var(--cjk-serif);
+    color: var(--accent);
+  }
+
+  .manifesto-body {
+    display: grid;
+    gap: 1rem;
+    max-width: var(--measure);
+    color: var(--muted);
+    font-size: var(--step-1);
+  }
+
+  .apps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
+    gap: 16px;
+  }
+
+  .app {
+    display: grid;
+    grid-template-areas: 'head' 'summary' 'highlights' 'ctas';
+    gap: 16px;
+    padding: clamp(20px, 3vw, 28px);
+  }
+
+  /* A card alone in its row spreads into two columns: the app on the left, what it does on the right. */
+  @media (min-width: 900px) {
+    .app:only-child {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas: 'head highlights' 'summary highlights' 'ctas highlights';
+      column-gap: clamp(2rem, 5vw, 4rem);
+      align-content: start;
+    }
+  }
+
+  .app-head {
+    grid-area: head;
+  }
+
+  .app-summary {
+    grid-area: summary;
+  }
+
+  .app-highlights {
+    grid-area: highlights;
+    align-self: center;
+  }
+
+  .app .ctas {
+    grid-area: ctas;
+  }
+
+  .app-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .app-icon {
+    border-radius: 14px;
+  }
+
+  .app h3 {
+    font-size: var(--step-2);
+  }
+
+  .app-tagline {
+    color: var(--dim);
+    font-size: 14px;
+  }
+
+  .app-summary {
+    color: var(--muted);
+  }
+
+  .app-highlights {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+
+  .app-highlights li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+
+  .app-highlights li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .app .ctas {
+    margin-top: 4px;
+  }
+
+  .closing {
+    padding-block: calc(var(--section-space) / 2) var(--section-space);
+  }
+
+  .band {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px 24px;
+    padding: clamp(20px, 4vw, 32px);
+  }
+
+  .band h2 {
+    font-size: clamp(1.25rem, 2.6vw, 1.625rem);
+    letter-spacing: -0.02em;
+  }
+
+  .band p {
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 14.5px;
+  }
+
+  @media (max-width: 900px) {
+    .layout,
+    .manifesto {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .band {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .band > .btn {
+      justify-self: start;
+    }
+  }
+</style>

@@ -6,8 +6,8 @@ const { inscription } = Astro.props;
 ---
 
 <div class="sky-frame">
-  <div class="sky reveal" aria-hidden="true"><canvas></canvas></div>
-  <p class="sky-inscription motto reveal">{inscription}</p>
+  <div class="sky" aria-hidden="true"><canvas></canvas></div>
+  <p class="sky-inscription motto">{inscription}</p>
 </div>
 
 <script>
@@ -28,3 +28,40 @@ const { inscription } = Astro.props;
     io.observe(el);
   }
 </script>
+
+<style>
+  .sky-frame {
+    position: relative;
+  }
+
+  /* The sky washes out into the page on every side instead of ending at a frame. */
+  .sky {
+    aspect-ratio: 4 / 3;
+    background: linear-gradient(var(--sky-top), var(--sky-mid) 55%, var(--sky-bottom));
+    --fade: transparent, rgb(0 0 0 / 0.4) 6%, rgb(0 0 0 / 0.8) 12%, #000 20%, #000 80%,
+      rgb(0 0 0 / 0.8) 88%, rgb(0 0 0 / 0.4) 94%, transparent;
+    mask-image: linear-gradient(90deg, var(--fade)), linear-gradient(var(--fade));
+    mask-composite: intersect;
+  }
+
+  .sky canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sky-inscription {
+    position: absolute;
+    top: 7%;
+    right: 6%;
+    white-space: nowrap;
+    line-height: 1;
+    font-size: 1.15rem;
+    color: var(--sky-ink);
+    opacity: 0.85;
+  }
+
+  :global(html:not(.js)) .sky-frame {
+    display: none;
+  }
+</style>
