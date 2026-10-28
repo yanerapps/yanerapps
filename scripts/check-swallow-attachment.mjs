@@ -1,10 +1,10 @@
 import fs from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import assert from 'node:assert/strict';
+import ts from 'typescript';
 // Exercise the real generated shoulder geometry and production wingbeat without WebGL.
 // Internal helpers are exposed only in this in-memory check, not in the browser API.
 const root = new URL('../', import.meta.url).pathname;
-const { transform } = await import(pathToFileURL(root + '/node_modules/esbuild/lib/main.js'));
 const url = pathToFileURL(root + '/node_modules/three/build/three.module.js').href;
 const THREE = await import(url);
 let source = await fs.readFile(root + 'src/studio/components/swallow.ts', 'utf8');
@@ -17,10 +17,10 @@ source = source.replace("from 'three'", `from '${url}'`);
 source +=
   '\nexport {wingGeometry,shoulderGeometry,boxUVs,buildSwallow,flightFeathersGeometry,covertFeathersGeometry,wingWeights,planform,SPAN};';
 source += `\nexport function checkPose(parts,beat){const {bird,wings,tail,feet}=parts; const t=0,gustAt=0,beats=4; ${pose} pose(1+beat,0);}`;
-const js = await transform(source, { loader: 'ts', format: 'esm' });
-const module = await import(
-  'data:text/javascript;base64,' + Buffer.from(js.code).toString('base64')
-);
+const code = ts.transpileModule(source, {
+  compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
+}).outputText;
+const module = await import('data:text/javascript;base64,' + Buffer.from(code).toString('base64'));
 const wing = module.wingGeometry(),
   box = module.boxUVs(wing),
   cuff = module.shoulderGeometry(box);
