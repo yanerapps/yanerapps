@@ -32,7 +32,7 @@ const template =
       <h1>Support</h1>
       <p class="lede">Questions, bug reports, and privacy requests for GPS-Go.</p>
       <div class="meta">
-        <span>Updated: 21 Sep 2026</span>
+        <span>Updated: 27 Oct 2026</span>
       </div>
     </div>
 
@@ -70,6 +70,8 @@ const template =
       Apps that verify location integrity, or that read location through their own means, can detect or
       ignore a mocked position. GPS-Go feeds the standard Android location providers; it cannot guarantee
       that every third-party app will accept the simulated position.
+      GPS-Go does not hide that the location is simulated. If an app says it cannot find your location,
+      it is most likely refusing the simulated one.
     </p>
 
     <h3>The floating joystick does not appear</h3>
@@ -92,7 +94,7 @@ const template =
 
     <h2>Responsible use</h2>
     <p>
-      GPS-Go simulates the location of your own device, for testing, development, and privacy purposes. Do
+      GPS-Go simulates the location of your own device, for development and testing, including keeping your real location out of demos and screenshots. Do
       not use it to deceive other people or to violate the terms of any service you use. You are
       responsible for how you use it.
     </p>
