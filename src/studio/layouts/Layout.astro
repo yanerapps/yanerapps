@@ -4,34 +4,32 @@ import '@fontsource-variable/newsreader';
 import '@fontsource-variable/newsreader/wght-italic.css';
 import '../styles/global.css';
 
+import SeoHead from '../../lib/SeoHead.astro';
+import ThemeBoot from '../../lib/ThemeBoot.astro';
+import { cleanPath, isZh, localize } from '../../lib/paths';
+
 interface Props {
   title?: string;
   description?: string;
-  currentPath?: string;
-  lang?: string;
 }
 
 const {
   title = 'Yaner Apps — We make quality apps.',
   description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.',
-  currentPath = '/',
-  lang = 'en',
 } = Astro.props;
 
-const zh = lang.startsWith('zh');
 // Every page has a counterpart: /x <-> /zh-hans/x, with the English page at the unprefixed path.
-const enPath = zh ? currentPath.replace(/^\/zh-hans/, '') || '/' : currentPath;
-const zhPath = enPath === '/' ? '/zh-hans' : '/zh-hans' + enPath;
-const local = (path: string) => (zh ? (path === '/' ? '/zh-hans' : '/zh-hans' + path) : path);
+const currentPath = cleanPath(Astro.url.pathname);
+const zh = isZh(currentPath);
+const lang = zh ? 'zh-Hans' : 'en';
+const enPath = localize(currentPath, false);
+const zhPath = localize(currentPath, true);
+const local = (path: string) => localize(path, zh);
 const home = local('/');
 const privacy = local('/privacy');
 // Support follows the app whose pages you are on; site-wide pages keep GPS-Go's.
 const app = enPath.match(/^\/(pingdeck|gps-go)\//)?.[1] ?? 'gps-go';
 const support = local(`/${app}/support`);
-const site = Astro.site || 'https://yanerapps.com';
-const canonicalUrl = new URL(currentPath, site).href;
-const enUrl = new URL(enPath, site).href;
-const zhUrl = new URL(zhPath, site).href;
 ---
 
 <!doctype html>
@@ -39,36 +37,21 @@ const zhUrl = new URL(zhPath, site).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="title" content={title} />
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
+    <SeoHead
+      title={title}
+      description={description}
+      image="/og.png"
+      imageSize={{ width: 1200, height: 630 }}
+      alternates={[
+        { hreflang: 'en', path: enPath },
+        { hreflang: 'zh-Hans', path: zhPath },
+        { hreflang: 'x-default', path: enPath },
+      ]}
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4f1ea" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e0d0b" />
-
-    <!-- Open Graph / Social Meta -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:image" content="https://yanerapps.com/og.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="alternate" hreflang="en" href={enUrl} />
-    <link rel="alternate" hreflang="zh-Hans" href={zhUrl} />
-    <link rel="alternate" hreflang="x-default" href={enUrl} />
-    <script is:inline>
-      (function () {
-        const d = document.documentElement;
-        d.classList.add('js');
-        try {
-          const t = localStorage.getItem('theme');
-          if (t) d.dataset.theme = t;
-        } catch {
-          // Without storage the page follows the system theme.
-        }
-      })();
-    </script>
+    <ThemeBoot />
   </head>
 
   <body>
@@ -85,7 +68,7 @@ const zhUrl = new URL(zhPath, site).href;
           {zh
             ? <a class="lang-switch" href={enPath} hreflang="en" lang="en" aria-label="English">EN</a>
             : <a class="lang-switch" href={zhPath} hreflang="zh-Hans" lang="zh-Hans" aria-label="中文">ZH</a>}
-          <button class="theme-toggle" type="button" aria-label={zh ? '切换深浅色' : 'Toggle dark mode'}>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label={zh ? '切换深浅色' : 'Toggle dark mode'}>
             <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
               <circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5" />
               <path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor" />
@@ -115,22 +98,9 @@ const zhUrl = new URL(zhPath, site).href;
       </div>
     </footer>
 
-    <!-- Theme toggle: an explicit choice is stored; picking the system theme clears it. -->
-    <script is:inline>
-      document.addEventListener('click', function (ev) {
-        if (!ev.target.closest('.theme-toggle')) return;
-        const d = document.documentElement;
-        const sys = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        const next = (d.dataset.theme || sys) === 'dark' ? 'light' : 'dark';
-        try {
-          if (next === sys) localStorage.removeItem('theme');
-          else localStorage.setItem('theme', next);
-        } catch {
-          // Without storage the choice lasts until the next page.
-        }
-        if (next === sys) delete d.dataset.theme;
-        else d.dataset.theme = next;
-      });
+    <script>
+      import { initTheme } from '../../lib/theme';
+      initTheme();
     </script>
 
     <!-- Long documents get a table of contents built from their h2s; CSS shows it only where the margin is wide -->

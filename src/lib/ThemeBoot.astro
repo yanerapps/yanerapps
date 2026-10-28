@@ -1,0 +1,22 @@
+---
+// Sets the theme before first paint; src/lib/theme.ts takes over once the page's script runs.
+---
+
+<script is:inline>
+  (function () {
+    const d = document.documentElement;
+    d.classList.add('js');
+    let t = null;
+    try {
+      t = localStorage.getItem('theme');
+    } catch {
+      // Without storage the page follows the system theme.
+    }
+    d.dataset.theme =
+      t === 'light' || t === 'dark'
+        ? t
+        : matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+  })();
+</script>
