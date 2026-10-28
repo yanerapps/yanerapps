@@ -3,7 +3,6 @@ import '@fontsource-variable/instrument-sans/wdth.css';
 import '@fontsource-variable/newsreader';
 import '@fontsource-variable/newsreader/wght-italic.css';
 import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -58,8 +57,6 @@ const zhUrl = new URL(zhPath, site).href;
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="zh-Hans" href={zhUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
-    <ClientRouter />
-
     <script is:inline>
       (function () {
         const d = document.documentElement;
@@ -70,12 +67,6 @@ const zhUrl = new URL(zhPath, site).href;
         } catch {
           // Without storage the page follows the system theme.
         }
-        // Client-side navigation replaces <html>'s attributes with the next page's; carry these over.
-        document.addEventListener('astro:before-swap', function (e) {
-          const n = e.newDocument.documentElement;
-          n.classList.add('js');
-          if (d.dataset.theme) n.dataset.theme = d.dataset.theme;
-        });
       })();
     </script>
   </head>
@@ -124,8 +115,7 @@ const zhUrl = new URL(zhPath, site).href;
       </div>
     </footer>
 
-    <!-- Theme toggle: an explicit choice is stored; picking the system theme clears it.
-         Delegated, so it keeps working after client-side navigation swaps the body. -->
+    <!-- Theme toggle: an explicit choice is stored; picking the system theme clears it. -->
     <script is:inline>
       document.addEventListener('click', function (ev) {
         if (!ev.target.closest('.theme-toggle')) return;
@@ -167,11 +157,10 @@ const zhUrl = new URL(zhPath, site).href;
           prose.prepend(rail);
         }
         toc();
-        document.addEventListener('astro:after-swap', toc);
       })();
     </script>
 
-    <!-- Scroll reveal: runs on load and again for each page swapped in by client-side navigation -->
+    <!-- Scroll reveal -->
     <script is:inline>
       (function () {
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -201,7 +190,6 @@ const zhUrl = new URL(zhPath, site).href;
           });
         }
         reveal();
-        document.addEventListener('astro:after-swap', reveal);
       })();
     </script>
   </body>

@@ -1370,37 +1370,4 @@ export function mount(el: HTMLElement) {
     }
   });
   watcher.observe(el);
-
-  // Tear-down for client-side navigation: stop the loop, drop the listeners, release the GL context.
-  return () => {
-    visible = false;
-    cancelAnimationFrame(raf);
-    watcher.disconnect();
-    sizer.disconnect();
-    themeWatch.disconnect();
-    scheme.removeEventListener('change', applyTheme);
-    window.removeEventListener('pointermove', onPointer);
-    document.documentElement.removeEventListener('mouseleave', onLeave);
-    // The closed skin, vanes and coverts share resources between mirrored wings.
-    const geometries = new Set<BufferGeometry>();
-    const materials = new Set<ShaderMaterial | MeshBasicMaterial>();
-    const skeletons = new Set<Skeleton>();
-    scene.traverse((object) => {
-      if (object instanceof Mesh) {
-        geometries.add(object.geometry);
-        for (const material of Array.isArray(object.material)
-          ? object.material
-          : [object.material]) {
-          materials.add(material as ShaderMaterial | MeshBasicMaterial);
-        }
-      }
-      if (object instanceof SkinnedMesh) skeletons.add(object.skeleton);
-    });
-    geometries.forEach((geometry) => geometry.dispose());
-    materials.forEach((material) => material.dispose());
-    skeletons.forEach((skeleton) => skeleton.dispose());
-    for (const { texture } of [lower, upper, tailSheet]) texture.dispose();
-    renderer.dispose();
-    renderer.forceContextLoss();
-  };
 }

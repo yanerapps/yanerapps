@@ -7,7 +7,7 @@ const root = new URL('../', import.meta.url).pathname;
 const { transform } = await import(pathToFileURL(root + '/node_modules/esbuild/lib/main.js'));
 const url = pathToFileURL(root + '/node_modules/three/build/three.module.js').href;
 const THREE = await import(url);
-let source = await fs.readFile(root + 'src/components/swallow.ts', 'utf8');
+let source = await fs.readFile(root + 'src/studio/components/swallow.ts', 'utf8');
 assert(
   source.includes('  function pose(') && source.includes('  function step('),
   'Production pose seam changed; update this check',
