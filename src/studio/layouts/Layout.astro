@@ -17,8 +17,8 @@ const {
 } = Astro.props;
 
 const currentPath = cleanPath(Astro.url.pathname);
-// Support follows the app whose pages you are on; site-wide pages keep GPS-Go's.
-const app = appIds.find((id) => currentPath.startsWith(`/${id}/`)) ?? 'gps-go';
+// Support follows the app whose pages you are on; site-wide pages link the support overview.
+const app = appIds.find((id) => currentPath.startsWith(`/${id}/`));
 const year = new Date().getFullYear();
 const links = [
   { href: '/#manifesto', label: 'Manifesto' },
@@ -27,7 +27,7 @@ const links = [
 ];
 const footerLinks = [
   { href: '/privacy', label: 'Privacy' },
-  { href: appPaths(app).support, label: 'Support' },
+  { href: app ? appPaths(app).support : '/support', label: 'Support' },
   { href: mailto(), label: studio.email },
 ];
 ---

@@ -1,0 +1,93 @@
+---
+import Layout from '../studio/layouts/Layout.astro';
+import { appIds, appPaths, apps, mailto, studio } from '../apps/registry';
+
+const title = 'Support — Yaner Apps';
+const description = 'Support and contact for apps by Yaner Apps.';
+---
+
+<Layout title={title} description={description}>
+  <div class="prose">
+    <div class="prose-header">
+      <h1>Support</h1>
+      <p class="lede">Help with Yaner Apps apps, and how to reach us.</p>
+    </div>
+
+    <h2>Contact</h2>
+    <p>
+      Email <a href={mailto()}>{studio.email}</a> with questions, bug reports, feedback or privacy requests. Say which
+      app it is about. For a bug, please include your device model and Android version, the app version, and what you
+      did, what you expected and what happened instead.
+    </p>
+
+    <h2>Support by app</h2>
+    <p>Each app has its own support page, with its common questions and an email template for bug reports.</p>
+    <ul class="app-links">
+      {
+        appIds.map((id) => (
+          <li>
+            <a class="app-link" href={appPaths(id).support}>
+              <strong>{apps[id].name}</strong>
+              <span>{apps[id].blurb}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>Privacy</h2>
+    <p>What each app does with your data is set out in its <a href="/privacy">privacy policy</a>.</p>
+  </div>
+</Layout>
+
+<style>
+  .app-links {
+    display: grid;
+    gap: 12px;
+    margin: 1.25rem 0 1.5rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .app-links li {
+    margin: 0;
+  }
+
+  .app-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px 16px;
+    flex-wrap: wrap;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--panel);
+    box-shadow: var(--shadow);
+    color: var(--muted);
+    text-decoration: none;
+    transition:
+      transform 0.2s var(--ease),
+      border-color 0.2s;
+  }
+
+  .app-link::after {
+    content: '→';
+    color: var(--accent);
+  }
+
+  .app-link:hover {
+    transform: translateY(-1px);
+    border-color: var(--line-2);
+    color: var(--muted);
+  }
+
+  .app-link strong {
+    color: var(--text);
+  }
+
+  .app-link span {
+    flex: 1;
+    font-size: 14.5px;
+  }
+</style>

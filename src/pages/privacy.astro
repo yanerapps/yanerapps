@@ -1,6 +1,6 @@
 ---
 import Layout from '../studio/layouts/Layout.astro';
-import { mailto, studio } from '../apps/registry';
+import { appIds, appPaths, apps, mailto, studio } from '../apps/registry';
 
 const title = 'Privacy — Yaner Apps';
 const description = 'Privacy policies for apps by Yaner Apps.';
@@ -14,12 +14,13 @@ const description = 'Privacy policies for apps by Yaner Apps.';
     </div>
 
     <ul>
-      <li>
-        <a href="/gps-go/privacy"><strong>GPS-Go</strong></a> &mdash; no-root location simulator for Android
-      </li>
-      <li>
-        <a href="/pingdeck/privacy"><strong>PingDeck</strong></a> &mdash; pings many hosts at once, for Android
-      </li>
+      {
+        appIds.map((id) => (
+          <li>
+            <a href={appPaths(id).privacy}><strong>{apps[id].name}</strong></a> &mdash; {apps[id].blurb}
+          </li>
+        ))
+      }
     </ul>
 
     <p>

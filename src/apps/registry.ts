@@ -8,6 +8,8 @@ export const studio = {
 export const apps = {
   'gps-go': {
     name: 'GPS-Go',
+    /** One line for the privacy and support lists. */
+    blurb: 'no-root location simulator for Android',
     // null turns every Play call to action back into "Coming soon to Google Play".
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.yanerapps.gpsgo' as
       string | null,
@@ -25,7 +27,7 @@ export const apps = {
       ],
     },
   },
-  pingdeck: { name: 'PingDeck' },
+  pingdeck: { name: 'PingDeck', blurb: 'pings many hosts at once, for Android' },
 } as const;
 
 export type AppId = keyof typeof apps;
