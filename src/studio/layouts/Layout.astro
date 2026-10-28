@@ -39,7 +39,8 @@ const footerLinks = [
     <slot />
   </main>
   <SiteFooter links={footerLinks}>
-    <Fragment slot="owner"><span class="motto">Ride the Wind</span> · © {year} {studio.name}</Fragment>
+    <Fragment slot="owner"
+      ><img class="studio-mark" src="/favicon.svg" alt="" width="20" height="20" /><span class="motto">Ride the Wind</span>{` · © ${year} ${studio.name}`}</Fragment>
     <Fragment slot="fineprint">Static site · No tracking · Swallow drawn in code</Fragment>
   </SiteFooter>
 </Shell>

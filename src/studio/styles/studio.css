@@ -41,6 +41,13 @@
   --sky-ink: #ede8de;
 }
 
+/* The studio's seal, the favicon, signs the footer before the motto. */
+.studio-mark {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: -5px;
+}
+
 /* The studio motto, Ride the Wind. It signs the sky and the footer. */
 .motto {
   font-family: var(--serif);
