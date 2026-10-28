@@ -1,5 +1,6 @@
 ---
 import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
 
 const title = 'Privacy Policy — PingDeck';
 const description = 'Privacy policy for PingDeck (com.yanerapps.pingdeck), an Android app by Yaner Apps that pings many hosts at once.';
@@ -257,7 +258,7 @@ const description = 'Privacy policy for PingDeck (com.yanerapps.pingdeck), an An
     <h3>Controller</h3>
     <p>
       The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
-      reachable at <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. Google acts as an independent
+      reachable at <a href={mailto()}>{studio.email}</a>. Google acts as an independent
       controller for the data it receives, under its own policies.
     </p>
 
@@ -328,7 +329,7 @@ const description = 'Privacy policy for PingDeck (com.yanerapps.pingdeck), an An
       data, or to object to certain processing. Since PingDeck stores your data only on your device, you can
       exercise these rights directly in the app. For anything related to advertising data held by Google, use
       the Privacy options screen in the app and Google's own controls. If you need help, write to
-      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a> and we will respond within 30 days.
+      <a href={mailto()}>{studio.email}</a> and we will respond within 30 days.
     </p>
 
     <h2>14. Changes to this policy</h2>
@@ -339,7 +340,7 @@ const description = 'Privacy policy for PingDeck (com.yanerapps.pingdeck), an An
 
     <h2>15. Contact</h2>
     <p>
-      Yaner Apps &mdash; <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+      Yaner Apps &mdash; <a href={mailto()}>{studio.email}</a>
     </p>
   </div>
 </Layout>

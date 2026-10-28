@@ -1,12 +1,13 @@
 ---
 import Layout from '../../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../../apps/registry';
 
 const title = '技术支持 — PingDeck';
 const description = 'PingDeck（Yaner Apps 出品）技术支持、常见问题与联系方式。';
 
 // 点一下就打开一封已经列好字段的邮件草稿。
 const template =
-  'mailto:yanerapps@gmail.com?' +
+  `mailto:${studio.email}?` +
   new URLSearchParams({
     subject: 'PingDeck：',
     body: [
@@ -39,7 +40,7 @@ const template =
 
     <h2>联系我们</h2>
     <p>
-      请发送邮件至 <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>。为协助我们更快定位问题，请在邮件中包含：
+      请发送邮件至 <a href={mailto()}>{studio.email}</a>。为协助我们更快定位问题，请在邮件中包含：
     </p>
     <ul>
       <li>设备型号与安卓系统版本</li>

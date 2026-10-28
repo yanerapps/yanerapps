@@ -1,6 +1,7 @@
 ---
 import Layout from '../studio/layouts/Layout.astro';
 import SwallowSky from '../studio/components/SwallowSky.astro';
+import { mailto, studio } from '../apps/registry';
 
 const title = 'Yaner Apps — We make quality apps.';
 const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.';
@@ -65,8 +66,8 @@ const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root l
     <div class="gallery-label reveal"><span class="num">03</span> / Contact</div>
     <div class="gallery-content">
       <div class="reveal">
-        <a href="mailto:yanerapps@gmail.com" class="contact-action">
-          yanerapps@gmail.com
+        <a href={mailto()} class="contact-action">
+          {studio.email}
         </a>
         <p class="contact-sub">
           Questions, feedback, and support inquiries. The

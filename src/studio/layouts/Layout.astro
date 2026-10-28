@@ -7,6 +7,7 @@ import '../styles/global.css';
 import SeoHead from '../../lib/SeoHead.astro';
 import ThemeBoot from '../../lib/ThemeBoot.astro';
 import { cleanPath, isZh, localize } from '../../lib/paths';
+import { appIds, appPaths } from '../../apps/registry';
 
 interface Props {
   title?: string;
@@ -28,8 +29,8 @@ const local = (path: string) => localize(path, zh);
 const home = local('/');
 const privacy = local('/privacy');
 // Support follows the app whose pages you are on; site-wide pages keep GPS-Go's.
-const app = enPath.match(/^\/(pingdeck|gps-go)\//)?.[1] ?? 'gps-go';
-const support = local(`/${app}/support`);
+const app = appIds.find((id) => enPath.startsWith(`/${id}/`)) ?? 'gps-go';
+const support = local(appPaths(app).support);
 ---
 
 <!doctype html>

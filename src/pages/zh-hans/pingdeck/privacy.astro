@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../../apps/registry';
 
 const title = '隐私政策 — PingDeck';
 const description = 'PingDeck（com.yanerapps.pingdeck）隐私政策，Yaner Apps 出品的安卓批量 ping 监控工具。';
@@ -213,7 +214,7 @@ const description = 'PingDeck（com.yanerapps.pingdeck）隐私政策，Yaner Ap
     <h3>控制者</h3>
     <p>
       本政策所述处理活动的控制者为以 Yaner Apps 名义发布应用的 Yaner Yang，联系邮箱
-      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>。Google 对其收到的数据作为独立控制者，按其自身政策处理。
+      <a href={mailto()}>{studio.email}</a>。Google 对其收到的数据作为独立控制者，按其自身政策处理。
     </p>
 
     <h3>处理目的与法律依据</h3>
@@ -272,13 +273,13 @@ const description = 'PingDeck（com.yanerapps.pingdeck）隐私政策，Yaner Ap
     <p>
       根据你所在地区的法律，你可能有权访问、更正、删除或转移你的个人数据，或反对某些处理。由于 PingDeck 只在你的设备上保存数据，你可以直接在应用里行使这些权利。
       与 Google 持有的广告数据相关的事项，请使用应用中的「隐私选项」和 Google 自己的设置。如需帮助，请写信至
-      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>，我们会在 30 天内回复。
+      <a href={mailto()}>{studio.email}</a>，我们会在 30 天内回复。
     </p>
 
     <h2>14. 政策变更</h2>
     <p>本政策如有变更，更新后的版本会发布在本页面，并标明新的更新日期。影响数据共享方式的重大变更，也会在应用的更新说明中注明。</p>
 
     <h2>15. 联系方式</h2>
-    <p>Yaner Apps——<a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a></p>
+    <p>Yaner Apps——<a href={mailto()}>{studio.email}</a></p>
   </div>
 </Layout>

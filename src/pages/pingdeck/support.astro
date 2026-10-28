@@ -1,12 +1,13 @@
 ---
 import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
 
 const title = 'Support — PingDeck';
 const description = 'Support and contact for PingDeck by Yaner Apps.';
 
 // One tap opens a mail draft with the report fields already laid out.
 const template =
-  'mailto:yanerapps@gmail.com?' +
+  `mailto:${studio.email}?` +
   new URLSearchParams({
     subject: 'PingDeck: ',
     body: [
@@ -39,7 +40,7 @@ const template =
 
     <h2>Contact</h2>
     <p>
-      Email <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. To help us reproduce a
+      Email <a href={mailto()}>{studio.email}</a>. To help us reproduce a
       problem, please include:
     </p>
     <ul>

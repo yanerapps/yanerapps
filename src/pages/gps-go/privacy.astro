@@ -1,5 +1,6 @@
 ---
 import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
 
 const title = 'Privacy Policy — GPS-Go';
 const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root Android location simulator by Yaner Apps.';
@@ -258,7 +259,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
     <h3>Controller</h3>
     <p>
       The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
-      reachable at <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>. Google, Geoapify, the
+      reachable at <a href={mailto()}>{studio.email}</a>. Google, Geoapify, the
       operator of your device's geocoding service, and the map service behind a shared link act as
       independent controllers for the data they receive, under their own policies.
     </p>
@@ -342,7 +343,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       data, or to object to certain processing. Since GPS-Go stores your data only on your device, you can
       exercise these rights directly in the app. For anything related to advertising data held by Google,
       use the Privacy Options screen in the app and Google's own controls. If you need help, write to
-      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a> and we will respond within 30 days.
+      <a href={mailto()}>{studio.email}</a> and we will respond within 30 days.
     </p>
 
     <h2>13. Changes to this policy</h2>
@@ -353,7 +354,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
 
     <h2>14. Contact</h2>
     <p>
-      Yaner Apps &mdash; <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+      Yaner Apps &mdash; <a href={mailto()}>{studio.email}</a>
     </p>
   </div>
 </Layout>

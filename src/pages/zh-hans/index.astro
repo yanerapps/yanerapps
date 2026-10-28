@@ -1,6 +1,7 @@
 ---
 import Layout from '../../studio/layouts/Layout.astro';
 import SwallowSky from '../../studio/components/SwallowSky.astro';
+import { mailto, studio } from '../../apps/registry';
 
 const title = 'Yaner Apps — 认真做好用的 App';
 const description = 'Yaner Apps 认真做好用的 App，作品有 GPS-Go——一款免 root 的安卓定位模拟工具。';
@@ -63,8 +64,8 @@ const description = 'Yaner Apps 认真做好用的 App，作品有 GPS-Go——�
     <div class="gallery-label reveal"><span class="num">03</span> / 联系</div>
     <div class="gallery-content">
       <div class="reveal">
-        <a href="mailto:yanerapps@gmail.com" class="contact-action">
-          yanerapps@gmail.com
+        <a href={mailto()} class="contact-action">
+          {studio.email}
         </a>
         <p class="contact-sub">
           问题、反馈和技术支持，都可以写信来。<a href="/zh-hans/gps-go/support">支持页面</a>列出了来信时需要附上的信息。

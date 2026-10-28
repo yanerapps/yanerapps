@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../../apps/registry';
 
 const title = '隐私政策 — GPS-Go';
 const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps 出品的免 root 安卓定位模拟工具。';
@@ -224,7 +225,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
     <h3>数据控制者</h3>
     <p>
       本政策所述处理活动的控制者为 Yaner Yang（以 Yaner Apps 名义发布），联系邮箱
-      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>。Google、Geoapify、你设备地理编码服务的
+      <a href={mailto()}>{studio.email}</a>。Google、Geoapify、你设备地理编码服务的
       运营方，以及分享链接背后的地图服务，对各自收到的数据是独立的控制者，适用各自的政策。
     </p>
 
@@ -299,7 +300,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
       取决于你所在地区，你可能享有访问、更正、删除、转移个人数据或反对特定处理的权利。由于 GPS-Go 只在你的设备上
       存储数据，这些权利可直接在应用内行使。涉及 Google 持有的广告数据，请使用应用内的「隐私选项」页面以及
       Google 自身的控制项。需要协助请写信至
-      <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>，我们会在 30 天内回复。
+      <a href={mailto()}>{studio.email}</a>，我们会在 30 天内回复。
     </p>
 
     <h2>13. 政策变更</h2>
@@ -310,7 +311,7 @@ const description = 'GPS-Go（com.yanerapps.gpsgo）隐私政策，Yaner Apps �
 
     <h2>14. 联系方式</h2>
     <p>
-      Yaner Apps — <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+      Yaner Apps — <a href={mailto()}>{studio.email}</a>
     </p>
   </div>
 </Layout>

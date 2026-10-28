@@ -1,5 +1,6 @@
 ---
 import Layout from '../studio/layouts/Layout.astro';
+import { mailto, studio } from '../apps/registry';
 
 const title = 'Privacy — Yaner Apps';
 const description = 'Privacy policies for apps by Yaner Apps.';
@@ -22,7 +23,7 @@ const description = 'Privacy policies for apps by Yaner Apps.';
     </ul>
 
     <p>
-      Questions about privacy: <a href="mailto:yanerapps@gmail.com">yanerapps@gmail.com</a>
+      Questions about privacy: <a href={mailto()}>{studio.email}</a>
     </p>
   </div>
 </Layout>
