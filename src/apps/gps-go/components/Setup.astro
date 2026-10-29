@@ -1,15 +1,10 @@
 ---
-import PhoneFrame from './PhoneFrame.astro';
 import Screenshot from './Screenshot.astro';
 import SetupFlow from './SetupFlow.svelte';
 import aboutLight from '../assets/screens/setup-about-light.webp';
 import aboutDark from '../assets/screens/setup-about-dark.webp';
 import developerLight from '../assets/screens/setup-developer-light.webp';
 import developerDark from '../assets/screens/setup-developer-dark.webp';
-import mockAppLight from '../assets/screens/setup-mock-app-light.webp';
-import mockAppDark from '../assets/screens/setup-mock-app-dark.webp';
-import allSetLight from '../assets/screens/setup-all-set-light.webp';
-import allSetDark from '../assets/screens/setup-all-set-dark.webp';
 ---
 
 <section class="section" id="setup" aria-labelledby="setup-title">
@@ -31,7 +26,6 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
         <li><a href="#setup-permissions" data-setup-node><span>3</span>Allow permissions</a></li>
         <li><a href="#points" data-setup-node><span>4</span>Start mocking</a></li>
       </ol>
-      <a class="flow-credit" href="https://svelteflow.dev" target="_blank" rel="noopener noreferrer">Svelte Flow</a>
     </nav>
 
     <ol class="steps">
@@ -68,16 +62,9 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
             sizes="(min-width: 960px) 26rem, 90vw"
             class="card-shot"
           />
-          <PhoneFrame
-            class="step-phone"
-            image={mockAppLight}
-            dark={mockAppDark}
-            alt="GPS-Go setup, step 2 of 6, Mock Location App: why it is required and how to enable it in Developer options. The step shows Granted."
-            sizes="(min-width: 960px) 12rem, 48vw"
-          />
         </div>
       </li>
-      <li class="step" id="setup-permissions">
+      <li class="step step-text-only" id="setup-permissions">
         <div class="step-copy">
           <span class="step-number readout" aria-hidden="true">3</span>
           <h3>Allow location and the overlay</h3>
@@ -85,15 +72,6 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
             Location is needed to run the mock, and display over other apps powers the floating joystick. Notifications and
             unrestricted battery use are recommended.
           </p>
-        </div>
-        <div class="step-shots">
-          <PhoneFrame
-            class="step-phone"
-            image={allSetLight}
-            dark={allSetDark}
-            alt="GPS-Go setup summary, All set: mock location app, display over other apps and location permission are required and granted, notification access and battery optimization are recommended and set."
-            sizes="(min-width: 960px) 12rem, 48vw"
-          />
         </div>
       </li>
     </ol>
@@ -157,13 +135,6 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
     font-size: 0.8125rem;
   }
 
-  .flow-credit {
-    position: absolute;
-    right: 0;
-    bottom: -1.5rem;
-    color: var(--muted);
-    font-size: 0.75rem;
-  }
 
   .steps {
     display: grid;
@@ -178,6 +149,10 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
     gap: clamp(2rem, 6vw, 5rem);
     align-items: center;
+  }
+
+  .step-text-only {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .step-copy {
@@ -229,11 +204,6 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
     box-shadow:
       0 0 0 1px var(--line-2),
       0 30px 60px -30px var(--phone-shadow);
-  }
-
-  .step-shots :global(.step-phone) {
-    flex: none;
-    width: min(12rem, 48vw);
   }
 
   @media (max-width: 860px) {

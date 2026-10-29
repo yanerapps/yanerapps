@@ -42,7 +42,6 @@ const sinks = [
         <p class="flow-target" data-flow-target><strong>Your apps</strong><span>{targetDetail}</span></p>
       </div>
       <div class="flow-canvas"><ProviderFlow {sinks} {sourceDetail} {targetDetail} client:visible /></div>
-      <a class="flow-credit" href="https://svelteflow.dev" target="_blank" rel="noopener noreferrer">Svelte Flow</a>
     </div>
   </div>
 </section>
@@ -75,18 +74,7 @@ const sinks = [
     opacity: 1;
   }
 
-  .flow-credit {
-    display: none;
-    position: absolute;
-    right: 0;
-    bottom: -1.5rem;
-    color: var(--muted);
-    font-size: 0.75rem;
-  }
 
-  [data-flow-ready] .flow-credit {
-    display: block;
-  }
 
   .flow p,
   .flow-node {
