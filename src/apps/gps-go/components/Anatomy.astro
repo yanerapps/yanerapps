@@ -24,24 +24,8 @@ const panelRadius = (w: number, h: number) =>
     <div class="anatomy" data-anatomy data-initial={initial}>
       <div class="anatomy-figure" style={panelRadius(overlayImage.image.width, overlayImage.image.height)}>
         <Screenshot src={overlayImage.image} dark={overlayImage.dark} alt={overlayImage.alt} sizes="(min-width: 860px) 26rem, 70vw" />
-        <Hotspots rects={parts.map((p) => p.rect)} />
+        <Hotspots rects={parts.map((p) => p.rect)} labels={parts.map((p) => p.title)} controls={parts.map((p) => `part-${p.id}`)} {initial} />
       </div>
-
-      <div class="anatomy-side">
-        <ol class="parts">
-          {
-            parts.map((p, i) => (
-              <li>
-                <button type="button" class="part" data-part={i} aria-pressed={i === initial ? 'true' : 'false'} aria-controls={`part-${p.id}`}>
-                  <span class="part-key" aria-hidden="true">
-                    {i + 1}
-                  </span>
-                  {p.title}
-                </button>
-              </li>
-            ))
-          }
-        </ol>
 
         <div class="details">
           {
@@ -62,7 +46,6 @@ const panelRadius = (w: number, h: number) =>
             ))
           }
         </div>
-      </div>
     </div>
   </div>
 </section>
@@ -75,9 +58,8 @@ const panelRadius = (w: number, h: number) =>
 <style>
   .anatomy {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: clamp(2.5rem, 7vw, 7rem);
-    align-items: start;
+    justify-items: start;
+    gap: 1.5rem;
   }
 
   .anatomy-figure {
@@ -91,72 +73,25 @@ const panelRadius = (w: number, h: number) =>
       0 30px 60px -30px var(--phone-shadow);
   }
 
+  .anatomy-figure :global(.spot-light) {
+    box-shadow: none;
+  }
+
+  .anatomy-figure :global(button.spot-marker) {
+    translate: none;
+    aspect-ratio: auto;
+    border-radius: 3cqi;
+    background: transparent;
+    box-shadow: none;
+    scale: 1;
+  }
+
   .anatomy-figure :global(img) {
     width: 100%;
   }
 
-  .anatomy-side {
-    display: grid;
-    gap: 2.5rem;
-    align-content: start;
-  }
-
-  .parts {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .part {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    width: 100%;
-    min-height: 3rem;
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--line-2);
-    border-radius: var(--radius-pill);
-    background: none;
-    text-align: left;
-    font-weight: 560;
-    cursor: pointer;
-    transition:
-      background-color 0.2s ease,
-      border-color 0.2s ease;
-  }
-
-  .part:hover {
-    border-color: color-mix(in oklab, var(--accent) 55%, transparent);
-  }
-
-  .part[aria-pressed='true'] {
-    background: var(--panel-2);
-    border-color: var(--accent);
-  }
-
-  .part-key {
-    display: grid;
-    place-items: center;
-    flex: none;
-    width: 1.6rem;
-    height: 1.6rem;
-    border-radius: 50%;
-    background: var(--accent);
-    color: var(--bg);
-    font-size: 0.8125rem;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .part[aria-pressed='true'] .part-key {
-    background: var(--accent);
-  }
-
-  .details {
-    min-height: 22rem;
+  :global(html:not(.js)) .anatomy-figure :global(button.spot-marker) {
+    display: none;
   }
 
   .detail {
@@ -217,36 +152,9 @@ const panelRadius = (w: number, h: number) =>
     color: var(--muted);
   }
 
-  /* Narrow screens: the list sits beside the screenshot so a tap and its highlight stay in view. */
   @media (max-width: 860px) {
-    .anatomy {
-      gap: 2rem 1rem;
-    }
-
-    .anatomy-side {
-      display: contents;
-    }
-
     .anatomy-figure {
-      width: min(46vw, 17rem);
-    }
-
-    .parts {
-      grid-template-columns: 1fr;
-      gap: 0.35rem;
-    }
-
-    .part {
-      min-height: 2.75rem;
-      padding: 0.35rem 0.7rem 0.35rem 0.4rem;
-      gap: 0.55rem;
-      font-size: 0.9375rem;
-      line-height: 1.2;
-    }
-
-    .details {
-      grid-column: 1 / -1;
-      min-height: 0;
+      width: min(100%, 26rem);
     }
   }
 </style>
