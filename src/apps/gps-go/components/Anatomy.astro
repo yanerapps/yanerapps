@@ -27,25 +27,25 @@ const panelRadius = (w: number, h: number) =>
         <Hotspots rects={parts.map((p) => p.rect)} labels={parts.map((p) => p.title)} controls={parts.map((p) => `part-${p.id}`)} {initial} />
       </div>
 
-        <div class="details">
-          {
-            parts.map((p, i) => (
-              <article class="detail" id={`part-${p.id}`} data-detail={i} data-open={i === initial ? '' : undefined}>
-                <h3>{p.title}</h3>
-                <p>{p.body}</p>
-                {p.fragment && (
-                  <figure
-                    class:list={['fragment', `fragment-${p.id}`, { 'fragment-panel': p.fragment.panel }]}
-                    style={p.fragment.panel ? panelRadius(p.fragment.image.width, p.fragment.image.height) : undefined}
-                  >
-                    <Screenshot src={p.fragment.image} dark={p.fragment.dark} alt={p.fragment.alt} sizes="20rem" />
-                    <figcaption>{p.fragment.caption}</figcaption>
-                  </figure>
-                )}
-              </article>
-            ))
-          }
-        </div>
+      <div class="details">
+        {
+          parts.map((p, i) => (
+            <article class="detail" id={`part-${p.id}`} data-detail={i} data-open={i === initial ? '' : undefined}>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+              {p.fragment && (
+                <figure
+                  class:list={['fragment', `fragment-${p.id}`, { 'fragment-panel': p.fragment.panel }]}
+                  style={p.fragment.panel ? panelRadius(p.fragment.image.width, p.fragment.image.height) : undefined}
+                >
+                  <Screenshot src={p.fragment.image} dark={p.fragment.dark} alt={p.fragment.alt} sizes="20rem" />
+                  <figcaption>{p.fragment.caption}</figcaption>
+                </figure>
+              )}
+            </article>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
@@ -58,8 +58,9 @@ const panelRadius = (w: number, h: number) =>
 <style>
   .anatomy {
     display: grid;
-    justify-items: start;
-    gap: 1.5rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(2.5rem, 7vw, 7rem);
   }
 
   .anatomy-figure {
@@ -153,6 +154,11 @@ const panelRadius = (w: number, h: number) =>
   }
 
   @media (max-width: 860px) {
+    .anatomy {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
     .anatomy-figure {
       width: min(100%, 26rem);
     }
