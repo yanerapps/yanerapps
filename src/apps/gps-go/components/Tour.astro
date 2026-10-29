@@ -2,6 +2,7 @@
 import Screenshot from './Screenshot.astro';
 import PhoneFrame from './PhoneFrame.astro';
 import Hotspots from './Hotspots.astro';
+import SetupFlow from './SetupFlow.svelte';
 import type { Chapter } from '../data/tour';
 
 interface Props {
@@ -23,7 +24,18 @@ const { id, kicker, title, lede, chapters } = Astro.props;
       <p class="lede">{lede}</p>
     </header>
 
-    <div class="tour" data-tour>
+    {id === 'routes' && (
+      <nav class="route-overview" aria-label="Route overview" data-route-flow>
+        <div class="route-canvas"><SetupFlow wrapperSelector="[data-route-flow]" nodeSelector="[data-route-node]" client:visible /></div>
+        <ol class="route-steps">
+          <li><a href="#tour-add" data-route-node>Draw or import</a></li>
+          <li><a href="#tour-run" data-route-node>Set pace and start</a></li>
+          <li><a href="#tour-follow" data-route-node>Follow the route</a></li>
+          <li><a href="#tour-detour" data-route-node><small>Optional</small>Detour and return</a></li>
+        </ol>
+      </nav>
+    )}
+    <div class:list={['tour', { 'route-tour': id === 'routes' }]} data-tour>
       <ol class="chapters" data-chapters>
         {
           chapters.map((c, ci) => (
@@ -35,7 +47,7 @@ const { id, kicker, title, lede, chapters } = Astro.props;
                 <div class="crop-window">
                   <div class="crop-image">
                     <Screenshot src={c.image} dark={c.dark} alt={c.alt} sizes="(min-width: 1024px) 1px, (min-width: 400px) 352px, 90vw" />
-                    <Hotspots rects={c.hotspots.map((h) => h.rect)} />
+                    <Hotspots rects={c.hotspots.map((h) => h.rect)} hideMarkers={id === 'routes'} />
                   </div>
                 </div>
               </div>
@@ -70,7 +82,7 @@ const { id, kicker, title, lede, chapters } = Astro.props;
               chapters.map((c, ci) => (
                 <div class="tour-frame" data-frame={ci} data-shown={ci === 0 ? '' : undefined} aria-hidden={ci === 0 ? 'false' : 'true'}>
                   <Screenshot src={c.image} dark={c.dark} alt={c.alt} sizes="(min-width: 1024px) 340px, 1px" />
-                  <Hotspots rects={c.hotspots.map((h) => h.rect)} />
+                  <Hotspots rects={c.hotspots.map((h) => h.rect)} hideMarkers={id === 'routes'} />
                 </div>
               ))
             }
@@ -87,6 +99,62 @@ const { id, kicker, title, lede, chapters } = Astro.props;
 </script>
 
 <style>
+  .route-overview {
+    position: relative;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .route-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .route-steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .route-steps a {
+    display: grid;
+    align-content: center;
+    min-height: 5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sheet);
+    background: var(--panel);
+    color: var(--text);
+    font-weight: 620;
+    text-decoration: none;
+  }
+
+  .route-steps a:hover {
+    border-color: var(--accent);
+  }
+
+  .route-steps small {
+    color: var(--muted);
+    font-size: var(--step--1);
+    font-weight: 400;
+  }
+
+  .route-tour :global(.spot-light) {
+    box-shadow: none;
+  }
+
+  .route-tour .callout-key {
+    display: none;
+  }
+
+  .route-tour .callout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .tour {
     --phone-w: min(21.5rem, 27vw, calc((100svh - var(--header-h) - 4rem) / 2.32));
     --progress: 0;
@@ -309,6 +377,17 @@ const { id, kicker, title, lede, chapters } = Astro.props;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (max-width: 860px) {
+    .route-steps {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .route-steps a {
+      min-height: 3.25rem;
+    }
   }
 
   @media (max-width: 1023px) {

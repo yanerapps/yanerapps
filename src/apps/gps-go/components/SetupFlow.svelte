@@ -5,6 +5,10 @@
   import ProviderNode from './ProviderNode.svelte';
   import FlowEdge from './FlowEdge.svelte';
 
+  let {
+    wrapperSelector = '[data-setup-flow]',
+    nodeSelector = '[data-setup-node]',
+  }: { wrapperSelector?: string; nodeSelector?: string } = $props();
   let root: HTMLDivElement;
   let nodes: Node[] = $state.raw([]);
   let direction: 'vertical' | 'horizontal' = $state('horizontal');
@@ -18,8 +22,8 @@
   }));
 
   onMount(() => {
-    const wrapper = root.closest<HTMLElement>('[data-setup-flow]');
-    const cards = [...(wrapper?.querySelectorAll<HTMLElement>('[data-setup-node]') ?? [])];
+    const wrapper = root.closest<HTMLElement>(wrapperSelector);
+    const cards = [...(wrapper?.querySelectorAll<HTMLElement>(nodeSelector) ?? [])];
     if (!wrapper || cards.length !== 4) return;
     const update = () => {
       const frame = wrapper.getBoundingClientRect();

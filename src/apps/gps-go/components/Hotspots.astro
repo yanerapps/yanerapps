@@ -8,16 +8,17 @@ interface Props {
   labels?: readonly string[];
   controls?: readonly string[];
   initial?: number;
+  hideMarkers?: boolean;
 }
 
-const { rects, class: className, labels, controls, initial } = Astro.props;
+const { rects, class: className, labels, controls, initial, hideMarkers = false } = Astro.props;
 const clamp = (v: number) => Math.min(96, Math.max(4, v));
 ---
 
 <div class:list={['spots', className]} data-spots data-rects={JSON.stringify(rects)} aria-hidden={labels ? undefined : 'true'}>
   <span class="spot-light" data-light></span>
   {
-    rects.map((r, i) => (
+    !hideMarkers && rects.map((r, i) => (
       labels ? (
         <button type="button" class="spot-marker" data-marker={i} aria-label={labels[i]} aria-controls={controls?.[i]} aria-pressed={i === initial ? 'true' : 'false'} style={`left:calc(${r[0]}% - 6px);top:calc(${r[1]}% - 6px);width:calc(${r[2]}% + 12px);height:calc(${r[3]}% + 12px)`}></button>
       ) : (
