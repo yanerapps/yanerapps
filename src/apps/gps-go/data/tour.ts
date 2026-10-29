@@ -37,11 +37,14 @@ export interface Chapter {
   dark: ImageMetadata;
   alt: string;
   hotspots: readonly Hotspot[];
+  /** Top and bottom edges of the mobile crop, as percentages of the screenshot. */
+  mobileCrop: readonly [top: number, bottom: number];
 }
 
 export const pointChapters: readonly Chapter[] = [
   {
     id: 'find',
+    mobileCrop: [0, 56],
     title: 'Find a spot',
     body: 'Search for a place, type coordinates in decimal or degrees, minutes and seconds, or paste a map link. Coordinates are read on the phone and never use one of your daily searches.',
     image: searchLight,
@@ -67,6 +70,7 @@ export const pointChapters: readonly Chapter[] = [
   },
   {
     id: 'pick',
+    mobileCrop: [38, 98],
     title: 'Pick a spot',
     body: 'Tap anywhere on the map, choose a saved place or a search result. You see the address and exact coordinates before anything changes.',
     image: pickLight,
@@ -92,6 +96,7 @@ export const pointChapters: readonly Chapter[] = [
   },
   {
     id: 'start',
+    mobileCrop: [40, 92],
     title: 'Mocking starts',
     body: 'The sheet closes and the mocked position takes over. The bar at the bottom shows what is running and stops it.',
     image: runningLight,
@@ -122,6 +127,7 @@ export const pointChapters: readonly Chapter[] = [
   },
   {
     id: 'teleport',
+    mobileCrop: [55, 98],
     title: 'Teleport, or travel there',
     body: 'While a session runs, picking another spot gives you two ways to get there: arrive at once, or move there in a straight line at your walk speed.',
     image: teleportLight,
@@ -147,6 +153,7 @@ export const pointChapters: readonly Chapter[] = [
   },
   {
     id: 'steer',
+    mobileCrop: [20, 55],
     title: 'Steer from any app',
     body: 'The joystick floats over whatever app you are using. Push it and the position moves at walking, running or cycling speed; let go and it keeps going until you stop it.',
     image: joystickLight,
@@ -180,6 +187,7 @@ export const pointChapters: readonly Chapter[] = [
 export const routeChapters: readonly Chapter[] = [
   {
     id: 'add',
+    mobileCrop: [55, 86],
     title: 'Add a place or a route',
     body: 'The + button on the map adds a place where you are looking, starts a drawing, or imports a GPX file.',
     image: fabLight,
@@ -205,6 +213,7 @@ export const routeChapters: readonly Chapter[] = [
   },
   {
     id: 'draw',
+    mobileCrop: [28, 92],
     title: 'Draw a route',
     body: 'Draw on the map with a finger. Add as many strokes as you like; each one continues from where the last one ended.',
     image: drawLight,
@@ -230,6 +239,7 @@ export const routeChapters: readonly Chapter[] = [
   },
   {
     id: 'run',
+    mobileCrop: [27, 93],
     title: 'Run it your way',
     body: 'Before you start, choose the pace, and under Advanced settings one-way or round trip, how many laps and what happens at the end. You can change the pace while it runs.',
     image: routeSheetLight,
@@ -256,6 +266,7 @@ export const routeChapters: readonly Chapter[] = [
   },
   {
     id: 'follow',
+    mobileCrop: [25, 85],
     title: 'Follow it exactly',
     body: 'The position follows the line you drew, not an approximation of it. What you have covered and what is left look different on the map.',
     image: routeRunningLight,
@@ -269,6 +280,7 @@ export const routeChapters: readonly Chapter[] = [
   },
   {
     id: 'detour',
+    mobileCrop: [20, 65],
     title: 'Wander off, then come back',
     body: 'Nudge the joystick in the middle of a route and you are on a detour. The route remembers exactly where you left it.',
     image: detourLight,

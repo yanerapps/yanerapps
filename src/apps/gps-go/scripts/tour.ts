@@ -4,7 +4,7 @@ import { at } from '../../../lib/at';
 /**
  * Sticky-phone tour. On wide screens the chapter crossing the middle of the viewport picks the
  * screenshot, and the callout crossing it picks the highlighted part; hovering, focusing or pressing
- * a callout (or tapping a marker) overrides that. Narrow screens use each chapter's inline phone.
+ * a callout (or tapping a marker) overrides that. Narrow screens use static annotated crops.
  */
 export function initTour() {
   document.querySelectorAll<HTMLElement>('[data-tour]').forEach(initOne);
@@ -15,7 +15,6 @@ function initOne(root: HTMLElement) {
   const chapters = [...root.querySelectorAll<HTMLElement>('[data-chapter]')];
   const frames = [...root.querySelectorAll<HTMLElement>('[data-frame]')];
   const stage = frames.map((f) => spotlight(f.querySelector('[data-spots]') as HTMLElement));
-  const inline = chapters.map((c) => spotlight(c.querySelector('[data-spots]') as HTMLElement));
   const buttons = chapters.map((c) => [...c.querySelectorAll<HTMLButtonElement>('[data-spot]')]);
   const callouts = [...root.querySelectorAll<HTMLElement>('[data-callout]')];
   const wide = matchMedia('(min-width: 1024px)');
@@ -35,8 +34,9 @@ function initOne(root: HTMLElement) {
           : -1;
 
   const render = (c: number) => {
+    if (!wide.matches) return;
     const spot = resolve(c);
-    at(wide.matches ? stage : inline, c).show(spot);
+    at(stage, c).show(spot);
     at(buttons, c).forEach((b, i) => b.setAttribute('aria-pressed', String(i === pinned[c])));
     at(buttons, c).forEach((b, i) => b.toggleAttribute('data-lit', i === spot));
   };
@@ -96,10 +96,8 @@ function initOne(root: HTMLElement) {
     }),
   );
 
-  [stage, inline].forEach((set) =>
-    set.forEach((s, c) =>
-      s.markers.forEach((m, i) => m.addEventListener('click', () => press(c, i))),
-    ),
+  stage.forEach((s, c) =>
+    s.markers.forEach((m, i) => m.addEventListener('click', () => press(c, i))),
   );
 
   // Progress runs from the list's top reaching mid-viewport to its bottom leaving it.
@@ -114,7 +112,6 @@ function initOne(root: HTMLElement) {
 
   wide.addEventListener('change', () => {
     stage.forEach((s) => s.show(-1));
-    inline.forEach((s) => s.show(-1));
     render(active);
     // Observing again reports the current intersections at once, so the sticky phone catches up.
     const reobserve = (observer: IntersectionObserver, targets: Element[]) =>
