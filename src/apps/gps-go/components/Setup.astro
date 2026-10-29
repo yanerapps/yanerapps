@@ -1,6 +1,7 @@
 ---
 import PhoneFrame from './PhoneFrame.astro';
 import Screenshot from './Screenshot.astro';
+import SetupFlow from './SetupFlow.svelte';
 import aboutLight from '../assets/screens/setup-about-light.webp';
 import aboutDark from '../assets/screens/setup-about-dark.webp';
 import developerLight from '../assets/screens/setup-developer-light.webp';
@@ -22,8 +23,19 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
       </p>
     </header>
 
+    <nav class="setup-overview" aria-label="Setup steps" data-setup-flow>
+      <div class="setup-canvas"><SetupFlow client:visible /></div>
+      <ol class="overview-steps">
+        <li><a href="#setup-developer" data-setup-node><span>1</span>Developer options</a></li>
+        <li><a href="#setup-mock-app" data-setup-node><span>2</span>Choose GPS-Go</a></li>
+        <li><a href="#setup-permissions" data-setup-node><span>3</span>Allow permissions</a></li>
+        <li><a href="#points" data-setup-node><span>4</span>Start mocking</a></li>
+      </ol>
+      <a class="flow-credit" href="https://svelteflow.dev" target="_blank" rel="noopener noreferrer">Svelte Flow</a>
+    </nav>
+
     <ol class="steps">
-      <li class="step">
+      <li class="step" id="setup-developer">
         <div class="step-copy">
           <span class="step-number readout" aria-hidden="true">1</span>
           <h3>Turn on Developer options</h3>
@@ -39,7 +51,7 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
           />
         </div>
       </li>
-      <li class="step">
+      <li class="step" id="setup-mock-app">
         <div class="step-copy">
           <span class="step-number readout" aria-hidden="true">2</span>
           <h3>Choose GPS-Go as the mock location app</h3>
@@ -65,7 +77,7 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
           />
         </div>
       </li>
-      <li class="step">
+      <li class="step" id="setup-permissions">
         <div class="step-copy">
           <span class="step-number readout" aria-hidden="true">3</span>
           <h3>Allow location and the overlay</h3>
@@ -89,6 +101,70 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
 </section>
 
 <style>
+  .section-head {
+    gap: 0.75rem;
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .setup-overview {
+    position: relative;
+    margin: 0 0 clamp(3rem, 5vw, 4rem);
+  }
+
+  .setup-canvas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .overview-steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .overview-steps a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 5rem;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sheet);
+    background: var(--panel);
+    color: var(--text);
+    font-weight: 620;
+    text-decoration: none;
+  }
+
+  .overview-steps a:hover {
+    border-color: var(--accent);
+  }
+
+  .overview-steps span {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 0.8125rem;
+  }
+
+  .flow-credit {
+    position: absolute;
+    right: 0;
+    bottom: -1.5rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
   .steps {
     display: grid;
     gap: clamp(3rem, 7vw, 5rem);
@@ -161,6 +237,16 @@ import allSetDark from '../assets/screens/setup-all-set-dark.webp';
   }
 
   @media (max-width: 860px) {
+    .overview-steps {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .overview-steps a {
+      min-height: 3.25rem;
+      padding-block: 0.65rem;
+    }
+
     .step {
       grid-template-columns: minmax(0, 1fr);
     }
