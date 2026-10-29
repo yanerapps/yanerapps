@@ -14,17 +14,15 @@
   let direction: 'vertical' | 'horizontal' = $state('horizontal');
   const nodeTypes = { provider: ProviderNode };
   const edgeTypes = { flow: FlowEdge };
-  const edges: Edge[] = [0, 1, 2].map((i) => ({
-    id: `step-${i}`,
-    source: `step-${i}`,
-    target: `step-${i + 1}`,
-    type: 'flow',
-  }));
+  let edges: Edge[] = $state.raw([]);
 
   onMount(() => {
     const wrapper = root.closest<HTMLElement>(wrapperSelector);
     const cards = [...(wrapper?.querySelectorAll<HTMLElement>(nodeSelector) ?? [])];
-    if (!wrapper || cards.length !== 4) return;
+    if (!wrapper || cards.length < 2) return;
+    edges = cards.slice(1).map((_, i) => ({
+      id: `step-${i}`, source: `step-${i}`, target: `step-${i + 1}`, type: 'flow',
+    }));
     const update = () => {
       const frame = wrapper.getBoundingClientRect();
       if (!frame.width || !frame.height) return;

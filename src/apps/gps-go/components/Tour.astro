@@ -24,18 +24,22 @@ const { id, kicker, title, lede, chapters } = Astro.props;
       <p class="lede">{lede}</p>
     </header>
 
-    {id === 'routes' && (
-      <nav class="route-overview" aria-label="Route overview" data-route-flow>
+    {(id === 'routes' || id === 'points') && (
+      <nav class="route-overview" aria-label={id === 'routes' ? 'Route overview' : 'Mock a place overview'} data-route-flow>
         <div class="route-canvas"><SetupFlow wrapperSelector="[data-route-flow]" nodeSelector="[data-route-node]" client:visible /></div>
-        <ol class="route-steps">
+        <ol class:list={['route-steps', { 'point-steps': id === 'points' }]}>
+          {id === 'points' ? chapters.map((chapter) => (
+            <li><a href={`#tour-${chapter.id}`} data-route-node>{chapter.title}</a></li>
+          )) : <>
           <li><a href="#tour-add" data-route-node>Draw or import</a></li>
           <li><a href="#tour-run" data-route-node>Set pace and start</a></li>
           <li><a href="#tour-follow" data-route-node>Follow the route</a></li>
           <li><a href="#tour-detour" data-route-node><small>Optional</small>Detour and return</a></li>
+          </>}
         </ol>
       </nav>
     )}
-    <div class:list={['tour', { 'route-tour': id === 'routes' }]} data-tour>
+    <div class:list={['tour', { 'route-tour': id === 'routes' || id === 'points' }]} data-tour>
       <ol class="chapters" data-chapters>
         {
           chapters.map((c, ci) => (
@@ -47,7 +51,7 @@ const { id, kicker, title, lede, chapters } = Astro.props;
                 <div class="crop-window">
                   <div class="crop-image">
                     <Screenshot src={c.image} dark={c.dark} alt={c.alt} sizes="(min-width: 1024px) 1px, (min-width: 400px) 352px, 90vw" />
-                    <Hotspots rects={c.hotspots.map((h) => h.rect)} hideMarkers={id === 'routes'} />
+                    <Hotspots rects={c.hotspots.map((h) => h.rect)} hideMarkers={id === 'routes' || id === 'points'} />
                   </div>
                 </div>
               </div>
@@ -82,7 +86,7 @@ const { id, kicker, title, lede, chapters } = Astro.props;
               chapters.map((c, ci) => (
                 <div class="tour-frame" data-frame={ci} data-shown={ci === 0 ? '' : undefined} aria-hidden={ci === 0 ? 'false' : 'true'}>
                   <Screenshot src={c.image} dark={c.dark} alt={c.alt} sizes="(min-width: 1024px) 340px, 1px" />
-                  <Hotspots rects={c.hotspots.map((h) => h.rect)} hideMarkers={id === 'routes'} />
+                  <Hotspots rects={c.hotspots.map((h) => h.rect)} hideMarkers={id === 'routes' || id === 'points'} />
                 </div>
               ))
             }
@@ -118,6 +122,10 @@ const { id, kicker, title, lede, chapters } = Astro.props;
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  .point-steps {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .route-steps a {
@@ -380,7 +388,8 @@ const { id, kicker, title, lede, chapters } = Astro.props;
   }
 
   @media (max-width: 860px) {
-    .route-steps {
+    .route-steps,
+    .point-steps {
       grid-template-columns: 1fr;
       gap: 0.75rem;
     }
