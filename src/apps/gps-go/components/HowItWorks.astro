@@ -1,10 +1,13 @@
 ---
 import AppIcon from './AppIcon.astro';
+import ProviderFlow from './ProviderFlow.svelte';
 
+const sourceDetail = 'Sends your simulated location';
+const targetDetail = 'A simulated location for your apps';
 const sinks = [
-  { name: 'GPS provider', detail: 'Apps that ask Android for satellite location' },
-  { name: 'Network provider', detail: 'Apps that ask for coarse, network location' },
-  { name: 'Fused location', detail: 'Apps built on Google Play services' },
+  { name: 'GPS provider', detail: 'For apps using GPS location', short: 'Apps using GPS' },
+  { name: 'Network provider', detail: 'For apps using network location', short: 'Apps using network' },
+  { name: 'Fused location', detail: 'For apps using Google Play services', short: 'Google Play services' },
 ];
 ---
 
@@ -19,31 +22,30 @@ const sinks = [
       </p>
     </header>
 
-    <div class="flow reveal" data-provider-flow>
-      <svg class="flow-wires" data-flow-wires aria-hidden="true"></svg>
-      <div class="flow-source" data-flow-source>
-        <AppIcon size={44} />
-        <p><strong>GPS-Go</strong><span class="readout">1 fix every 200 ms</span></p>
+    <div class="flow-wrapper reveal" data-flow-wrapper>
+      <div class="flow" data-provider-flow>
+        <div class="flow-source" data-flow-source>
+          <AppIcon size={44} />
+          <p><strong>GPS-Go</strong><span>{sourceDetail}</span></p>
+        </div>
+        <ol class="flow-sinks" data-flow-sinks>
+          {
+            sinks.map((sink) => (
+              <li class="flow-node" data-flow-provider>
+                <strong>{sink.name}</strong>
+                <span class="detail">{sink.detail}</span>
+                <span class="detail-short">{sink.short}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="flow-target" data-flow-target><strong>Your apps</strong><span>{targetDetail}</span></p>
       </div>
-      <ol class="flow-sinks" data-flow-sinks>
-        {
-          sinks.map((sink) => (
-            <li class="flow-node" data-flow-provider>
-              <strong>{sink.name}</strong>
-              <span>{sink.detail}</span>
-            </li>
-          ))
-        }
-      </ol>
-      <p class="flow-target" data-flow-target><strong>Your apps</strong><span>One consistent position</span></p>
+      <div class="flow-canvas"><ProviderFlow {sinks} {sourceDetail} {targetDetail} client:visible /></div>
+      <a class="flow-credit" href="https://svelteflow.dev" target="_blank" rel="noopener noreferrer">Svelte Flow</a>
     </div>
   </div>
 </section>
-
-<script>
-  import { connectProviders } from '../scripts/provider-diagram';
-  connectProviders();
-</script>
 
 <style>
   .flow {
@@ -54,20 +56,36 @@ const sinks = [
     gap: clamp(3rem, 5vw, 4.5rem);
   }
 
-  .flow-wires {
+  .flow-wrapper {
+    position: relative;
+  }
+
+  .flow-canvas {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    opacity: 0;
     pointer-events: none;
   }
 
-  .flow-wires :global(path) {
-    fill: none;
-    stroke: color-mix(in oklab, var(--muted) 45%, var(--bg));
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  [data-flow-ready] .flow {
+    opacity: 0;
+  }
+
+  [data-flow-ready] .flow-canvas {
+    opacity: 1;
+  }
+
+  .flow-credit {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: -1.5rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  [data-flow-ready] .flow-credit {
+    display: block;
   }
 
   .flow p,
@@ -128,6 +146,10 @@ const sinks = [
     box-shadow: var(--shadow);
   }
 
+  .detail-short {
+    display: none;
+  }
+
   @media (max-width: 860px) {
     .flow {
       grid-template-columns: 1fr;
@@ -156,8 +178,12 @@ const sinks = [
       text-align: center;
     }
 
-    .flow-node span {
+    .flow-node .detail {
       display: none;
+    }
+
+    .flow-node .detail-short {
+      display: block;
     }
   }
 
