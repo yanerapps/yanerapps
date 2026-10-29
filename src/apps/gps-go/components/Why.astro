@@ -8,7 +8,7 @@ const cases = [
   {
     who: 'Recording demos and screenshots',
     without: 'Your own street sits in the corner of every screenshot and screen recording.',
-    with: 'Your real address never reaches the screen.',
+    with: 'Use a simulated location in demos instead of your own street.',
   },
   {
     who: 'Testing fitness and navigation apps',
@@ -51,16 +51,6 @@ const cases = [
           </div>
         ))
       }
-      <div class="stats">
-        <div>
-          <p class="big">0 km</p>
-          <p>travelled to test a place across town</p>
-        </div>
-        <div>
-          <p class="big">0</p>
-          <p>real addresses in your screenshots</p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -116,26 +106,6 @@ const cases = [
 
   .tag {
     display: none;
-  }
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    margin-top: 6px;
-    padding-top: 20px;
-    border-top: 1px solid var(--line);
-  }
-
-  .stats p {
-    color: var(--muted);
-    font-size: 13.5px;
-  }
-
-  .stats .big {
-    font: 700 clamp(36px, 5vw, 48px) / 1.1 var(--display);
-    letter-spacing: -0.03em;
-    color: var(--text);
   }
 
   @media (max-width: 760px) {
