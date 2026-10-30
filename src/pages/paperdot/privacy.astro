@@ -1,0 +1,267 @@
+---
+import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
+
+const title = 'Privacy Policy — Paperdot';
+const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a Bullet Journal app for Android by Yaner Apps.';
+---
+
+<Layout title={title} description={description}>
+  <div class="prose">
+    <nav aria-label="Paperdot navigation" class="product-nav">
+      <a href="/privacy">Privacy by app</a> <span aria-hidden="true">/</span> Paperdot
+      <span> · </span><a href="/paperdot/support">Support</a>
+    </nav>
+    <div class="prose-header">
+      <h1>Privacy Policy</h1>
+      <p class="lede">Paperdot for Android (<code>com.yanerapps.paperdot</code>)</p>
+      <div class="meta">
+        <span>Effective: from Paperdot&rsquo;s release on Google Play</span>
+        <span>&middot;</span>
+        <span>Updated: 30 Oct 2026</span>
+      </div>
+    </div>
+
+    <p>
+      This policy explains what Paperdot does with your data. Paperdot is made by Yaner Apps, an independent
+      developer studio ("we", "us"). It applies to the Paperdot Android application and to this website.
+    </p>
+
+    <div class="card">
+      <p><strong>In short:</strong> Paperdot has no user accounts and no servers of our own. Your journal stays
+      on your device. Paperdot reads your calendar only to show events next to your logs, and never saves them.
+      This version shows no ads. If you subscribe to Pro, Google Play processes the purchase and payment, and we
+      never see your payment details. We never sell your personal information.</p>
+    </div>
+
+    <h2>1. Data that stays on your device</h2>
+    <p>
+      The following is stored in the app's private storage and is never transmitted to us &mdash; we operate
+      no server and have no way to read it:
+    </p>
+    <ul>
+      <li>Your journal: entries, logs, collections, trackers and their history</li>
+      <li>Reminders you set on entries</li>
+      <li>App settings, including app lock, the calendars you chose to show and the backup reminder</li>
+      <li>Your Pro status, as a copy signed with a key that stays in your device's secure keystore</li>
+    </ul>
+    <p>
+      You can delete entries, collections and trackers inside the app at any time. Uninstalling Paperdot
+      removes everything stored on the device.
+    </p>
+
+    <h2>2. Permissions</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Permission</th>
+            <th>What Paperdot does with it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Calendar (read only, optional)</td>
+            <td>Shows events from the calendars you choose next to your daily and monthly logs. Events are read when a page is shown and are never stored in your journal, backups, exports or search. Paperdot cannot create or change calendar events</td>
+          </tr>
+          <tr>
+            <td>Notifications (optional)</td>
+            <td>Shows the reminders you set and the backup reminder</td>
+          </tr>
+          <tr>
+            <td>Run at startup</td>
+            <td>Puts your reminders back after the device restarts</td>
+          </tr>
+          <tr>
+            <td>Biometrics</td>
+            <td>Lets app lock ask Android to confirm it is you, with your fingerprint, face or screen lock. Android checks it; Paperdot only learns whether it succeeded</td>
+          </tr>
+          <tr>
+            <td>Network access</td>
+            <td>Used only by Google Play Billing, to show Pro prices and confirm a subscription</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Paperdot does not ask for your location, contacts, camera, microphone or files. Text you share into
+      Paperdot from another app becomes a journal entry on your device.
+    </p>
+
+    <h2>3. Data sent to third parties</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Recipient</th>
+            <th>What is sent</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google Play Billing</td>
+            <td>Which Pro plan you chose, your purchase, and an identifier the app derives on your device with a one-way hash</td>
+            <td>To sell Pro, confirm that you have it, and help Google detect fraud</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Your journal, reminders, calendar events and settings are never sent to Google or to anyone else.
+      This version of Paperdot shows no ads and does not start an advertising SDK, so it does not use your
+      advertising ID. If a future version adds ads, this policy will be updated before it ships.
+    </p>
+
+    <h2>4. Subscribing to Pro</h2>
+    <p>
+      Paperdot Pro is an auto-renewing subscription sold and billed entirely by Google Play. Google Play takes
+      the payment, and your payment method and billing details stay with Google. We never receive your card
+      number, billing address or other payment information, and Paperdot has no server that receives your
+      purchases. Google Play gives us order records for our sales in the Play Console, such as the order
+      number, plan, price and date, which we use only for accounting, refunds and support.
+    </p>
+    <p>
+      To unlock Pro, the app asks Google Play whether you have it and keeps a signed copy of the answer in
+      private storage, so Pro keeps working for up to 7 days when you are offline. This copy is excluded from
+      Android cloud backup and device-to-device transfer. You can cancel at any time in Google Play. When Pro
+      ends, nothing in your journal is changed or deleted.
+    </p>
+    <p>
+      Refunds and changes of payment method are handled by Google Play under your Google account. Google's
+      handling of payment data is governed by the
+      <a href="https://payments.google.com/payments/apis-secure/u/0/get_legal_document?ldo=0&amp;ldt=privacynotice" rel="noopener" target="_blank">Google Payments Privacy Notice</a>.
+    </p>
+
+    <h2>5. Backups and exports</h2>
+    <p>
+      Paperdot can write files to places you choose: a full backup (<code>.paperdot.json</code>), a Markdown
+      export and, with Pro, a PDF export. These files contain your journal in plain text. They are created only
+      when you ask for them, they are not uploaded anywhere by Paperdot, and once they leave the app they are
+      yours to protect. Sharing an export through Android's share sheet sends it to the app you pick.
+    </p>
+    <p>
+      Android's own cloud backup may include your journal and settings if you have enabled it on your device;
+      app lock, calendar choices and your Pro status are left out of it. That backup is managed by Google under
+      your Google account, not by us.
+    </p>
+
+    <h2>6. Notifications and the widget</h2>
+    <p>
+      Reminders and the home screen widget can show the text of your entries, so anyone who can see your screen
+      can see them. App lock hides Paperdot's preview in recent apps but does not hide notifications or the
+      widget. You can hide sensitive notification content on the lock screen in Android's notification
+      settings.
+    </p>
+
+    <h2>7. What we do not do</h2>
+    <ul>
+      <li>No user accounts, sign-in, or profiles</li>
+      <li>No servers operated by us, and therefore no copy of your journal held by us</li>
+      <li>No ads, analytics or crash-reporting SDKs started by this version</li>
+      <li>No location permission and no use of your location</li>
+      <li>No sale of personal information</li>
+    </ul>
+
+    <h2>8. Children</h2>
+    <p>
+      Paperdot is not directed to children under 13, and we do not knowingly collect data from children.
+      Since the app collects nothing, a child's journal stays on their device like anyone else's.
+    </p>
+
+    <h2>9. Data retention and deletion</h2>
+    <p>
+      Because your data lives on your device, you control its lifetime: it stays until you delete it or
+      uninstall the app. There is nothing for us to delete on our side, since we hold nothing. Data held by
+      Google as a result of a purchase is subject to Google's own retention practices.
+    </p>
+
+    <h2>10. Security</h2>
+    <p>
+      Your journal is kept in the app's private storage, which other apps cannot read on a non-rooted device.
+      App lock adds a check with your fingerprint, face or screen lock each time you come back to the app.
+      Backup and export files are not encrypted, so keep them somewhere safe. The billing library talks to
+      Google over HTTPS.
+    </p>
+
+    <h2>11. Additional information for the EEA, UK and Switzerland</h2>
+    <p>
+      This section gives the information required by the EU and UK General Data Protection Regulation and
+      the Swiss Federal Act on Data Protection.
+    </p>
+
+    <h3>Controller</h3>
+    <p>
+      The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
+      reachable at <a href={mailto()}>{studio.email}</a>. Google acts as an independent
+      controller for the data it receives, under its own policies.
+    </p>
+
+    <h3>Purposes and legal bases</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Data</th>
+            <th>Legal basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Providing Pro you subscribed to</td>
+            <td>Your Google Play purchase status, the hashed identifier sent with a purchase, and the order records Google Play provides</td>
+            <td>Necessary to perform the contract you entered into when subscribing (Art. 6(1)(b) GDPR)</td>
+          </tr>
+          <tr>
+            <td>Answering your emails</td>
+            <td>Your email address and your message</td>
+            <td>Legitimate interests in responding to you (Art. 6(1)(f)); we delete the correspondence once the matter is closed, and within 12 months at the latest</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Data that stays on your device (section 1) is not processed by us at all. You are not required to
+      provide any personal data. We make no decisions based solely on automated processing.
+    </p>
+
+    <h3>International transfers</h3>
+    <p>
+      Google may process purchase data in the United States and other countries, relying on the EU-U.S. Data
+      Privacy Framework, its UK Extension and the Swiss-U.S. Data Privacy Framework, and on Standard
+      Contractual Clauses where needed (see
+      <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google's data transfer frameworks</a>).
+    </p>
+
+    <h3>Your rights under the GDPR</h3>
+    <p>
+      You have the right to access, rectify and erase your personal data, to restrict or object to its
+      processing, and to data portability. You also have the right to lodge a complaint with a data
+      protection supervisory authority, in particular in the country where you live or work; in the UK this
+      is the Information Commissioner's Office, and in Switzerland the Federal Data Protection and
+      Information Commissioner. Section 12 explains how to exercise these rights.
+    </p>
+
+    <h2>12. Your rights</h2>
+    <p>
+      Depending on where you live, you may have rights to access, correct, delete, or port your personal
+      data. Since Paperdot stores your journal only on your device, you can exercise these rights directly in
+      the app: edit or delete entries, and export a backup or Markdown file to take your data elsewhere. If
+      you need help, write to <a href={mailto()}>{studio.email}</a> and we will respond within 30 days.
+    </p>
+
+    <h2>13. Changes to this policy</h2>
+    <p>
+      If this policy changes, the updated version is published on this page with a new "updated" date.
+      Paperdot may later offer optional end-to-end encrypted sync; this policy will describe it before that
+      feature is released. Material changes affecting how data is shared will also be noted in the app's
+      release notes.
+    </p>
+
+    <h2>14. Contact</h2>
+    <p>
+      Yaner Apps &mdash; <a href={mailto()}>{studio.email}</a>
+    </p>
+  </div>
+</Layout>

@@ -34,11 +34,28 @@ export const apps = {
     showcase: {
       icon: '/pingdeck/icon.png',
       tagline: 'Know when your connections need attention',
-      summary: 'Keep an eye on your network from your phone and spot connection problems as they happen.',
+      summary:
+        'Keep an eye on your network from your phone and spot connection problems as they happen.',
       highlights: [
         'See which devices and services are reachable at a glance',
         'Track response times and see how connections change over time',
         'Get alerts when a connection goes down or recovers, and check status from your home screen',
+      ],
+    },
+  },
+  paperdot: {
+    name: 'Paperdot',
+    blurb: 'a Bullet Journal for Android',
+    playStoreUrl: null as string | null,
+    showcase: {
+      icon: '/paperdot/icon.svg',
+      tagline: 'A Bullet Journal that feels like paper',
+      summary:
+        'Log tasks, events and notes the Bullet Journal way, in a notebook you turn page by page, and decide each month what moves forward.',
+      highlights: [
+        'Quick logging with signifiers in daily, monthly and future logs',
+        'A guided review migrates unfinished tasks one by one, never all at once',
+        'No account needed — your journal stays on your device, with backups you own',
       ],
     },
   },

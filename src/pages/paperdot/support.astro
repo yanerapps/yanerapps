@@ -1,0 +1,108 @@
+---
+import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
+
+const title = 'Support — Paperdot';
+const description = 'Support and contact for Paperdot by Yaner Apps.';
+
+// One tap opens a mail draft with the report fields already laid out.
+const template =
+  `mailto:${studio.email}?` +
+  new URLSearchParams({
+    subject: 'Paperdot: ',
+    body: [
+      'Device model: ',
+      'Android version: ',
+      'Paperdot version (Android Settings → Apps → Paperdot): ',
+      '',
+      'What I did:',
+      '',
+      'What I expected:',
+      '',
+      'What happened instead:',
+      '',
+    ].join('\n'),
+  })
+    .toString()
+    .replace(/\+/g, '%20');
+---
+
+<Layout title={title} description={description}>
+  <div class="prose">
+    <nav aria-label="Paperdot navigation" class="product-nav">
+      <a href="/support">Support by app</a> <span aria-hidden="true">/</span> Paperdot
+      <span> · </span><a href="/paperdot/privacy">Privacy</a>
+    </nav>
+    <div class="prose-header">
+      <h1>Support</h1>
+      <p class="lede">Questions, bug reports, and privacy requests for Paperdot.</p>
+      <div class="meta">
+        <span>Updated: 30 Oct 2026</span>
+      </div>
+    </div>
+
+    <h2>Contact</h2>
+    <p>
+      Email <a href={mailto()}>{studio.email}</a>. To help us reproduce a
+      problem, please include:
+    </p>
+    <ul>
+      <li>Your device model and Android version</li>
+      <li>The app version (Android Settings &rarr; Apps &rarr; Paperdot)</li>
+      <li>What you did, what you expected, and what happened instead</li>
+    </ul>
+    <p>
+      Please don't send your journal or a backup file unless we ask for it; a description of the problem is
+      usually enough.
+    </p>
+    <p><a class="button" href={template}>Start an email with these fields</a></p>
+
+    <h2>Common questions</h2>
+
+    <h3>How do I move my journal to a new phone?</h3>
+    <p>
+      Make a backup in <strong>Profile &rarr; Back up &amp; restore</strong>, copy the <code>.paperdot.json</code> file to the
+      new phone, and restore it there from the same screen. Restoring first backs up whatever journal is already
+      on that phone, so nothing is lost by accident.
+    </p>
+
+    <h3>My reminders arrive late or not at all</h3>
+    <p>
+      Allow notifications for Paperdot, then go to <strong>Settings &rarr; Apps &rarr; Paperdot &rarr; Battery</strong>
+      (or <strong>App battery usage</strong>) and select <strong>Unrestricted</strong>. Some devices hold back
+      reminders from apps they put to sleep.
+    </p>
+
+    <h3>My calendar events don't show up</h3>
+    <p>
+      Paperdot shows events only from the calendars you pick in its settings, and only after you allow calendar
+      access. Events from an account appear once Android has synced that account's calendar.
+    </p>
+
+    <h3>Why can't I migrate all my tasks at once?</h3>
+    <p>
+      That's on purpose. In the Bullet Journal method, rewriting each task by hand is when you decide whether it
+      still matters. The review walks you through tasks one at a time, and <strong>Later</strong> always takes
+      you straight back to your journal.
+    </p>
+
+    <h3>I subscribed to Pro but still see the free limits</h3>
+    <p>
+      Open <strong>Profile &rarr; Paperdot Pro &rarr; Restore purchase</strong> while online, signed in to the
+      Google account you subscribed with. On a new device or after reinstalling, Paperdot checks with Google
+      Play the first time it can.
+    </p>
+
+    <h3>What happens to my journal if Pro ends?</h3>
+    <p>
+      Nothing is deleted or changed. Trackers you made stay readable and editable, and your paper and font
+      choices come back if you subscribe again.
+    </p>
+
+    <h3>How do I delete my data?</h3>
+    <p>
+      Your journal is stored only on your device. Delete entries in the app, or uninstall Paperdot to remove
+      everything. Backup files you saved elsewhere are yours to delete.
+    </p>
+  </div>
+</Layout>

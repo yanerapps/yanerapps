@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="512" height="512">
+  <rect width="108" height="108" fill="#F6F1E7"/>
+  <!-- The launcher icon's foreground, scaled up from Android's safe zone to fill a flat web icon. -->
+  <g transform="translate(54 54) scale(1.5) translate(-54 -54)">
+    <g fill="#B9B1A2">
+      <circle cx="40" cy="40" r="2"/><circle cx="54" cy="40" r="2"/><circle cx="68" cy="40" r="2"/>
+      <circle cx="40" cy="54" r="2"/><circle cx="68" cy="54" r="2"/>
+      <circle cx="40" cy="68" r="2"/><circle cx="54" cy="68" r="2"/><circle cx="68" cy="68" r="2"/>
+    </g>
+    <circle cx="54" cy="54" r="8" fill="#3F5A8A"/>
+  </g>
+</svg>
