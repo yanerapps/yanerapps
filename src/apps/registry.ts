@@ -17,17 +17,31 @@ export const apps = {
     /** Shown on the studio home page; an app without one is not listed there yet. */
     showcase: {
       icon: '/gps-go/favicon.svg',
-      tagline: 'A no-root location simulator',
+      tagline: 'Test your app from anywhere',
       summary:
-        'Pick a point on the map, mock device coordinates, and control movement with a floating joystick overlay. Built for developers and QA testing location-based apps.',
+        'Explore how your app behaves in different places, without leaving your desk. Pick a location, follow a route or move around freely.',
       highlights: [
-        'Jump to any coordinate or saved place, or replay a route or GPX track at walking, running or cycling speed',
-        'Floating joystick with rocker and D-pad controls',
+        'Jump to a place or travel along a route at your chosen pace',
+        'Steer from a floating joystick while using another app',
         'No account needed — your places, routes and history stay on your device',
       ],
     },
   },
-  pingdeck: { name: 'PingDeck', blurb: 'pings many hosts at once, for Android' },
+  pingdeck: {
+    name: 'PingDeck',
+    blurb: 'pings many hosts at once, for Android',
+    playStoreUrl: null as string | null,
+    showcase: {
+      icon: '/pingdeck/icon.png',
+      tagline: 'Know when your connections need attention',
+      summary: 'Keep an eye on your network from your phone and spot connection problems as they happen.',
+      highlights: [
+        'See which devices and services are reachable at a glance',
+        'Track response times and see how connections change over time',
+        'Get alerts when a connection goes down or recovers, and check status from your home screen',
+      ],
+    },
+  },
 } as const;
 
 export type AppId = keyof typeof apps;

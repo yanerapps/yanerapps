@@ -79,7 +79,11 @@ const showcased = appIds.flatMap((id) => {
                 ))}
               </ul>
               <div class="ctas">
-                <a class="btn btn-primary" href={appPaths(app.id).home}>See how it works</a>
+                {app.id === 'gps-go' ? (
+                  <a class="btn btn-primary" href={appPaths(app.id).home}>See how it works</a>
+                ) : (
+                  <span class="coming-soon">Coming soon to Google Play</span>
+                )}
                 {app.playStoreUrl && (
                   <a class="btn btn-quiet" href={app.playStoreUrl} rel="noopener">Get it on Google Play</a>
                 )}
@@ -167,6 +171,8 @@ const showcased = appIds.flatMap((id) => {
   .lede {
     margin-top: 18px;
   }
+
+  .coming-soon { color: var(--muted); font-size: 0.9rem; font-weight: 600; }
 
   .ctas {
     display: flex;
