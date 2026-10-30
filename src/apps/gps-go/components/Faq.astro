@@ -16,15 +16,18 @@ import { faqs } from '../data/faq';
               <span>{f.q}</span>
               <span class="toggle" aria-hidden="true" />
             </summary>
-            <p>{f.a}</p>
+            <p>{f.a} {f.q === 'Does GPS-Go need root?' && <a href="/gps-go/guide#setup">See the setup guide.</a>}</p>
           </details>
         ))
       }
+      <p class="help">Still have questions? <a href="/gps-go/support">Visit GPS-Go support.</a></p>
     </div>
   </div>
 </section>
 
 <style>
+  .help { margin-top: 1rem; color: var(--muted); }
+
   .faq {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
