@@ -69,5 +69,11 @@ const footerLinks = [
     rail.className = 'toc-rail';
     rail.append(nav);
     prose.prepend(rail);
+    const mobile = document.createElement('details');
+    mobile.className = 'toc-mobile';
+    const summary = document.createElement('summary');
+    summary.textContent = 'On this page';
+    mobile.append(summary, nav.cloneNode(true));
+    prose.querySelector('.prose-header')?.after(mobile);
   }
 </script>

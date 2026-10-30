@@ -213,7 +213,18 @@
   display: none;
 }
 
+ .toc-mobile {
+  margin: 0 0 2rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.toc-mobile summary { cursor: pointer; font-weight: 600; }
+.toc-mobile .toc { display: grid; gap: 0.6rem; margin-top: 1rem; }
+
 @media (min-width: 80rem) {
+  .toc-mobile { display: none; }
   .toc-rail {
     display: block;
     position: absolute;
@@ -248,7 +259,8 @@
   .header,
   .footer,
   .skip-link,
-  .toc-rail {
+  .toc-rail,
+  .toc-mobile {
     display: none !important;
   }
 
