@@ -13,11 +13,11 @@ const description = 'Privacy policies for apps by Yaner Apps.';
       <p class="lede">Each Yaner Apps app has its own privacy policy.</p>
     </div>
 
-    <ul>
+    <ul class="app-links">
       {
         appIds.map((id) => (
           <li>
-            <a href={appPaths(id).privacy}><strong>{apps[id].name}</strong></a> &mdash; {apps[id].blurb}
+            <a class="app-link" href={appPaths(id).privacy}><strong>{apps[id].name}</strong><span>{apps[id].blurb}</span></a>
           </li>
         ))
       }
@@ -28,3 +28,4 @@ const description = 'Privacy policies for apps by Yaner Apps.';
     </p>
   </div>
 </Layout>
+
