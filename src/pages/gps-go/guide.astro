@@ -32,13 +32,14 @@ const contents = [
       <p class="lede">
         Everything from the one-time setup to mocking a place, steering the joystick, running routes and making the data look real.
       </p>
-      <nav aria-label="On this page">
+      <nav id="guide-contents" aria-label="On this page">
         <ol>
           {contents.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
         </ol>
       </nav>
     </header>
     <Setup />
+    <p class="page guide-return"><a href="#guide-contents">↑ Back to chapters</a></p>
     <Tour
       id="points"
       kicker="02 · Mock a place"
@@ -46,7 +47,9 @@ const contents = [
       lede="Find a place, start mocking, and move around with the joystick."
       chapters={pointChapters}
     />
+    <p class="page guide-return"><a href="#guide-contents">↑ Back to chapters</a></p>
     <Anatomy />
+    <p class="page guide-return"><a href="#guide-contents">↑ Back to chapters</a></p>
     <Tour
       id="routes"
       kicker="04 · Routes"
@@ -54,7 +57,9 @@ const contents = [
       lede="Draw a route or import one, play it back at the pace you choose, and leave it with the joystick whenever you need to."
       chapters={routeChapters}
     />
+    <p class="page guide-return"><a href="#guide-contents">↑ Back to chapters</a></p>
     <Library />
+    <p class="page guide-return"><a href="#guide-contents">↑ Back to chapters</a></p>
     <Realism />
     <Closing />
   </main>
@@ -62,6 +67,8 @@ const contents = [
 </Base>
 
 <style>
+  .guide-return { margin-block: 0; text-align: right; }
+  .guide-return a { color: var(--muted); font-size: 0.875rem; }
   .guide-head {
     display: grid;
     gap: 1.5rem;
