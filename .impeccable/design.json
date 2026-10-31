@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T22:38:06.881Z",
+  "title": "Design System: Yaner Apps",
+  "extensions": {
+    "colorMeta": {
+      "studio-vermilion": {
+        "role": "primary",
+        "displayName": "Studio Vermilion",
+        "canonical": "oklch(54.801% 0.176 32.673)",
+        "tonalRamp": [
+          "oklch(15% 0.031 32.673)",
+          "oklch(26.429% 0.095 32.673)",
+          "oklch(37.857% 0.145 32.673)",
+          "oklch(49.286% 0.172 32.673)",
+          "oklch(60.714% 0.172 32.673)",
+          "oklch(72.143% 0.145 32.673)",
+          "oklch(83.571% 0.095 32.673)",
+          "oklch(95% 0.031 32.673)"
+        ]
+      },
+      "gps-go-pin-green": {
+        "role": "primary",
+        "displayName": "GPS-Go Pin Green",
+        "canonical": "oklch(51.978% 0.14 136.263)",
+        "tonalRamp": [
+          "oklch(15% 0.024 136.263)",
+          "oklch(26.429% 0.076 136.263)",
+          "oklch(37.857% 0.116 136.263)",
+          "oklch(49.286% 0.138 136.263)",
+          "oklch(60.714% 0.138 136.263)",
+          "oklch(72.143% 0.116 136.263)",
+          "oklch(83.571% 0.076 136.263)",
+          "oklch(95% 0.024 136.263)"
+        ]
+      },
+      "bench-grey": {
+        "role": "neutral",
+        "displayName": "Bench Grey",
+        "canonical": "oklch(97.594% 0.003 264.542)",
+        "tonalRamp": [
+          "oklch(15% 0 264.542)",
+          "oklch(26.429% 0.002 264.542)",
+          "oklch(37.857% 0.002 264.542)",
+          "oklch(49.286% 0.003 264.542)",
+          "oklch(60.714% 0.003 264.542)",
+          "oklch(72.143% 0.002 264.542)",
+          "oklch(83.571% 0.002 264.542)",
+          "oklch(95% 0 264.542)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(15.932% 0.007 270.981)",
+        "tonalRamp": [
+          "oklch(15% 0.001 270.981)",
+          "oklch(26.429% 0.004 270.981)",
+          "oklch(37.857% 0.005 270.981)",
+          "oklch(49.286% 0.006 270.981)",
+          "oklch(60.714% 0.006 270.981)",
+          "oklch(72.143% 0.005 270.981)",
+          "oklch(83.571% 0.004 270.981)",
+          "oklch(95% 0.001 270.981)"
+        ]
+      },
+      "sky-top": {
+        "role": "tertiary",
+        "displayName": "Swallow Sky",
+        "canonical": "oklch(78.1% 0.044 234.177)",
+        "tonalRamp": [
+          "oklch(15% 0.008 234.177)",
+          "oklch(26.429% 0.024 234.177)",
+          "oklch(37.857% 0.036 234.177)",
+          "oklch(49.286% 0.043 234.177)",
+          "oklch(60.714% 0.043 234.177)",
+          "oklch(72.143% 0.036 234.177)",
+          "oklch(83.571% 0.024 234.177)",
+          "oklch(95% 0.008 234.177)"
+        ]
+      },
+      "swallow-back": {
+        "role": "tertiary",
+        "displayName": "Swallow Navy",
+        "canonical": "oklch(34.802% 0.05 255.593)",
+        "tonalRamp": [
+          "oklch(15% 0.009 255.593)",
+          "oklch(26.429% 0.027 255.593)",
+          "oklch(37.857% 0.042 255.593)",
+          "oklch(49.286% 0.049 255.593)",
+          "oklch(60.714% 0.049 255.593)",
+          "oklch(72.143% 0.042 255.593)",
+          "oklch(83.571% 0.027 255.593)",
+          "oklch(95% 0.009 255.593)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page heroes; ink-to-60% gradient."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings and document titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card titles and document h2s."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading text in muted ink, 60ch measure."
+      },
+      "label": {
+        "displayName": "Mono Label",
+        "purpose": "Accent section kickers, meta lines, table heads, contents rail."
+      },
+      "motto": {
+        "displayName": "Motto",
+        "purpose": "Italic; \"Ride the Wind\" in the sky and footer, studio only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "ambient-lift",
+        "value": "0 1px 2px rgb(12 13 16 / 0.06), 0 16px 48px -16px rgb(12 13 16 / 0.18)",
+        "purpose": "Every panel in light mode."
+      },
+      {
+        "name": "ambient-lift-dark",
+        "value": "0 1px 0 rgb(255 255 255 / 0.04) inset, 0 24px 64px -24px rgb(0 0 0 / 0.8)",
+        "purpose": "Every panel in dark mode."
+      },
+      {
+        "name": "accent-glow",
+        "value": "0 8px 28px -8px var(--glow)",
+        "purpose": "Beneath primary buttons only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-workshop",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Hover lifts and reveals."
+      },
+      {
+        "name": "hover-lift",
+        "value": "translateY(-1px) over 0.2s",
+        "purpose": "Buttons, link rows."
+      },
+      {
+        "name": "reveal",
+        "value": "opacity 0→1, translateY(14px)→0, blur(6px)→0 over 0.8s",
+        "purpose": "Blocks entering the viewport, once. Off with reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "900px"
+      },
+      {
+        "name": "mobile-nav",
+        "value": "860px"
+      },
+      {
+        "name": "band-stack",
+        "value": "640px"
+      },
+      {
+        "name": "toc-rail",
+        "value": "80rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one main action: ink fill, accent glow beneath.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\">See what we built</a>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:2.75rem;padding:11px 18px;border-radius:12px;border:1px solid transparent;font:600 15px/1.2 var(--sans);letter-spacing:-0.005em;text-decoration:none;cursor:pointer;transition:transform .2s cubic-bezier(0.22, 1, 0.36, 1),background-color .2s,border-color .2s;} .ds-btn:hover{transform:translateY(-1px)} .ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;} .ds-btn-primary{background:var(--btn-bg);color:var(--btn-text);box-shadow:0 8px 28px -8px var(--glow)}"
+    },
+    {
+      "name": "Quiet Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Secondary action beside a primary.",
+      "html": "<a class=\"ds-btn ds-btn-quiet\" href=\"#\">Explore GPS-Go</a>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:2.75rem;padding:11px 18px;border-radius:12px;border:1px solid transparent;font:600 15px/1.2 var(--sans);letter-spacing:-0.005em;text-decoration:none;cursor:pointer;transition:transform .2s cubic-bezier(0.22, 1, 0.36, 1),background-color .2s,border-color .2s;} .ds-btn:hover{transform:translateY(-1px)} .ds-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;} .ds-btn-quiet{border-color:var(--line-2);color:var(--text)} .ds-btn-quiet:hover{background:var(--panel-2)}"
+    },
+    {
+      "name": "Section Head",
+      "kind": "custom",
+      "refersTo": "kicker",
+      "description": "Mono numbered kicker over a gradient heading.",
+      "html": "<header class=\"ds-head\"><p class=\"ds-kicker\">01 · Manifesto</p><h2 class=\"ds-h2\">Built one beakful at a time.</h2></header>",
+      "css": ".ds-head{display:grid;gap:1rem;max-width:46rem} .ds-kicker{margin:0;font:12.5px/20px var(--mono);letter-spacing:.5px;color:var(--accent)} .ds-h2{margin:0;padding-bottom:.1em;font:700 clamp(2.125rem,5.4vw,3.25rem)/1.06 var(--sans);letter-spacing:-.04em;background:linear-gradient(var(--heading-from) 40%,var(--heading-to));-webkit-background-clip:text;background-clip:text;color:transparent}"
+    },
+    {
+      "name": "App Card",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "The shared panel surface carrying an app.",
+      "html": "<article class=\"ds-panel\"><h3 class=\"ds-title\">GPS-Go</h3><p class=\"ds-tag\">Test your app from anywhere</p><ul class=\"ds-list\"><li>Jump to a place or travel along a route</li><li>No account needed</li></ul></article>",
+      "css": ".ds-panel{display:grid;gap:12px;padding:clamp(20px,3vw,28px);background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)} .ds-title{margin:0;font:650 1.25rem/1.25 var(--sans);letter-spacing:-.015em;color:var(--text)} .ds-tag{margin:0;color:var(--dim);font-size:14px} .ds-list{display:grid;gap:8px;margin:0;padding:0;list-style:none;color:var(--muted);font-size:14.5px} .ds-list li{position:relative;padding-left:1.25rem} .ds-list li::before{content:\"\";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--accent)}"
+    },
+    {
+      "name": "App Link Row",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "An app in the privacy and support overviews.",
+      "html": "<a class=\"ds-row\" href=\"#\"><strong>GPS-Go</strong><span>no-root location simulator for Android</span></a>",
+      "css": ".ds-row{display:flex;align-items:center;gap:4px 16px;flex-wrap:wrap;padding:16px 20px;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow);color:var(--muted);text-decoration:none;transition:transform .2s cubic-bezier(0.22, 1, 0.36, 1),border-color .2s} .ds-row::after{content:\"→\";color:var(--accent)} .ds-row:hover{transform:translateY(-1px);border-color:var(--line-2)} .ds-row:focus-visible{outline:2px solid var(--accent);outline-offset:2px;} .ds-row strong{color:var(--text)} .ds-row span{flex:1;font-size:14.5px}"
+    },
+    {
+      "name": "Header",
+      "kind": "nav",
+      "refersTo": "header-control",
+      "description": "Brand, muted links, hairline theme toggle.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-brand\" href=\"#\">Yaner Apps</a><a href=\"#\">Manifesto</a><a href=\"#\" aria-current=\"page\">Apps</a><a href=\"#\">Contact</a><button class=\"ds-toggle\" aria-label=\"Switch theme\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z\"/></svg></button></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:22px;height:3.5rem;padding:0 16px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 72%,transparent)} .ds-nav a{color:var(--muted);font-size:14px;text-decoration:none} .ds-nav a:hover,.ds-nav a[aria-current=page]{color:var(--text)} .ds-nav .ds-brand{color:var(--text);font-weight:650;font-size:15px;margin-right:6px} .ds-toggle{display:grid;place-items:center;margin-left:auto;width:2.25rem;height:2.25rem;padding:0;border:1px solid var(--line-2);border-radius:9px;background:transparent;color:var(--muted);cursor:pointer} .ds-toggle:hover{color:var(--text)} .ds-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Workshop",
+    "overview": "A tidy bench where a few small tools are made with care. The surfaces are cool, near-neutral greys and white sheets; type is Inter, set tight and heavy for headings and calm for reading; labels are typed in IBM Plex Mono like notes pinned to the bench. Restraint is the craft: most of every page is ink on grey, and the one thing that carries colour is the site's own accent.\n\nEvery page on yanerapps.com shares this base (`src/lib/ui/global.css`). The studio and each app site differ only in their accent: vermilion for the studio, the launcher icon's pin green for GPS-Go. The studio adds two signatures of its own: the swallow flying in a muted sky, drawn in code, and the motto \"Ride the Wind\" set in IBM Plex Serif italic.\n\nBoth themes are first-class. Light is the base; dark is a near-black night bench with the same structure, and a manual choice carries across the studio and app pages.",
+    "keyCharacteristics": [
+      "Cool neutral greys, white sheets, near-black ink; no warm paper.",
+      "One accent per site, used for kickers, links, bullets, focus and the second line of the hero.",
+      "Heavy, tightly tracked Inter headings fading top to bottom from ink to 60% ink.",
+      "Mono numbered kickers (\"01 · Manifesto\") above every section heading.",
+      "One soft ambient shadow under every card; nothing stacks higher.",
+      "Motion is slow and optional: blur-up reveals, a 1px lift on hover, the swallow's glide."
+    ],
+    "rules": [
+      {
+        "name": "The One Signature Rule",
+        "body": "Each site has exactly one accent, set as `--accent`, `--on-accent` and `--glow` for both themes in that site's own stylesheet. A new app picks a colour from its own launcher icon and darkens it in light mode until it reads as text on Bench Grey.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink Button Rule",
+        "body": "The primary button is ink, never the accent. The accent appears only as the soft glow beneath it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tight Heading Rule",
+        "body": "Headings track negative (−0.015em to −0.045em) and balance their lines; body text never does.",
+        "section": "typography"
+      },
+      {
+        "name": "The Numbered Kicker Rule",
+        "body": "Every major section opens with a mono kicker in the form `01 · Name` above its heading.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Lift Rule",
+        "body": "There is one elevation. A card on a card is a sign the layout is wrong.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** take every colour from the shared tokens and set only `--accent`, `--on-accent` and `--glow` per site.",
+      "**Do** open each section with a mono `01 · Name` kicker and a gradient Inter heading.",
+      "**Do** give every card the same 18px radius, hairline and ambient lift.",
+      "**Do** design both themes together and use theme-matched `-light` / `-dark` screenshot pairs.",
+      "**Do** keep all motion optional: `prefers-reduced-motion` switches it off, and pages read fully without JavaScript."
+    ],
+    "donts": [
+      "**Don't** fill a button with the accent; primary buttons are ink.",
+      "**Don't** add a second accent colour to a site, or reuse one app's accent on another app's pages.",
+      "**Don't** stack shadows or lift anything more than 1px on hover.",
+      "**Don't** load three.js eagerly; the swallow is lazy-loaded.",
+      "**Don't** let drag-to-orbit or other heavy interaction into the sky; it only leans."
+    ]
+  }
+}
