@@ -213,18 +213,27 @@
   display: none;
 }
 
- .toc-mobile {
+.toc-mobile {
   margin: 0 0 2rem;
   padding: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel);
 }
-.toc-mobile summary { cursor: pointer; font-weight: 600; }
-.toc-mobile .toc { display: grid; gap: 0.6rem; margin-top: 1rem; }
+.toc-mobile summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.toc-mobile .toc {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
 
 @media (min-width: 80rem) {
-  .toc-mobile { display: none; }
+  .toc-mobile {
+    display: none;
+  }
   .toc-rail {
     display: block;
     position: absolute;
@@ -275,54 +284,53 @@
   }
 }
 
+/* .prose sets list padding and margins; this list drops them. */
+.prose .app-links {
+  display: grid;
+  gap: 12px;
+  margin: 1.25rem 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
 
-  .app-links {
-    display: grid;
-    gap: 12px;
-    margin: 1.25rem 0 1.5rem;
-    padding: 0;
-    list-style: none;
-  }
+.app-links li {
+  margin: 0;
+}
 
-  .app-links li {
-    margin: 0;
-  }
+.app-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 16px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  color: var(--muted);
+  text-decoration: none;
+  transition:
+    transform 0.2s var(--ease),
+    border-color 0.2s;
+}
 
-  .app-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 4px 16px;
-    flex-wrap: wrap;
-    padding: 16px 20px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--panel);
-    box-shadow: var(--shadow);
-    color: var(--muted);
-    text-decoration: none;
-    transition:
-      transform 0.2s var(--ease),
-      border-color 0.2s;
-  }
+.app-link::after {
+  content: '→';
+  color: var(--accent);
+}
 
-  .app-link::after {
-    content: '→';
-    color: var(--accent);
-  }
+.app-link:hover {
+  transform: translateY(-1px);
+  border-color: var(--line-2);
+  color: var(--muted);
+}
 
-  .app-link:hover {
-    transform: translateY(-1px);
-    border-color: var(--line-2);
-    color: var(--muted);
-  }
+.app-link strong {
+  color: var(--text);
+}
 
-  .app-link strong {
-    color: var(--text);
-  }
-
-  .app-link span {
-    flex: 1;
-    font-size: 14.5px;
-  }
-
+.app-link span {
+  flex: 1;
+  font-size: 14.5px;
+}

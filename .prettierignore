@@ -3,3 +3,5 @@ dist/
 package-lock.json
 # prettier-plugin-astro pads inline elements with whitespace, which adds visible spaces around links in Chinese text.
 *.astro
+# Written by the impeccable design tooling.
+.impeccable/

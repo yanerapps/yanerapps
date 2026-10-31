@@ -1,0 +1,35 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/studio/styles/studio.css"
+        ],
+        "createdAt": "2026-10-31T23:13:23.707Z",
+        "reason": "incumbent heading treatment documented in DESIGN.md (Typography, Do's); out of scope for this nav fix"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/pages/index.astro"
+        ],
+        "createdAt": "2026-10-31T23:13:23.731Z",
+        "reason": "incumbent heading treatment documented in DESIGN.md (Typography, Do's); out of scope for this nav fix"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/lib/ui/global.css"
+        ],
+        "createdAt": "2026-10-31T23:13:23.753Z",
+        "reason": "incumbent heading treatment documented in DESIGN.md (Typography, Do's); out of scope for this nav fix"
+      }
+    ]
+  }
+}

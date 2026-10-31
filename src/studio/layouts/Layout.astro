@@ -18,17 +18,20 @@ const {
 } = Astro.props;
 
 const currentPath = cleanPath(Astro.url.pathname);
-// Support follows the app whose pages you are on; site-wide pages link the support overview.
+// Privacy and Support follow the app whose pages you are on; site-wide pages link the overviews.
 const app = appIds.find((id) => currentPath.startsWith(`/${id}/`));
+const privacy = app ? appPaths(app).privacy : '/privacy';
+const support = app ? appPaths(app).support : '/support';
 const year = new Date().getFullYear();
+// Visitors from a Play listing come for privacy and support, so both sit in the header.
 const links = [
-  { href: '/#manifesto', label: 'Manifesto' },
   { href: '/#apps', label: 'Apps' },
-  { href: '/#contact', label: 'Contact' },
+  { href: privacy, label: 'Privacy' },
+  { href: support, label: 'Support' },
 ];
 const footerLinks = [
   { href: '/privacy', label: 'Privacy' },
-  { href: app ? appPaths(app).support : '/support', label: 'Support' },
+  { href: support, label: 'Support' },
   { href: mailto(), label: studio.email },
 ];
 ---

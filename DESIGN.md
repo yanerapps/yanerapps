@@ -119,6 +119,18 @@ Every page on yanerapps.com shares this base (`src/lib/ui/global.css`). The stud
 
 Both themes are first-class. Light is the base; dark is a near-black night bench with the same structure, and a manual choice carries across the studio and app pages.
 
+### Design Principles
+
+Four principles govern the studio and every product site, set with the user on 2026-10-31. They are ranked: when two conflict, the earlier one wins.
+
+**1. Meets expectations (符合预期).** Interaction follows convention; expression may be new. Navigation, links, buttons and footers work the way visitors already know. A product site's screenshots, colour and wording match the app itself. Moving between the studio and a product site, visitors always feel they are on the same family's site. Novelty belongs only where it cannot get in the way of use: illustration, motion, typographic character. (Truth of claims is a product principle in PRODUCT.md, not repeated here.)
+
+**2. Clear hierarchy (主次分明).** One focus per screen. Primary and secondary are separated by contrast, using any of size, weight, space and colour, but the primary is always big and everything else gives way to it. Button count is not capped, as long as one thing on each screen is seen first. Apps on Google Play always come first and larger; unreleased apps are plainly secondary. Test: blur a screenshot until the words go; where the eye lands first must be that screen's focus.
+
+**3. Tailor-made (量身打造).** Material comes from three places: the product itself (launcher-icon accent, real screenshots, real interactions), the product's domain (maps and coordinates for GPS-Go, paper and dot grid for Paperdot, networks and signals for PingDeck), and the studio's story (燕儿, the swallow, nest-building, Ride the Wind). The shared base decides how things work: navigation, type, buttons, cards and greys are common to every site. Each site decides what it shows: accent, signature element, illustration and demos. Two tests, both required: with the logo and name removed, the screen would look wrong on another app's site; and every page has at least one element only this product could make.
+
+**4. Restraint (克制).** Restraint governs colour and decoration. Colour: one accent per site, everything else neutral grey, never a second colour for looks. Decoration: nothing that carries no information, such as background grids, glows or icon clutter. Two things are exempt and may be big and rich: each site's signature element (the studio's swallow sky, a product's defining demo) and the product itself (real screenshots and demos). Each site may also use one piece of purely atmospheric domain material (say, Paperdot's dot-grid paper), never behind body text.
+
 **Key Characteristics:**
 
 - Cool neutral greys, white sheets, near-black ink; no warm paper.
@@ -134,7 +146,7 @@ A cool, almost colourless workshop with a single signed accent per site.
 
 ### Primary
 
-- **Studio Vermilion** (`studio-vermilion`, dark `studio-vermilion-dark`): the studio's seal red. Kickers, links, highlight bullets, focus rings, text selection, the coloured second line of the home hero, the 燕儿 characters, and the swallow's brick-red face in light mode. Its glow (14–16% alpha) sits behind the primary button and the hero sky.
+- **Studio Vermilion** (`studio-vermilion`, dark `studio-vermilion-dark`): the studio's seal red. Kickers, links, highlight bullets, focus rings, text selection, the coloured second line of the home hero, the 燕儿 characters, and the swallow's brick-red face in light mode. Its glow (14–16% alpha) sits beneath the primary button.
 - **GPS-Go Pin Green** (`gps-go-pin-green`, dark `gps-go-pin-green-dark`): replaces vermilion on GPS-Go's product pages only. Darkened in light mode until it passes as text.
 
 ### Neutral
@@ -189,7 +201,7 @@ Heroes and two-part sections use two-column grids (`1fr / 1.05fr`, or `0.8fr / 1
 
 ## Elevation & Depth
 
-Depth is a single soft ambient lift. Cards, framed pictures, the mobile menu and the closing band all share one shadow and one hairline border; nothing floats above anything else. Hover lifts an element by 1px, never more. Headings get a quiet sense of depth from their top-to-bottom gradient, and the home hero adds a faint 56px grid fading out from behind the sky, plus a blurred accent glow.
+Depth is a single soft ambient lift. Cards, framed pictures, the mobile menu and the closing band all share one shadow and one hairline border; nothing floats above anything else. Hover lifts an element by 1px, never more. Headings get a quiet sense of depth from their top-to-bottom gradient. The studio hero has no background grid or glow; both were removed under Restraint. GPS-Go's hero keeps its faint 56px grid and blurred accent glow by the user's decision (2026-10-31); the grid counts as GPS-Go's one piece of atmospheric domain material, a coordinate grid.
 
 ### Shadow Vocabulary
 
@@ -245,6 +257,8 @@ The studio's signature: a lazy-loaded three.js barn swallow gliding in a muted b
 - **Do** give every card the same 18px radius, hairline and ambient lift.
 - **Do** design both themes together and use theme-matched `-light` / `-dark` screenshot pairs.
 - **Do** keep all motion optional: `prefers-reduced-motion` switches it off, and pages read fully without JavaScript.
+- **Do** give each screen one focus that is visibly bigger than everything around it.
+- **Do** give every page at least one element only its product could make, drawn from the product, its domain or the studio's story.
 
 ### Don't:
 
@@ -253,3 +267,6 @@ The studio's signature: a lazy-loaded three.js barn swallow gliding in a muted b
 - **Don't** stack shadows or lift anything more than 1px on hover.
 - **Don't** load three.js eagerly; the swallow is lazy-loaded.
 - **Don't** let drag-to-orbit or other heavy interaction into the sky; it only leans.
+- **Don't** invent a new way to navigate, link or press; novelty stays in illustration, motion and type.
+- **Don't** add decoration that carries no information; a site gets at most one piece of atmospheric domain material, and never behind body text.
+- **Don't** give an unreleased app the same size or position as an app on Google Play.

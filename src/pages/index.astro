@@ -5,15 +5,17 @@ import { appIds, appPaths, apps, mailto, studio } from '../apps/registry';
 
 const title = 'Yaner Apps — We make quality apps.';
 const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.';
-const showcased = appIds.flatMap((id) => {
-  const app = apps[id];
-  return 'showcase' in app ? [{ id, ...app, ...app.showcase }] : [];
-});
+// Apps already on Google Play lead, each as a full-width feature; the rest follow in pairs.
+const showcased = appIds
+  .flatMap((id) => {
+    const app = apps[id];
+    return 'showcase' in app ? [{ id, ...app, ...app.showcase }] : [];
+  })
+  .sort((a, b) => Number(!!b.playStoreUrl) - Number(!!a.playStoreUrl));
 ---
 
 <Layout title={title} description={description}>
   <section class="hero" id="top" aria-labelledby="hero-title">
-    <div class="glow" aria-hidden="true"></div>
     <div class="page layout">
       <div class="copy">
         <h1 id="hero-title">We make <em>quality apps.</em></h1>
@@ -64,7 +66,7 @@ const showcased = appIds.flatMap((id) => {
       <div class="apps">
         {
           showcased.map((app) => (
-            <article class="app panel reveal">
+            <article class:list={['app panel reveal', { 'app-feature': app.playStoreUrl }]}>
               <div class="app-head">
                 <img class="app-icon" src={app.icon} alt="" width="56" height="56" />
                 <div>
@@ -88,6 +90,10 @@ const showcased = appIds.flatMap((id) => {
                   <a class="btn btn-quiet" href={app.playStoreUrl} rel="noopener">Get it on Google Play</a>
                 )}
               </div>
+              <p class="app-docs">
+                <a href={appPaths(app.id).privacy} aria-label={`${app.name} privacy policy`}>Privacy policy</a>
+                <a href={appPaths(app.id).support} aria-label={`${app.name} support`}>Support</a>
+              </p>
             </article>
           ))
         }
@@ -113,35 +119,8 @@ const showcased = appIds.flatMap((id) => {
 
 <style>
   .hero {
-    position: relative;
-    isolation: isolate;
-    overflow-x: clip;
     padding-top: calc(var(--header-h) + clamp(2.5rem, 7vw, 5rem));
     padding-bottom: clamp(2rem, 5vw, 3.5rem);
-  }
-
-  /* Faint grid that fades out toward the edges, plus a soft glow behind the sky. */
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    background-image:
-      linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 80% 70% at 60% 30%, #000 30%, transparent 75%);
-  }
-
-  .glow {
-    position: absolute;
-    z-index: -1;
-    right: 0;
-    top: 10%;
-    width: min(900px, 100vw);
-    height: 560px;
-    background: radial-gradient(closest-side, var(--glow), transparent);
-    filter: blur(20px);
-    pointer-events: none;
   }
 
   .layout {
@@ -215,24 +194,38 @@ const showcased = appIds.flatMap((id) => {
 
   .apps {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
     gap: 16px;
   }
 
   .app {
     display: grid;
-    grid-template-areas: 'head' 'summary' 'highlights' 'ctas';
+    grid-template-areas: 'head' 'summary' 'highlights' 'ctas' 'docs';
+    /* Paired cards keep their actions on one line whatever the length of their lists. */
+    grid-template-rows: auto auto 1fr auto auto;
     gap: 16px;
     padding: clamp(20px, 3vw, 28px);
   }
 
-  /* A card alone in its row spreads into two columns: the app on the left, what it does on the right. */
+  /* shortcut: an odd number of unreleased apps leaves the last one half-width; span it if that ever looks wrong. */
   @media (min-width: 900px) {
-    .app:only-child {
+    .apps {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      grid-template-areas: 'head highlights' 'summary highlights' 'ctas highlights';
+    }
+
+    /* A feature (or a lone card) spans the row and spreads into two columns: the app on the left, what it does on the right. */
+    .app-feature,
+    .app:only-child {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-rows: none;
+      grid-template-areas: 'head highlights' 'summary highlights' 'ctas highlights' 'docs highlights';
       column-gap: clamp(2rem, 5vw, 4rem);
       align-content: start;
+    }
+
+    .app-feature .app-highlights,
+    .app:only-child .app-highlights {
+      align-self: center;
     }
   }
 
@@ -246,7 +239,7 @@ const showcased = appIds.flatMap((id) => {
 
   .app-highlights {
     grid-area: highlights;
-    align-self: center;
+    align-self: start;
   }
 
   .app .ctas {
@@ -304,6 +297,24 @@ const showcased = appIds.flatMap((id) => {
 
   .app .ctas {
     margin-top: 4px;
+  }
+
+  .app-docs {
+    grid-area: docs;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    font-size: var(--step--1);
+  }
+
+  .app-docs a {
+    color: var(--muted);
+  }
+
+  .app-docs a:hover {
+    color: var(--text);
   }
 
   .closing {

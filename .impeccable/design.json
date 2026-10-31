@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-31T22:38:06.881Z",
+  "generatedAt": "2026-10-31T23:45:39.828Z",
   "title": "Design System: Yaner Apps",
   "extensions": {
     "colorMeta": {
@@ -226,7 +226,7 @@
   ],
   "narrative": {
     "northStar": "The Quiet Workshop",
-    "overview": "A tidy bench where a few small tools are made with care. The surfaces are cool, near-neutral greys and white sheets; type is Inter, set tight and heavy for headings and calm for reading; labels are typed in IBM Plex Mono like notes pinned to the bench. Restraint is the craft: most of every page is ink on grey, and the one thing that carries colour is the site's own accent.\n\nEvery page on yanerapps.com shares this base (`src/lib/ui/global.css`). The studio and each app site differ only in their accent: vermilion for the studio, the launcher icon's pin green for GPS-Go. The studio adds two signatures of its own: the swallow flying in a muted sky, drawn in code, and the motto \"Ride the Wind\" set in IBM Plex Serif italic.\n\nBoth themes are first-class. Light is the base; dark is a near-black night bench with the same structure, and a manual choice carries across the studio and app pages.",
+    "overview": "A tidy bench where a few small tools are made with care. The surfaces are cool, near-neutral greys and white sheets; type is Inter, set tight and heavy for headings and calm for reading; labels are typed in IBM Plex Mono like notes pinned to the bench. Restraint is the craft: most of every page is ink on grey, and the one thing that carries colour is the site's own accent.\n\nEvery page on yanerapps.com shares this base (`src/lib/ui/global.css`). The studio and each app site differ only in their accent: vermilion for the studio, the launcher icon's pin green for GPS-Go. The studio adds two signatures of its own: the swallow flying in a muted sky, drawn in code, and the motto \"Ride the Wind\" set in IBM Plex Serif italic.\n\nBoth themes are first-class. Light is the base; dark is a near-black night bench with the same structure, and a manual choice carries across the studio and app pages.\n\n### Design Principles\n\nFour principles govern the studio and every product site, set with the user on 2026-10-31. They are ranked: when two conflict, the earlier one wins.\n\n**1. Meets expectations (符合预期).** Interaction follows convention; expression may be new. Navigation, links, buttons and footers work the way visitors already know. A product site's screenshots, colour and wording match the app itself. Moving between the studio and a product site, visitors always feel they are on the same family's site. Novelty belongs only where it cannot get in the way of use: illustration, motion, typographic character. (Truth of claims is a product principle in PRODUCT.md, not repeated here.)\n\n**2. Clear hierarchy (主次分明).** One focus per screen. Primary and secondary are separated by contrast, using any of size, weight, space and colour, but the primary is always big and everything else gives way to it. Button count is not capped, as long as one thing on each screen is seen first. Apps on Google Play always come first and larger; unreleased apps are plainly secondary. Test: blur a screenshot until the words go; where the eye lands first must be that screen's focus.\n\n**3. Tailor-made (量身打造).** Material comes from three places: the product itself (launcher-icon accent, real screenshots, real interactions), the product's domain (maps and coordinates for GPS-Go, paper and dot grid for Paperdot, networks and signals for PingDeck), and the studio's story (燕儿, the swallow, nest-building, Ride the Wind). The shared base decides how things work: navigation, type, buttons, cards and greys are common to every site. Each site decides what it shows: accent, signature element, illustration and demos. Two tests, both required: with the logo and name removed, the screen would look wrong on another app's site; and every page has at least one element only this product could make.\n\n**4. Restraint (克制).** Restraint governs colour and decoration. Colour: one accent per site, everything else neutral grey, never a second colour for looks. Decoration: nothing that carries no information, such as background grids, glows or icon clutter. Two things are exempt and may be big and rich: each site's signature element (the studio's swallow sky, a product's defining demo) and the product itself (real screenshots and demos). Each site may also use one piece of purely atmospheric domain material (say, Paperdot's dot-grid paper), never behind body text.",
     "keyCharacteristics": [
       "Cool neutral greys, white sheets, near-black ink; no warm paper.",
       "One accent per site, used for kickers, links, bullets, focus and the second line of the hero.",
@@ -236,6 +236,26 @@
       "Motion is slow and optional: blur-up reveals, a 1px lift on hover, the swallow's glide."
     ],
     "rules": [
+      {
+        "name": "1. Meets expectations (符合预期)",
+        "body": "Interaction follows convention; expression may be new. Navigation, links, buttons and footers work the way visitors already know. A product site's screenshots, colour and wording match the app itself. Moving between the studio and a product site, visitors always feel they are on the same family's site. Novelty belongs only where it cannot get in the way of use: illustration, motion, typographic character. (Truth of claims is a product principle in PRODUCT.md, not repeated here.)",
+        "section": "principles"
+      },
+      {
+        "name": "2. Clear hierarchy (主次分明)",
+        "body": "One focus per screen. Primary and secondary are separated by contrast, using any of size, weight, space and colour, but the primary is always big and everything else gives way to it. Button count is not capped, as long as one thing on each screen is seen first. Apps on Google Play always come first and larger; unreleased apps are plainly secondary. Test: blur a screenshot until the words go; where the eye lands first must be that screen's focus.",
+        "section": "principles"
+      },
+      {
+        "name": "3. Tailor-made (量身打造)",
+        "body": "Material comes from three places: the product itself (launcher-icon accent, real screenshots, real interactions), the product's domain (maps and coordinates for GPS-Go, paper and dot grid for Paperdot, networks and signals for PingDeck), and the studio's story (燕儿, the swallow, nest-building, Ride the Wind). The shared base decides how things work: navigation, type, buttons, cards and greys are common to every site. Each site decides what it shows: accent, signature element, illustration and demos. Two tests, both required: with the logo and name removed, the screen would look wrong on another app's site; and every page has at least one element only this product could make.",
+        "section": "principles"
+      },
+      {
+        "name": "4. Restraint (克制)",
+        "body": "Restraint governs colour and decoration. Colour: one accent per site, everything else neutral grey, never a second colour for looks. Decoration: nothing that carries no information, such as background grids, glows or icon clutter. Two things are exempt and may be big and rich: each site's signature element (the studio's swallow sky, a product's defining demo) and the product itself (real screenshots and demos). Each site may also use one piece of purely atmospheric domain material (say, Paperdot's dot-grid paper), never behind body text.",
+        "section": "principles"
+      },
       {
         "name": "The One Signature Rule",
         "body": "Each site has exactly one accent, set as `--accent`, `--on-accent` and `--glow` for both themes in that site's own stylesheet. A new app picks a colour from its own launcher icon and darkens it in light mode until it reads as text on Bench Grey.",
@@ -267,14 +287,19 @@
       "**Do** open each section with a mono `01 · Name` kicker and a gradient Inter heading.",
       "**Do** give every card the same 18px radius, hairline and ambient lift.",
       "**Do** design both themes together and use theme-matched `-light` / `-dark` screenshot pairs.",
-      "**Do** keep all motion optional: `prefers-reduced-motion` switches it off, and pages read fully without JavaScript."
+      "**Do** keep all motion optional: `prefers-reduced-motion` switches it off, and pages read fully without JavaScript.",
+      "**Do** give each screen one focus that is visibly bigger than everything around it.",
+      "**Do** give every page at least one element only its product could make, drawn from the product, its domain or the studio's story."
     ],
     "donts": [
       "**Don't** fill a button with the accent; primary buttons are ink.",
       "**Don't** add a second accent colour to a site, or reuse one app's accent on another app's pages.",
       "**Don't** stack shadows or lift anything more than 1px on hover.",
       "**Don't** load three.js eagerly; the swallow is lazy-loaded.",
-      "**Don't** let drag-to-orbit or other heavy interaction into the sky; it only leans."
+      "**Don't** let drag-to-orbit or other heavy interaction into the sky; it only leans.",
+      "**Don't** invent a new way to navigate, link or press; novelty stays in illustration, motion and type.",
+      "**Don't** add decoration that carries no information; a site gets at most one piece of atmospheric domain material, and never behind body text.",
+      "**Don't** give an unreleased app the same size or position as an app on Google Play."
     ]
   }
 }
