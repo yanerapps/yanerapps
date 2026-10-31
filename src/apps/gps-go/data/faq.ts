@@ -25,6 +25,10 @@ export const faqs: readonly Faq[] = [
     a: 'Android and map apps can cache the last known location. In Help, Restore my real location asks the system for a fresh fix. If that isn’t enough, set Select mock location app to Nothing, toggle location or airplane mode, and let a map app get a fix outdoors.',
   },
   {
+    q: 'Can GPS-Go hide my real location?',
+    a: 'Not reliably, and it isn’t built to. It changes the GPS location Android reports to apps, but Wi-Fi, cell towers and your IP address can still reveal where you are. Apps that check can tell the location is simulated, and when you stop, your real location comes back. What it does well is keep your street out of screenshots, recordings and demos.',
+  },
+  {
     q: 'Can I bring in places and routes from other apps?',
     a: 'Yes. Share a place from Google Maps, Apple Maps, Waze, HERE, OpenStreetMap, Bing or Yandex, or any geo: link or plain coordinates, and it lands on the map. GPX files import as routes, and routes export as GPX. Amap, Baidu and Tencent use a different coordinate system and aren’t supported yet.',
   },
