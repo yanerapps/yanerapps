@@ -41,7 +41,7 @@ A small studio that builds native apps per platform and looks after each one unt
 
 - Static Astro site with Svelte islands, deployed to Cloudflare Workers static assets. URLs never end in a slash.
 - `src/apps/registry.ts` is the single source for the studio's name, email, URL and each app's name, blurb, Play link and showcase copy.
-- Apps today, all Android: **GPS-Go** (no-root location simulator, live on Google Play), **PingDeck** (pings many hosts at once) and **Paperdot** (a Bullet Journal); the last two are "Coming soon to Google Play".
+- Apps today, all Android: **GPS-Go** (no-root location simulator, live on Google Play), **PingDeck** (pings many hosts at once) and **Paperdot** (a daily journal and planner; store title "Paperdot: Journal & Planner"; never "Bullet Journal" or "BuJo" in names or taglines, both are registered trademarks); the last two are "Coming soon to Google Play".
 - The studio is native-first across operating systems (confirmed 2026-10-31). Do not name an iOS or macOS app until one ships.
 - Today's apps are small tools, but the studio may later build medium-size apps or SaaS (2026-10-31). Studio-level copy should not lock it to "small", "tools" or "your phone".
 - GPS-Go is free with ads and daily limits; the Ad-free and Pro monthly subscriptions are live for everyone since the release submitted on 2026-10-25. The site states prices nowhere, since Google Play sets them per region.

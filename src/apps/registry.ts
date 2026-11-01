@@ -45,16 +45,16 @@ export const apps = {
   },
   paperdot: {
     name: 'Paperdot',
-    blurb: 'a Bullet Journal for Android',
+    blurb: 'a daily journal and planner for Android',
     playStoreUrl: null as string | null,
     showcase: {
       icon: '/paperdot/icon.svg',
-      tagline: 'A Bullet Journal that feels like paper',
+      tagline: 'A daily journal that feels like paper',
       summary:
-        'Log tasks, events and notes the Bullet Journal way, in a notebook you turn page by page, and decide each month what moves forward.',
+        'Log tasks, events and notes with quick signifiers, in a notebook you turn page by page, and decide each month what moves forward.',
       highlights: [
         'Quick logging with signifiers in daily, monthly and future logs',
-        'A guided review migrates unfinished tasks one by one, never all at once',
+        'A guided review of every open task: migrate, schedule or strike out, one by one or several at once',
         'No account needed — your journal stays on your device, with backups you own',
       ],
     },
