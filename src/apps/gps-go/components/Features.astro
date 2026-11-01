@@ -121,10 +121,11 @@ const more = [
   .card {
     display: flex;
     flex-direction: column;
-    padding: 22px;
+    padding: clamp(20px, 3vw, 28px);
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    background: linear-gradient(var(--panel), color-mix(in srgb, var(--panel) 70%, var(--bg)));
+    background: var(--panel);
+    box-shadow: var(--shadow);
   }
 
   .wide {
@@ -133,18 +134,17 @@ const more = [
 
   .card h3 {
     margin: 22px 0 8px;
-    font-size: 19px;
   }
 
   .card > p {
     color: var(--muted);
-    font-size: 14.5px;
+    font-size: var(--step--1);
   }
 
   .more-link {
     margin-top: auto;
     padding-top: 14px;
-    font-size: 14px;
+    font-size: var(--step--1);
     font-weight: 600;
     text-decoration: none;
   }
@@ -197,7 +197,7 @@ const more = [
   .formats li {
     padding: 3px 9px;
     border: 1px solid var(--line-2);
-    border-radius: 7px;
+    border-radius: 6px;
     background: var(--panel);
     font: 12px var(--mono);
   }

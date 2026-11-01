@@ -87,6 +87,14 @@
   color: var(--muted);
 }
 
+/* The breadcrumb above an app's privacy or support title, set like a kicker. */
+.product-nav {
+  margin-bottom: 14px;
+  font: 12.5px/20px var(--mono);
+  letter-spacing: 0.5px;
+  color: var(--dim);
+}
+
 .prose .meta {
   display: flex;
   flex-wrap: wrap;
@@ -180,8 +188,10 @@
   background: var(--panel);
 }
 
+/* On a phone the table scrolls inside .table-scroll rather than crushing its columns. */
 .prose table {
   width: 100%;
+  min-width: 36rem;
   border-collapse: collapse;
   font-size: var(--step--1);
   text-align: left;

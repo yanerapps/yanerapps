@@ -38,6 +38,114 @@
         ],
         "createdAt": "2026-10-31T23:55:11.394Z",
         "reason": "incumbent heading treatment documented in DESIGN.md; this edit only changed copy"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          "src/apps/gps-go/components/PhoneFrame.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:50.987Z",
+        "reason": "phone frame material colours, not page UI; drawn to match the device"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "src/apps/gps-go/components/PhoneFrame.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.008Z",
+        "reason": "phone frame geometry in container units"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          "src/apps/gps-go/components/Hotspots.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.028Z",
+        "reason": "scrims over app screenshots, sized to the screenshot"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "src/apps/gps-go/components/Hotspots.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.049Z",
+        "reason": "hotspot outlines follow app controls in container units"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "3cqi",
+        "files": [
+          "src/apps/gps-go/components/Anatomy.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.070Z",
+        "reason": "hotspot outlines follow app controls in container units"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "2px",
+        "files": [
+          "src/apps/gps-go/components/Faq.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.091Z",
+        "reason": "rounded cap on a 2px plus/minus stroke"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "3px",
+        "files": [
+          "src/apps/gps-go/components/Tour.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.112Z",
+        "reason": "rounded cap on a 3px progress rail"
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/apps/gps-go/components/Hero.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.132Z",
+        "reason": "user decided 2026-10-31 to keep GPS-Go's hero grid (DESIGN.md Elevation & Depth)"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/apps/gps-go/components/Hero.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.153Z",
+        "reason": "incumbent heading treatment documented in DESIGN.md"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#000",
+        "files": [
+          "src/apps/gps-go/components/Hero.astro"
+        ],
+        "createdAt": "2026-11-01T01:00:51.173Z",
+        "reason": "opaque stop of the grid's mask-image, not a painted colour"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "*",
+        "files": [
+          "src/studio/components/swallow-debug.ts"
+        ],
+        "createdAt": "2026-11-01T01:01:17.848Z",
+        "reason": "dev-only slider panel behind import.meta.env.DEV and ?wing; never ships"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "*",
+        "files": [
+          "src/studio/components/swallow-debug.ts"
+        ],
+        "createdAt": "2026-11-01T01:01:17.868Z",
+        "reason": "dev-only slider panel behind import.meta.env.DEV and ?wing; never ships"
       }
     ]
   }

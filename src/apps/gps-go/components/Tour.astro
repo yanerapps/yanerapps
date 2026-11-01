@@ -262,7 +262,7 @@ const { id, kicker, title, lede, chapters } = Astro.props;
     width: 100%;
     padding: 0.9rem 1rem;
     border: 1px solid transparent;
-    border-radius: 1rem;
+    border-radius: var(--radius);
     background: none;
     text-align: left;
     cursor: pointer;
@@ -328,7 +328,7 @@ const { id, kicker, title, lede, chapters } = Astro.props;
     height: calc(224.444cqw * var(--crop-height));
     overflow: hidden;
     border: 1px solid var(--line);
-    border-radius: 1rem;
+    border-radius: var(--radius);
     background: var(--panel);
   }
 

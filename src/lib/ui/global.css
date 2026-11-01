@@ -259,7 +259,7 @@ pre {
     border-color 0.2s;
 }
 
-.btn:not(.btn-static):hover {
+.btn:hover {
   transform: translateY(-1px);
 }
 
@@ -276,12 +276,15 @@ pre {
   color: var(--text);
 }
 
-.btn-quiet:not(.btn-static):hover {
+.btn-quiet:hover {
   background: var(--panel-2);
 }
 
-.btn-static {
-  cursor: default;
+/* A status where an action will be, such as "Coming soon to Google Play": a mono label, not a disabled button. */
+.status {
+  font: 12.5px/20px var(--mono);
+  letter-spacing: 0.5px;
+  color: var(--dim);
 }
 
 /* Cards and framed pictures share one surface. */

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-01T00:21:27.240Z",
+  "generatedAt": "2026-11-01T01:01:06.000Z",
   "title": "Design System: Yaner Apps",
   "extensions": {
     "colorMeta": {
@@ -119,6 +119,10 @@
       "display-studio": {
         "displayName": "Studio Display",
         "purpose": "The studio home hero, capped at 4.5rem."
+      },
+      "page-title": {
+        "displayName": "Page Title",
+        "purpose": "Sub-page titles on a product site."
       },
       "lede": {
         "displayName": "Lede",

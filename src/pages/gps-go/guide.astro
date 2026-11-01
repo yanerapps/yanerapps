@@ -68,10 +68,19 @@ const contents = [
 
 <style>
   .guide-return { margin-block: 0; text-align: right; }
-  .guide-return a { color: var(--muted); font-size: 0.875rem; }
+  .guide-return a { color: var(--muted); font-size: var(--step--1); }
   .guide-head {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+
+  .guide-head .kicker {
+    margin: 0;
+  }
+
+  /* Page titles share one size across the GPS-Go pages (the FAQ's). */
+  .guide-head h1 {
+    font-size: clamp(2.5rem, 5.4vw, 4rem);
   }
 
   ol {
@@ -88,7 +97,8 @@ const contents = [
     counter-increment: part;
   }
 
-  a {
+  /* Numbered chapter chips; scoped so the "Back to chapters" links stay plain links. */
+  #guide-contents a {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
@@ -97,12 +107,12 @@ const contents = [
     border: 1px solid var(--line);
     border-radius: var(--radius-pill);
     color: var(--text);
-    font-size: 0.9375rem;
+    font-size: var(--step--1);
     text-decoration: none;
     transition: border-color 0.18s ease;
   }
 
-  a::before {
+  #guide-contents a::before {
     content: counter(part);
     display: grid;
     place-items: center;
@@ -116,7 +126,7 @@ const contents = [
     font-weight: 600;
   }
 
-  a:hover {
+  #guide-contents a:hover {
     border-color: var(--accent);
     color: var(--text);
   }

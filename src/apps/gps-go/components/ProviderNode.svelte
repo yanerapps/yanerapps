@@ -39,7 +39,7 @@
     height: 100%;
     padding: 1.125rem 1rem;
     border: 1px solid var(--line);
-    border-radius: 1.25rem;
+    border-radius: var(--radius);
     background: var(--panel);
     box-shadow: var(--shadow);
     color: var(--text);

@@ -84,7 +84,7 @@ const showcased = appIds
                 {app.id === 'gps-go' ? (
                   <a class="btn btn-primary" href={appPaths(app.id).home}>Explore {app.name}</a>
                 ) : (
-                  <span class="coming-soon">Coming soon to Google Play</span>
+                  <span class="status">Coming soon to Google Play</span>
                 )}
                 {app.playStoreUrl && (
                   <a class="btn btn-quiet" href={app.playStoreUrl} rel="noopener">Get it on Google Play</a>
@@ -151,12 +151,6 @@ const showcased = appIds
     margin-top: 18px;
   }
 
-  /* A status, not a disabled button: set like the mono labels, quieter than the actions it stands in for. */
-  .coming-soon {
-    font: 12.5px/20px var(--mono);
-    letter-spacing: 0.5px;
-    color: var(--dim);
-  }
 
   .ctas {
     display: flex;

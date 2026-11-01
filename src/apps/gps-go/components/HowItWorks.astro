@@ -128,7 +128,7 @@ const sinks = [
   .flow-node {
     align-content: center;
     padding: 1.125rem 1rem;
-    border-radius: 1.25rem;
+    border-radius: var(--radius);
     background: var(--panel);
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
@@ -150,6 +150,7 @@ const sinks = [
       width: min(100%, 20rem);
     }
 
+    .flow-source,
     .flow-target {
       text-align: center;
     }
@@ -175,9 +176,4 @@ const sinks = [
     }
   }
 
-  @media (max-width: 500px) {
-    .flow-node strong {
-      font-size: 0.8125rem;
-    }
-  }
 </style>
