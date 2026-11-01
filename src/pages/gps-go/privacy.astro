@@ -1,12 +1,17 @@
 ---
-import Layout from '../../studio/layouts/Layout.astro';
+import Base from '../../apps/gps-go/layouts/Base.astro';
+import Header from '../../apps/gps-go/components/Header.astro';
+import Footer from '../../apps/gps-go/components/Footer.astro';
+import ProseToc from '../../lib/ui/ProseToc.astro';
 import { mailto, studio } from '../../apps/registry';
 
 const title = 'Privacy Policy — GPS-Go';
 const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root Android location simulator by Yaner Apps.';
 ---
 
-<Layout title={title} description={description}>
+<Base title={title} description={description}>
+  <Header />
+  <main id="main">
   <div class="prose">
     <nav aria-label="GPS-Go navigation" class="product-nav">
       <a href="/gps-go">GPS-Go</a> <span aria-hidden="true">/</span> Privacy
@@ -362,4 +367,7 @@ const description = 'Privacy policy for GPS-Go (com.yanerapps.gpsgo), a no-root 
       Yaner Apps &mdash; <a href={mailto()}>{studio.email}</a>
     </p>
   </div>
-</Layout>
+  </main>
+  <Footer />
+  <ProseToc />
+</Base>

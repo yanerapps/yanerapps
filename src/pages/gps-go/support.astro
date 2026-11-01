@@ -1,5 +1,8 @@
 ---
-import Layout from '../../studio/layouts/Layout.astro';
+import Base from '../../apps/gps-go/layouts/Base.astro';
+import Header from '../../apps/gps-go/components/Header.astro';
+import Footer from '../../apps/gps-go/components/Footer.astro';
+import ProseToc from '../../lib/ui/ProseToc.astro';
 import { mailto, studio } from '../../apps/registry';
 
 const title = 'Support — GPS-Go';
@@ -27,7 +30,9 @@ const template =
     .replace(/\+/g, '%20');
 ---
 
-<Layout title={title} description={description}>
+<Base title={title} description={description}>
+  <Header />
+  <main id="main">
   <div class="prose">
     <nav aria-label="GPS-Go navigation" class="product-nav">
       <a href="/gps-go">GPS-Go</a> <span aria-hidden="true">/</span> Support
@@ -55,7 +60,7 @@ const template =
 
     <h2>Common questions</h2>
 
-    <h3>The app says it is not the selected mock location app</h3>
+    <h3>The app says it is not the selected mock location app.</h3>
     <p>
       Android requires you to pick a mock location app in Developer options. Open
       <strong>Settings &rarr; System &rarr; Developer options &rarr; Select mock location app</strong> and choose GPS-Go.
@@ -63,14 +68,14 @@ const template =
       The in-app setup checklist walks you through this and the other permissions.
     </p>
 
-    <h3>Simulation stops when the screen is off or the app is in the background</h3>
+    <h3>Simulation stops when the screen is off or the app is in the background.</h3>
     <p>
       Android's power management may terminate background services to save battery. Go to
       <strong>Settings &rarr; Apps &rarr; GPS-Go &rarr; Battery</strong> (or <strong>App battery usage</strong>) and select <strong>Unrestricted</strong>.
       You can also open this setting from the in-app setup checklist.
     </p>
 
-    <h3>Some apps still show my real location</h3>
+    <h3>Some apps still show my real location.</h3>
     <p>
       Apps that verify location integrity, or that read location through their own means, can detect or
       ignore a mocked position. GPS-Go feeds the standard Android location providers; it cannot guarantee
@@ -79,13 +84,13 @@ const template =
       it is most likely refusing the simulated one.
     </p>
 
-    <h3>The floating joystick does not appear</h3>
+    <h3>The floating joystick does not appear.</h3>
     <p>
       The joystick needs the "Display over other apps" permission. Grant it from the in-app setup checklist
       or from <strong>Settings &rarr; Apps &rarr; GPS-Go &rarr; Display over other apps</strong>.
     </p>
 
-    <h3>I subscribed but still see ads or limits</h3>
+    <h3>I subscribed but still see ads or limits.</h3>
     <p>
       Open <strong>Profile &rarr; Plan &rarr; Restore purchases</strong> while online, signed in to the Google
       account you subscribed with. Your plan belongs to that Google account, not to the device; on a new device
@@ -112,4 +117,7 @@ const template =
       responsible for how you use it.
     </p>
   </div>
-</Layout>
+  </main>
+  <Footer />
+  <ProseToc />
+</Base>

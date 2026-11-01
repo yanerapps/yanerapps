@@ -11,6 +11,13 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
   <div class="page footer-inner">
+    {
+      Astro.slots.has('studio') && (
+        <p class="studio-line">
+          <slot name="studio" />
+        </p>
+      )
+    }
     <p><slot name="owner">© {year} <a href="/">{studio.name}</a></slot></p>
     <ul>
       {
@@ -49,11 +56,12 @@ const year = new Date().getFullYear();
     list-style: none;
   }
 
-  .footer a {
+  /* :global reaches links passed in through the slots, which carry their own component's scope. */
+  .footer :global(a) {
     color: var(--dim);
   }
 
-  .footer a:hover {
+  .footer :global(a:hover) {
     color: var(--text);
   }
 
@@ -64,5 +72,18 @@ const year = new Date().getFullYear();
   .fineprint {
     flex-basis: 100%;
     max-width: 70ch;
+  }
+
+  /* A product site's way back to the studio, on its own line above the rest. */
+  .studio-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    flex-basis: 100%;
+    padding-bottom: 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
   }
 </style>

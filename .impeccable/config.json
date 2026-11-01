@@ -146,6 +146,15 @@
         ],
         "createdAt": "2026-11-01T01:01:17.868Z",
         "reason": "dev-only slider panel behind import.meta.env.DEV and ?wing; never ships"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/lib/ui/prose.css"
+        ],
+        "createdAt": "2026-11-01T01:46:01.501Z",
+        "reason": "incumbent document title treatment moved from studio.css; documented in DESIGN.md"
       }
     ]
   }

@@ -23,7 +23,7 @@ Every commit passes `check`, `lint`, `format:check`, `test` and `build`. The too
 | Path                   | What lives there                                                                                                                                              |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/pages/`           | Routes only. `/<app>/privacy` and `/<app>/support` exist for every app                                                                                        |
-| `src/studio/`          | The studio's look: `layouts/Layout.astro`, `styles/global.css`, and the swallow in `components/`                                                              |
+| `src/studio/`          | The studio's look: `layouts/Layout.astro`, `styles/studio.css`, and the swallow in `components/`                                                              |
 | `src/apps/registry.ts` | The studio's name, email and URL, and each app's name and Play listing, written once and read by every page                                                   |
 | `src/apps/<app>/`      | An app's own product site: components, data, layout, scripts, styles and images                                                                               |
 | `src/lib/`             | What both looks share: `SeoHead.astro` (title, description, canonical, Open Graph), `ThemeBoot.astro` and `theme.ts`, `paths.ts` (with its tests) and `at.ts` |
@@ -40,7 +40,7 @@ Every commit passes `check`, `lint`, `format:check`, `test` and `build`. The too
 
 ## GPS-Go product pages
 
-`/gps-go`, `/gps-go/guide` and `/gps-go/faq` keep GPS-Go's own look: they use `src/apps/gps-go/layouts/Base.astro`, not the studio layout. GPS-Go's privacy and support pages stay on the studio layout. `base` in `src/apps/gps-go/data/site.ts` is `/gps-go`, so a link is `${base}/guide`.
+Every `/gps-go` page, privacy and support included, keeps GPS-Go's own look: it uses `src/apps/gps-go/layouts/Base.astro`, not the studio layout. Long documents on either layout take their styles and contents list from `src/lib/ui/ProseToc.astro` (`prose.css`). The footer's first line, "Designed by Yaner Apps. More apps →", leads back to the studio. `base` in `src/apps/gps-go/data/site.ts` is `/gps-go`, so a link is `${base}/guide`.
 
 - **Google Play**: `playStoreUrl` for `gps-go` in `src/apps/registry.ts` is the listing every call to action links to, including the studio home pages, and the product page's structured data gives it as `installUrl`. Set it to `null` and the product pages say "Coming soon to Google Play" while the home pages drop the button.
 

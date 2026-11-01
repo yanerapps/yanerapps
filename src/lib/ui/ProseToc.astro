@@ -1,0 +1,37 @@
+---
+// Long documents (privacy policies, support pages) on any site: their styles, plus a contents list built
+// from their h2s, shown in the margin on wide screens and as a disclosure under the title otherwise.
+import './prose.css';
+---
+
+<script>
+  const prose = document.querySelector('.prose');
+  const heads = prose ? [...prose.querySelectorAll('h2')] : [];
+  if (prose && heads.length >= 4) {
+    const nav = document.createElement('nav');
+    nav.className = 'toc';
+    nav.setAttribute('aria-label', 'Contents');
+    for (const h of heads) {
+      const text = (h.textContent ?? '').replace(/^\d+\.\s*/, '').trim();
+      if (!h.id)
+        h.id = text
+          .toLowerCase()
+          .replace(/[^\p{L}\p{N}]+/gu, '-')
+          .replace(/^-|-$/g, '');
+      const a = document.createElement('a');
+      a.href = `#${h.id}`;
+      a.textContent = text;
+      nav.append(a);
+    }
+    const rail = document.createElement('div');
+    rail.className = 'toc-rail';
+    rail.append(nav);
+    prose.prepend(rail);
+    const mobile = document.createElement('details');
+    mobile.className = 'toc-mobile';
+    const summary = document.createElement('summary');
+    summary.textContent = 'On this page';
+    mobile.append(summary, nav.cloneNode(true));
+    prose.querySelector('.prose-header')?.after(mobile);
+  }
+</script>
