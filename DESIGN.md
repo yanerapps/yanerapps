@@ -48,6 +48,11 @@ typography:
     fontSize: '1rem'
     fontWeight: 400
     lineHeight: 1.6
+  body-small:
+    fontFamily: "'Inter Variable', -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
+    fontSize: '0.875rem'
+    fontWeight: 400
+    lineHeight: 1.6
   label:
     fontFamily: "'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
     fontSize: '12.5px'
@@ -59,10 +64,33 @@ typography:
     fontSize: '1rem'
     fontWeight: 400
     letterSpacing: '0.01em'
+  display-studio:
+    fontFamily: "'Inter Variable', -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
+    fontSize: 'clamp(2.75rem, 6vw, 4.5rem)'
+    fontWeight: 700
+    lineHeight: 1.02
+    letterSpacing: '-0.045em'
+  lede:
+    fontFamily: "'Inter Variable', -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
+    fontSize: 'clamp(1rem, 1.8vw, 1.125rem)'
+    fontWeight: 400
+    lineHeight: 1.6
+  band-title:
+    fontFamily: "'Inter Variable', -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
+    fontSize: 'clamp(1.25rem, 2.6vw, 1.625rem)'
+    fontWeight: 700
+    letterSpacing: '-0.02em'
+  ui:
+    fontFamily: "'Inter Variable', -apple-system, BlinkMacSystemFont, system-ui, sans-serif"
+    fontSize: '15px'
+    fontWeight: 600
+    lineHeight: 1.2
 rounded:
   focus: '6px'
   control: '9px'
+  row: '10px'
   button: '12px'
+  icon: '14px'
   card: '18px'
   pill: '999px'
 spacing:
@@ -183,8 +211,9 @@ A cool, almost colourless workshop with a single signed accent per site.
 
 - **Display** (700, `clamp(2.75rem, 9vw, 5.75rem)`, 1.02): page heroes. The studio home hero caps at 4.5rem.
 - **Headline** (700, `clamp(2.125rem, 5.4vw, 3.25rem)`, 1.06): section headings and document titles, painted with the ink-to-60% gradient.
-- **Title** (650, 1.25rem, 1.25): card titles, document h2s.
+- **Title** (650, 1.25rem, 1.25): card titles, document h2s. The closing band's heading grows to `clamp(1.25rem, 2.6vw, 1.625rem)` so the page ends on something larger than a card.
 - **Body** (400, 16px, 1.6): reading text in Muted Ink. Ledes run `clamp(1rem, 1.8vw, 1.125rem)` at a 60ch measure; legal documents sit in a 46rem column.
+- **Body small** (400, 0.875rem / `--step--1`): card highlights, taglines, link-row blurbs, the closing band's text, header links and tables. Small text takes this one size, never 14.5px or 0.9rem.
 - **Label** (Plex Mono 400, 12.5px/20px, +0.5px): section kickers in the accent, meta lines, table heads, the contents rail. Not uppercase.
 
 ### Named Rules
@@ -224,7 +253,7 @@ Soft, even rounding sized to the object: 6px focus outlines, 9px header controls
 - **Primary:** ink fill with white text (inverted in dark mode) and the accent glow beneath.
 - **Quiet:** transparent with a 14% hairline border and ink text; fills with Sheet Shade on hover.
 - **Hover / Focus:** a 1px lift over 0.2s on the workshop ease (`cubic-bezier(0.22, 1, 0.36, 1)`); focus is a 2px accent outline offset 2px.
-- **Static:** "Coming soon to Google Play" is plain muted 600 text, not a disabled button.
+- **Status:** "Coming soon to Google Play" is a status, not a disabled button: set as a Mono Label in Dim Ink where the buttons would be.
 
 ### Cards / Containers
 

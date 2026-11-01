@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-01T00:16:33.677Z",
+  "generatedAt": "2026-11-01T00:21:27.240Z",
   "title": "Design System: Yaner Apps",
   "extensions": {
     "colorMeta": {
@@ -111,6 +111,26 @@
       "body": {
         "displayName": "Body",
         "purpose": "Reading text in muted ink, 60ch measure."
+      },
+      "body-small": {
+        "displayName": "Body Small",
+        "purpose": "Card highlights, taglines, link-row blurbs, band text, header links, tables."
+      },
+      "display-studio": {
+        "displayName": "Studio Display",
+        "purpose": "The studio home hero, capped at 4.5rem."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "Section and hero ledes, 60ch measure."
+      },
+      "band-title": {
+        "displayName": "Band Title",
+        "purpose": "The closing band heading."
+      },
+      "ui": {
+        "displayName": "UI",
+        "purpose": "Buttons and the brand name."
       },
       "label": {
         "displayName": "Mono Label",

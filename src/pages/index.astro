@@ -151,7 +151,12 @@ const showcased = appIds
     margin-top: 18px;
   }
 
-  .coming-soon { color: var(--muted); font-size: 0.9rem; font-weight: 600; }
+  /* A status, not a disabled button: set like the mono labels, quieter than the actions it stands in for. */
+  .coming-soon {
+    font: 12.5px/20px var(--mono);
+    letter-spacing: 0.5px;
+    color: var(--dim);
+  }
 
   .ctas {
     display: flex;
@@ -262,7 +267,7 @@ const showcased = appIds
 
   .app-tagline {
     color: var(--dim);
-    font-size: 14px;
+    font-size: var(--step--1);
   }
 
   .app-summary {
@@ -276,7 +281,7 @@ const showcased = appIds
     padding: 0;
     list-style: none;
     color: var(--muted);
-    font-size: 14.5px;
+    font-size: var(--step--1);
   }
 
   .app-highlights li {
@@ -337,7 +342,7 @@ const showcased = appIds
   .band p {
     margin-top: 4px;
     color: var(--muted);
-    font-size: 14.5px;
+    font-size: var(--step--1);
   }
 
   @media (max-width: 900px) {

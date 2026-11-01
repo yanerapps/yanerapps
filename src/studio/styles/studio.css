@@ -183,7 +183,7 @@
 .prose table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: var(--step--1);
   text-align: left;
 }
 
@@ -332,5 +332,5 @@
 
 .app-link span {
   flex: 1;
-  font-size: 14.5px;
+  font-size: var(--step--1);
 }

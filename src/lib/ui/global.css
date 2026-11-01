@@ -298,7 +298,7 @@ pre {
   top: -4rem;
   z-index: 100;
   padding: 8px 14px;
-  border-radius: 8px;
+  border-radius: 9px;
   background: var(--btn-bg);
   color: var(--btn-text);
   text-decoration: none;
