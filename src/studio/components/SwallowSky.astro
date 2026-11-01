@@ -20,7 +20,7 @@ const { inscription } = Astro.props;
         io.disconnect();
         import('./swallow').then(
           (m) => m.mount(el),
-          () => el.parentElement?.remove(),
+          () => {}, // three.js failed to load: the still poster stays
         );
       },
       { rootMargin: '400px 0px' },
@@ -36,6 +36,7 @@ const { inscription } = Astro.props;
 
   /* The sky washes out into the page on every side instead of ending at a frame. */
   .sky {
+    position: relative;
     aspect-ratio: 4 / 3;
     background: linear-gradient(var(--sky-top), var(--sky-mid) 55%, var(--sky-bottom));
     --fade: transparent, rgb(0 0 0 / 0.4) 6%, rgb(0 0 0 / 0.8) 12%, #000 20%, #000 80%,
@@ -44,10 +45,50 @@ const { inscription } = Astro.props;
     mask-composite: intersect;
   }
 
+  /* A still of the bird's first frame (npm run sky-poster) holds its place until three.js draws, and
+     stays when JavaScript, the download or WebGL fails. */
+  .sky::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/sky/swallow-wide-light.webp') center / cover no-repeat;
+    transition: opacity 0.6s var(--ease);
+  }
+
+  :global([data-theme='dark']) .sky::before {
+    background-image: url('/sky/swallow-wide-dark.webp');
+  }
+
   .sky canvas {
+    position: relative;
     display: block;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease);
+  }
+
+  .sky[data-live]::before {
+    opacity: 0;
+  }
+
+  .sky[data-live] canvas {
+    opacity: 1;
+  }
+
+  /* Once the hero stacks, a shorter sky keeps the apps closer to the top. */
+  @media (max-width: 900px) {
+    .sky {
+      aspect-ratio: 16 / 10;
+    }
+
+    .sky::before {
+      background-image: url('/sky/swallow-narrow-light.webp');
+    }
+
+    :global([data-theme='dark']) .sky::before {
+      background-image: url('/sky/swallow-narrow-dark.webp');
+    }
   }
 
   .sky-inscription {
@@ -59,9 +100,5 @@ const { inscription } = Astro.props;
     font-size: 1.15rem;
     color: var(--sky-ink);
     opacity: 0.85;
-  }
-
-  :global(html:not(.js)) .sky-frame {
-    display: none;
   }
 </style>

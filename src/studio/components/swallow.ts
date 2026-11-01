@@ -942,8 +942,7 @@ export function mount(el: HTMLElement) {
   try {
     renderer = new WebGLRenderer({ canvas, alpha: true, antialias: true });
   } catch {
-    (el.parentElement ?? el).remove(); // no WebGL: drop the sky and its inscription together
-    return;
+    return; // no WebGL: the sky keeps its still poster
   }
   const small = el.clientWidth < 480;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1282,6 +1281,7 @@ export function mount(el: HTMLElement) {
     if (!reduced || dirty) {
       renderer.render(scene, camera);
       dirty = false;
+      if (!('live' in el.dataset)) el.dataset.live = ''; // the canvas fades in over the still poster
     }
     raf = requestAnimationFrame(frame);
   }
@@ -1352,7 +1352,7 @@ export function mount(el: HTMLElement) {
     if (!w || !h) return;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    camera.zoom = Math.min(1, camera.aspect / 1.6); // on the taller 4:3 phone sky, pull back so upstrokes clear the top
+    camera.zoom = Math.min(1, camera.aspect / 1.6); // on the taller 4:3 sky, pull back so upstrokes clear the top
     // Shift the lens so the bird sits a little left of centre, with room to fly into.
     camera.filmOffset = 0.1 * 35 * Math.tan((camera.fov * Math.PI) / 360) * camera.aspect;
     camera.updateProjectionMatrix();

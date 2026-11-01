@@ -15,7 +15,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "node --test",
-    "og": "node scripts/og.mjs"
+    "og": "node scripts/og.mjs",
+    "sky-poster": "node scripts/sky-poster.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

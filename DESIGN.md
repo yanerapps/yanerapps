@@ -246,7 +246,7 @@ Sheet-white rows listing each app on privacy and support overviews: name in ink,
 
 ### Swallow Sky
 
-The studio's signature: a lazy-loaded three.js barn swallow gliding in a muted blue sky, inscribed "Ride the Wind" in the top-right corner. Flat unlit colour, mostly gliding with occasional wingbeats and gusts; a slow camera arc alternates two oblique views and leans a little after the pointer. Reduced motion shows a still glide pose; without JavaScript the sky stays a static gradient.
+The studio's signature: a lazy-loaded three.js barn swallow gliding in a muted blue sky, inscribed "Ride the Wind" in the top-right corner. Flat unlit colour, mostly gliding with occasional wingbeats and gusts; a slow camera arc alternates two oblique views and leans a little after the pointer. Reduced motion shows a still glide pose. A still of that pose (`public/sky/`, 4:3 wide and 16:10 once the hero stacks, light and dark) holds the sky until three.js draws, then crossfades away over 0.6s; it stays when JavaScript, the download or WebGL fails.
 
 ## Do's and Don'ts
 
