@@ -34,7 +34,7 @@ export const faqs: readonly Faq[] = [
   },
   {
     q: 'Is GPS-Go free?',
-    a: 'Yes, with daily limits on new sessions and place searches. Watching an optional ad adds more, and typing coordinates never uses a search. Paid plans that lift the limits are on the way.',
+    a: 'Yes. The free plan gives you 3 session starts and 3 place searches a day, and watching an optional ad adds more; typing coordinates never uses a search. Two optional subscriptions, Ad-free and Pro, remove ads, and Pro also raises or removes the limits.',
   },
   {
     q: 'Which phones does it run on?',

@@ -29,6 +29,15 @@
         ],
         "createdAt": "2026-10-31T23:13:23.753Z",
         "reason": "incumbent heading treatment documented in DESIGN.md (Typography, Do's); out of scope for this nav fix"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/apps/gps-go/components/Honest.astro"
+        ],
+        "createdAt": "2026-10-31T23:55:11.394Z",
+        "reason": "incumbent heading treatment documented in DESIGN.md; this edit only changed copy"
       }
     ]
   }

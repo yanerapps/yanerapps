@@ -43,6 +43,8 @@ A small studio that builds native apps per platform and looks after each one unt
 - `src/apps/registry.ts` is the single source for the studio's name, email, URL and each app's name, blurb, Play link and showcase copy.
 - Apps today, all Android: **GPS-Go** (no-root location simulator, live on Google Play), **PingDeck** (pings many hosts at once) and **Paperdot** (a Bullet Journal); the last two are "Coming soon to Google Play".
 - The studio is native-first across operating systems (confirmed 2026-10-31). Do not name an iOS or macOS app until one ships.
+- Today's apps are small tools, but the studio may later build medium-size apps or SaaS (2026-10-31). Studio-level copy should not lock it to "small", "tools" or "your phone".
+- GPS-Go is free with ads and daily limits; the Ad-free and Pro monthly subscriptions are live for everyone since the release submitted on 2026-10-25. The site states prices nowhere, since Google Play sets them per region.
 - GPS-Go's product pages keep their own look (`src/apps/gps-go/layouts/Base.astro`); its privacy and support pages use the studio layout.
 - three.js is allowed only lazy-loaded; all content must remain readable without JavaScript.
 - Light and dark themes; a manual choice carries across the studio and app pages.
