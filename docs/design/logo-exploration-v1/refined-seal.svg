@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" color="#c23b22" role="img"><title>Yaner Apps — Refined seal</title>
+<g id="refined-seal" fill="none" stroke="currentColor" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round">
+  <path id="crown" d="M36 27 C48 26 78 28 91 26 M48 16 C47 25 47 36 53 37 C59 39 70 39 76 36 C80 33 79 23 80 16"/>
+  <path id="left-wing" d="M37 45 C31 55 37 61 35 72 C33 79 27 84 23 88 M34 59 C30 64 26 68 22 71"/>
+  <path id="right-wing" d="M89 45 C93 55 87 64 91 74 C93 80 99 85 104 87 M91 59 C96 63 101 66 105 68"/>
+  <path id="body-and-tail" d="M50 46 L51 66 C51 74 76 75 77 66 L78 46 M51 53 C60 55 69 55 77 53 M64 73 C66 91 53 102 29 115 M64 84 C69 98 83 109 100 115"/>
+  <path id="left-feather" d="M44 85 C40 92 34 99 27 103"/>
+  <path id="right-feather" d="M84 85 C89 92 96 98 103 102"/>
+</g></svg>
