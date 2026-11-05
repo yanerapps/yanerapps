@@ -1,29 +1,26 @@
 ---
+const tools = ['Emulator', 'adb', 'GPS-Go'];
+
+const rows = [
+  { what: 'Runs on a real phone', values: ['No', 'Yes', 'Yes'] },
+  { what: 'Works with no computer attached', values: ['No', 'No', 'Yes'] },
+  { what: 'Moves along routes and GPX tracks', values: ['Yes', 'Scripted', 'Yes'] },
+  { what: 'Steer by hand over the app you’re testing', values: ['No', 'No', 'Yes'] },
+  { what: 'Usable without Android Studio or a terminal', values: ['No', 'No', 'Yes'] },
+];
+
 const cases = [
   {
-    who: 'Building and testing location features',
-    without: 'Drive across town to check one screen, then drive back after every fix.',
-    with: 'Every app on the phone is already there.',
+    who: 'Location features',
+    what: 'Check a geofence alert, a feature that only exists in one city, or how an app holds up over hours on a looping route, without going there.',
   },
   {
-    who: 'Recording demos and screenshots',
-    without: 'Your own street sits in the corner of every screenshot and screen recording.',
-    with: 'Use a simulated location in demos instead of your own street.',
+    who: 'Fitness and navigation apps',
+    what: 'Play a recorded GPX run back along its exact path, lap after lap, until the bug it caught shows up again.',
   },
   {
-    who: 'Testing fitness and navigation apps',
-    without: 'Walk last week’s loop again to reproduce one bug from a recorded run.',
-    with: 'The same run plays back, lap after lap, from your desk.',
-  },
-  {
-    who: 'Testing geofences and city-only features',
-    without: 'Go to the edge of a zone to see whether one alert fires, then go back after every fix.',
-    with: 'Jump in and out of the zone, or anywhere a feature is live, as often as you need.',
-  },
-  {
-    who: 'Running long route tests',
-    without: 'Ride the same loop for hours to catch drift, missed points or battery drain.',
-    with: 'Set a round trip or extra laps and let the route run while you watch the logs.',
+    who: 'Demos and screenshots',
+    what: 'Record at a sample location so your own street stays out of the shot.',
   },
 ];
 ---
@@ -32,77 +29,101 @@ const cases = [
   <div class="page">
     <header class="section-head">
       <p class="kicker reveal">01 · Why</p>
-      <h2 class="reveal" id="why-title">Your phone only knows where it is.</h2>
+      <h2 class="reveal" id="why-title">Test location features on a real phone.</h2>
       <p class="lede reveal">
-        A lot of work needs it somewhere else: a feature that only shows up in one city, a demo that shouldn’t give away
-        your street, a recorded run you want to play again. GPS-Go moves the location Android reports and leaves you
-        where you are.
+        The Android emulator and adb can already set a location. GPS-Go does it on the phone itself, with nothing plugged
+        in. The location holds still or moves along a route while you use the app you’re testing, and anyone on the team
+        can run it.
       </p>
     </header>
 
     <div class="compare panel reveal">
-      <div class="row head" aria-hidden="true">
-        <span></span>
-        <span>Without GPS-Go</span>
-        <span>With GPS-Go</span>
-      </div>
+      <table aria-label="GPS-Go compared with the Android emulator and adb">
+        <thead>
+          <tr>
+            <td></td>
+            {tools.map((t) => <th scope="col">{t}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((r) => (
+              <tr>
+                <th scope="row">{r.what}</th>
+                {r.values.map((v) => (
+                  <td class:list={{ yes: v === 'Yes', no: v === 'No' }}>{v}</td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="cases">
       {
         cases.map((c) => (
-          <div class="row">
+          <li class="reveal">
             <h3>{c.who}</h3>
-            <p class="without">
-              <span class="tag">Without GPS-Go</span>
-              {c.without}
-            </p>
-            <p class="with">
-              <span class="tag">With GPS-Go</span>
-              {c.with}
-            </p>
-          </div>
+            <p>{c.what}</p>
+          </li>
         ))
       }
-    </div>
+    </ul>
   </div>
 </section>
 
 <style>
   .compare {
-    padding: clamp(16px, 3vw, 24px);
+    padding: clamp(8px, 2vw, 16px) clamp(16px, 3vw, 24px);
   }
 
-  .row {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr) minmax(0, 1fr);
-    gap: 24px;
-    padding-block: 18px;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+
+  th,
+  td {
+    padding: 14px 8px;
     border-top: 1px solid var(--line);
+    text-align: center;
   }
 
-  .row.head {
-    padding-top: 0;
+  thead th,
+  thead td {
     border-top: 0;
     font: 12.5px/20px var(--mono);
     letter-spacing: 0.5px;
     color: var(--dim);
   }
 
-  .row h3 {
-    font-size: 16px;
+  thead th:last-child {
+    color: var(--accent);
   }
 
-  .row p {
-    font-size: var(--step--1);
+  tbody th {
+    padding-left: 0;
+    text-align: left;
+    font-weight: 600;
   }
 
-  .without {
+  td {
+    width: 18%;
+    color: var(--muted);
+  }
+
+  td.no {
     color: var(--dim);
   }
 
-  .with {
+  td:last-child {
     color: var(--text);
+    font-weight: 600;
   }
 
-  .with::before {
+  td.yes:last-child::before {
     content: '';
     display: inline-block;
     width: 7px;
@@ -113,34 +134,48 @@ const cases = [
     vertical-align: 0.1em;
   }
 
-  .tag {
-    display: none;
+  .cases {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin: clamp(28px, 5vw, 40px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cases h3 {
+    font-size: 16px;
+  }
+
+  .cases p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: var(--step--1);
   }
 
   @media (max-width: 760px) {
-    .row {
+    .compare {
+      padding-inline: 12px;
+    }
+
+    th,
+    td {
+      padding: 12px 4px;
+    }
+
+    thead th,
+    td {
+      width: 1%;
+      white-space: nowrap;
+    }
+
+    td.yes:last-child::before {
+      display: none;
+    }
+
+    .cases {
       grid-template-columns: minmax(0, 1fr);
-      gap: 8px;
-    }
-
-    .row.head {
-      display: none;
-    }
-
-    .row:nth-child(2) {
-      border-top: 0;
-      padding-top: 0;
-    }
-
-    .tag {
-      display: block;
-      font: 12.5px/20px var(--mono);
-      letter-spacing: 0.5px;
-      color: var(--dim);
-    }
-
-    .with::before {
-      display: none;
+      gap: 18px;
     }
   }
 </style>
