@@ -71,5 +71,8 @@ export const appPaths = (id: AppId) => ({
   support: `/${id}/support`,
 });
 
+/** Apps that publish a terms page at /<id>/terms. */
+export const appsWithTerms: readonly AppId[] = ['gps-go', 'paperdot', 'pingdeck'];
+
 export const mailto = (subject?: string) =>
   `mailto:${studio.email}` + (subject ? `?subject=${encodeURIComponent(subject)}` : '');

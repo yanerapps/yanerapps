@@ -6,7 +6,7 @@ import SiteHeader from '../../lib/ui/SiteHeader.astro';
 import SiteFooter from '../../lib/ui/SiteFooter.astro';
 import ProseToc from '../../lib/ui/ProseToc.astro';
 import { cleanPath } from '../../lib/paths';
-import { appIds, appPaths, mailto, studio } from '../../apps/registry';
+import { appIds, appPaths, appsWithTerms, mailto, studio } from '../../apps/registry';
 
 interface Props {
   title?: string;
@@ -33,6 +33,7 @@ const links = [
 const footerLinks = [
   { href: privacy, label: 'Privacy' },
   { href: support, label: 'Support' },
+  ...(app && appsWithTerms.includes(app) ? [{ href: `/${app}/terms`, label: 'Terms' }] : []),
   { href: mailto(), label: studio.email },
 ];
 ---
