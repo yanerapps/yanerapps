@@ -90,10 +90,6 @@ const showcased = appIds
                   <a class="btn btn-quiet" href={app.playStoreUrl} rel="noopener">Get it on Google Play</a>
                 )}
               </div>
-              <p class="app-docs">
-                <a href={appPaths(app.id).privacy} aria-label={`${app.name} privacy policy`}>Privacy policy</a>
-                <a href={appPaths(app.id).support} aria-label={`${app.name} support`}>Support</a>
-              </p>
             </article>
           ))
         }
@@ -198,9 +194,9 @@ const showcased = appIds
 
   .app {
     display: grid;
-    grid-template-areas: 'head' 'summary' 'highlights' 'ctas' 'docs';
+    grid-template-areas: 'head' 'summary' 'highlights' 'ctas';
     /* Paired cards keep their actions on one line whatever the length of their lists. */
-    grid-template-rows: auto auto 1fr auto auto;
+    grid-template-rows: auto auto 1fr auto;
     gap: 16px;
     padding: clamp(20px, 3vw, 28px);
   }
@@ -217,7 +213,7 @@ const showcased = appIds
       grid-column: 1 / -1;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       grid-template-rows: none;
-      grid-template-areas: 'head highlights' 'summary highlights' 'ctas highlights' 'docs highlights';
+      grid-template-areas: 'head highlights' 'summary highlights' 'ctas highlights';
       column-gap: clamp(2rem, 5vw, 4rem);
       align-content: start;
     }
@@ -296,24 +292,6 @@ const showcased = appIds
 
   .app .ctas {
     margin-top: 4px;
-  }
-
-  .app-docs {
-    grid-area: docs;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 20px;
-    padding-top: 14px;
-    border-top: 1px solid var(--line);
-    font-size: var(--step--1);
-  }
-
-  .app-docs a {
-    color: var(--muted);
-  }
-
-  .app-docs a:hover {
-    color: var(--text);
   }
 
   .closing {
