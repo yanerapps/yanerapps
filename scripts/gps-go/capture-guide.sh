@@ -15,8 +15,11 @@ for candidate in $("$adb" devices | awk '$1 ~ /^emulator-/ && $2 == "device" {pr
 done
 [ -n "$serial" ] || { echo "Pixel_10 is not running. Boot it: \$ANDROID_HOME/emulator/emulator -avd Pixel_10 -no-audio -no-boot-anim -no-snapshot-save"; exit 1; }
 device() { "$adb" -s "$serial" "$@"; }
+# Keeps the status bar clock clear of the rounded corner on the Pixel 10 skin.
+statusbar_fix="$(cd "$(dirname "$0")/../../../../shared/store-kit" && pwd)/android-statusbar-fix.sh"
 
 demo() { device shell am broadcast -a com.android.systemui.demo "$@" >/dev/null; }
+ADB="$adb" "$statusbar_fix" "$serial" on
 device shell settings put global sysui_demo_allowed 1
 demo -e command enter
 demo -e command clock -e hhmm 0941
@@ -27,6 +30,7 @@ device shell cmd uimode night no >/dev/null
 restore() {
   device shell cmd uimode night no >/dev/null
   demo -e command exit
+  ADB="$adb" "$statusbar_fix" "$serial" off
 }
 trap restore EXIT
 
