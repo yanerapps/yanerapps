@@ -1,0 +1,134 @@
+---
+import PhoneFrame from '../../gps-go/components/PhoneFrame.astro';
+import Screenshot from '../../gps-go/components/Screenshot.astro';
+import { site } from '../data/site';
+import list from '../assets/screens/list.webp';
+import alerts from '../assets/screens/alerts.webp';
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="page layout">
+    <div class="copy">
+      <h1 id="hero-title">Every host, <em>at a glance.</em></h1>
+      <p class="lede">
+        PingDeck monitors your servers, routers, websites, and network devices at once. See live latency, packet loss,
+        and status in one table, with alerts when a host goes down or comes back.
+      </p>
+      <div class="ctas">
+        {site.playStoreUrl && (
+          <a class="btn btn-primary" href={site.playStoreUrl} rel="noopener">Get it on Google Play</a>
+        )}
+        <a class:list={['btn', site.playStoreUrl ? 'btn-quiet' : 'btn-primary']} href="#features">
+          See what it does
+        </a>
+      </div>
+      <div class="availability">
+        {!site.playStoreUrl && <p class="status">Coming soon to Google Play</p>}
+        <p class="meta">Android {site.minAndroid} or later · No root · No account</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <PhoneFrame
+        class="hero-phone"
+        image={list}
+        alt="PingDeck's host list while monitoring: hosts grouped into Office LAN and Public DNS, each with its last round trip, loss and average, and a Needs attention filter showing 3."
+        sizes="(min-width: 375px) 256px, 74vw"
+        eager
+      />
+      <div class="notification">
+        <Screenshot
+          src={alerts}
+          alt="A PingDeck notification: 1 host recovered, 3 hosts unreachable."
+          sizes="(min-width: 370px) 336px, calc(100vw - 32px)"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: calc(var(--header-h) + clamp(2.5rem, 6vw, 4.5rem));
+    padding-bottom: clamp(1.5rem, 3vw, 3rem);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  /* background-clip: text paints only inside the box; the padding keeps descenders in it. */
+  h1 {
+    padding-bottom: 0.1em;
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    text-wrap: initial;
+    background: linear-gradient(var(--heading-from) 45%, var(--heading-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  h1 em {
+    display: block;
+    font-style: normal;
+    background: none;
+    -webkit-text-fill-color: var(--accent);
+  }
+
+  .lede {
+    margin-top: 1rem;
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .availability {
+    display: grid;
+    gap: 0.25rem;
+    margin-top: 1rem;
+  }
+
+  .meta {
+    font-size: var(--step--1);
+    color: var(--dim);
+  }
+
+  .stage {
+    width: min(100%, 22rem);
+    margin-inline: auto;
+  }
+
+  .stage :global(.hero-phone) {
+    width: min(76%, 16rem);
+    margin-inline: auto;
+  }
+
+  .notification {
+    position: relative;
+    width: min(100%, 21rem);
+    margin: -1rem auto 0;
+    overflow: hidden;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .notification :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

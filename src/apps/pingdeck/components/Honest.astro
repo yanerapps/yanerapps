@@ -1,0 +1,106 @@
+---
+import { site } from '../data/site';
+
+const commitments = [
+  ['No account', 'Install PingDeck and start monitoring.'],
+  ['On-device storage', 'Your hosts and statistics stay on your phone.'],
+  ['No root required', 'Check hosts over ICMP, TCP, or HTTP(S).'],
+  ['One-time Pro purchase', 'Pay once to unlock Pro.'],
+];
+---
+
+<section class="section" id="honest" aria-labelledby="honest-title">
+  <div class="page">
+    <header class="section-head">
+      <h2 class="reveal" id="honest-title">Your hosts are yours.</h2>
+      <p class="lede reveal">
+        PingDeck sends probes only to the hosts you add, and requests only to the webhook and links you set up. Nothing
+        goes to us.
+      </p>
+    </header>
+
+    <div class="layout">
+      <ul class="points reveal">
+        <li>Your host list, settings and statistics are stored on your device. Uninstalling removes everything.</li>
+        <li>The free version shows ads from Google AdMob, with consent where required. Pro removes them.</li>
+        <li>
+          Monitoring runs as a foreground service with an ongoing notification, so it keeps going when you switch apps.
+          Long sessions use more battery; stop monitoring when you’re done.
+        </li>
+        <li>PingDeck asks for local network access only to ping and scan devices on your own network.</li>
+        <li>Monitor only hosts and networks you own or have permission to test.</li>
+        <li>How PingDeck handles data is set out in the <a href={site.privacyUrl}>privacy policy</a>.</li>
+      </ul>
+      <dl class="commitments panel reveal">
+        {
+          commitments.map(([label, why]) => (
+            <div>
+              <dt>{label}</dt>
+              <dd>{why}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+  }
+
+  .points {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding-inline-start: 1.25rem;
+  }
+
+  .points li {
+    color: var(--muted);
+  }
+
+  .points li::marker {
+    color: var(--accent);
+  }
+
+  .commitments {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    overflow: hidden;
+    background: var(--line-2);
+  }
+
+  .commitments > div {
+    padding: clamp(1rem, 2.4vw, 1.5rem);
+    background: var(--panel);
+  }
+
+  dt {
+    font-weight: 650;
+  }
+
+  dd {
+    margin: 0.25rem 0 0;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 420px) {
+    .commitments {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

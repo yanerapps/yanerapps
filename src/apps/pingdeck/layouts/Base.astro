@@ -1,0 +1,35 @@
+---
+import '../styles/accent.css';
+import Shell from '../../../lib/ui/Shell.astro';
+import { cleanPath } from '../../../lib/paths';
+import { base, site } from '../data/site';
+
+const canonical = new URL(cleanPath(Astro.url.pathname), Astro.site).href;
+const ogImage = `${base}/og.png`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: site.name,
+  operatingSystem: `Android ${site.minAndroid} or later`,
+  applicationCategory: 'UtilitiesApplication',
+  description: site.description,
+  url: canonical,
+  image: new URL(ogImage, Astro.site).href,
+  publisher: { '@type': 'Organization', name: site.publisher, url: site.publisherUrl },
+  ...(site.playStoreUrl && { installUrl: site.playStoreUrl }),
+};
+---
+
+<Shell
+  title={site.title}
+  description={site.description}
+  siteName={site.name}
+  image={ogImage}
+  imageAlt="Three phones running PingDeck: the host list, a latency chart and the home screen widgets."
+  favicon={`${base}/icon.png`}
+  appleTouchIcon={`${base}/apple-touch-icon.png`}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <slot />
+</Shell>

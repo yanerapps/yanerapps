@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-01T01:01:06.000Z",
+  "generatedAt": "2026-11-15T20:43:30.735Z",
   "title": "Design System: Yaner Apps",
   "extensions": {
     "colorMeta": {
@@ -19,6 +19,21 @@
           "oklch(95% 0.031 32.673)"
         ]
       },
+      "studio-vermilion-dark": {
+        "role": "primary",
+        "displayName": "Studio Vermilion (Dark)",
+        "canonical": "oklch(66.602% 0.168 33.697)",
+        "tonalRamp": [
+          "oklch(15% 0.029 33.697)",
+          "oklch(26.429% 0.091 33.697)",
+          "oklch(37.857% 0.138 33.697)",
+          "oklch(49.286% 0.164 33.697)",
+          "oklch(60.714% 0.164 33.697)",
+          "oklch(72.143% 0.138 33.697)",
+          "oklch(83.571% 0.091 33.697)",
+          "oklch(95% 0.029 33.697)"
+        ]
+      },
       "gps-go-pin-green": {
         "role": "primary",
         "displayName": "GPS-Go Pin Green",
@@ -32,6 +47,51 @@
           "oklch(72.143% 0.116 136.263)",
           "oklch(83.571% 0.076 136.263)",
           "oklch(95% 0.024 136.263)"
+        ]
+      },
+      "gps-go-pin-green-dark": {
+        "role": "primary",
+        "displayName": "GPS-Go Pin Green (Dark)",
+        "canonical": "oklch(75.029% 0.153 130.659)",
+        "tonalRamp": [
+          "oklch(15% 0.027 130.659)",
+          "oklch(26.429% 0.083 130.659)",
+          "oklch(37.857% 0.126 130.659)",
+          "oklch(49.286% 0.15 130.659)",
+          "oklch(60.714% 0.15 130.659)",
+          "oklch(72.143% 0.126 130.659)",
+          "oklch(83.571% 0.083 130.659)",
+          "oklch(95% 0.027 130.659)"
+        ]
+      },
+      "pingdeck-indigo": {
+        "role": "primary",
+        "displayName": "PingDeck Indigo",
+        "canonical": "oklch(45.111% 0.157 271.602)",
+        "tonalRamp": [
+          "oklch(15% 0.027 271.602)",
+          "oklch(26.429% 0.085 271.602)",
+          "oklch(37.857% 0.13 271.602)",
+          "oklch(49.286% 0.154 271.602)",
+          "oklch(60.714% 0.154 271.602)",
+          "oklch(72.143% 0.13 271.602)",
+          "oklch(83.571% 0.085 271.602)",
+          "oklch(95% 0.027 271.602)"
+        ]
+      },
+      "pingdeck-indigo-dark": {
+        "role": "primary",
+        "displayName": "PingDeck Indigo (Dark)",
+        "canonical": "oklch(74.234% 0.073 276.543)",
+        "tonalRamp": [
+          "oklch(15% 0.013 276.543)",
+          "oklch(26.429% 0.04 276.543)",
+          "oklch(37.857% 0.06 276.543)",
+          "oklch(49.286% 0.072 276.543)",
+          "oklch(60.714% 0.072 276.543)",
+          "oklch(72.143% 0.06 276.543)",
+          "oklch(83.571% 0.04 276.543)",
+          "oklch(95% 0.013 276.543)"
         ]
       },
       "bench-grey": {
@@ -49,6 +109,51 @@
           "oklch(95% 0 264.542)"
         ]
       },
+      "bench-grey-raised": {
+        "role": "neutral",
+        "displayName": "Raised Bench",
+        "canonical": "oklch(95.447% 0.005 258.325)",
+        "tonalRamp": [
+          "oklch(15% 0.001 258.325)",
+          "oklch(26.429% 0.002 258.325)",
+          "oklch(37.857% 0.004 258.325)",
+          "oklch(49.286% 0.004 258.325)",
+          "oklch(60.714% 0.004 258.325)",
+          "oklch(72.143% 0.004 258.325)",
+          "oklch(83.571% 0.002 258.325)",
+          "oklch(95% 0.001 258.325)"
+        ]
+      },
+      "sheet-white": {
+        "role": "neutral",
+        "displayName": "Sheet White",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26.429% 0 0)",
+          "oklch(37.857% 0 0)",
+          "oklch(49.286% 0 0)",
+          "oklch(60.714% 0 0)",
+          "oklch(72.143% 0 0)",
+          "oklch(83.571% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "sheet-shade": {
+        "role": "neutral",
+        "displayName": "Sheet Shade",
+        "canonical": "oklch(96.32% 0.003 247.859)",
+        "tonalRamp": [
+          "oklch(15% 0.001 247.859)",
+          "oklch(26.429% 0.002 247.859)",
+          "oklch(37.857% 0.003 247.859)",
+          "oklch(49.286% 0.003 247.859)",
+          "oklch(60.714% 0.003 247.859)",
+          "oklch(72.143% 0.003 247.859)",
+          "oklch(83.571% 0.002 247.859)",
+          "oklch(95% 0.001 247.859)"
+        ]
+      },
       "ink": {
         "role": "neutral",
         "displayName": "Ink",
@@ -64,6 +169,141 @@
           "oklch(95% 0.001 270.981)"
         ]
       },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "oklch(44.057% 0.018 260.695)",
+        "tonalRamp": [
+          "oklch(15% 0.003 260.695)",
+          "oklch(26.429% 0.01 260.695)",
+          "oklch(37.857% 0.015 260.695)",
+          "oklch(49.286% 0.018 260.695)",
+          "oklch(60.714% 0.018 260.695)",
+          "oklch(72.143% 0.015 260.695)",
+          "oklch(83.571% 0.01 260.695)",
+          "oklch(95% 0.003 260.695)"
+        ]
+      },
+      "ink-dim": {
+        "role": "neutral",
+        "displayName": "Dim Ink",
+        "canonical": "oklch(54.692% 0.017 260.713)",
+        "tonalRamp": [
+          "oklch(15% 0.003 260.713)",
+          "oklch(26.429% 0.009 260.713)",
+          "oklch(37.857% 0.014 260.713)",
+          "oklch(49.286% 0.017 260.713)",
+          "oklch(60.714% 0.017 260.713)",
+          "oklch(72.143% 0.014 260.713)",
+          "oklch(83.571% 0.009 260.713)",
+          "oklch(95% 0.003 260.713)"
+        ]
+      },
+      "night-bench": {
+        "role": "neutral",
+        "displayName": "Night Bench",
+        "canonical": "oklch(13.945% 0.005 262.802)",
+        "tonalRamp": [
+          "oklch(15% 0.001 262.802)",
+          "oklch(26.429% 0.003 262.802)",
+          "oklch(37.857% 0.004 262.802)",
+          "oklch(49.286% 0.005 262.802)",
+          "oklch(60.714% 0.005 262.802)",
+          "oklch(72.143% 0.004 262.802)",
+          "oklch(83.571% 0.003 262.802)",
+          "oklch(95% 0.001 262.802)"
+        ]
+      },
+      "night-bench-raised": {
+        "role": "neutral",
+        "displayName": "Night Raised Bench",
+        "canonical": "oklch(16.401% 0.007 270.998)",
+        "tonalRamp": [
+          "oklch(15% 0.001 270.998)",
+          "oklch(26.429% 0.004 270.998)",
+          "oklch(37.857% 0.005 270.998)",
+          "oklch(49.286% 0.006 270.998)",
+          "oklch(60.714% 0.006 270.998)",
+          "oklch(72.143% 0.005 270.998)",
+          "oklch(83.571% 0.004 270.998)",
+          "oklch(95% 0.001 270.998)"
+        ]
+      },
+      "night-sheet": {
+        "role": "neutral",
+        "displayName": "Night Sheet",
+        "canonical": "oklch(18.243% 0.006 271.055)",
+        "tonalRamp": [
+          "oklch(15% 0.001 271.055)",
+          "oklch(26.429% 0.003 271.055)",
+          "oklch(37.857% 0.005 271.055)",
+          "oklch(49.286% 0.006 271.055)",
+          "oklch(60.714% 0.006 271.055)",
+          "oklch(72.143% 0.005 271.055)",
+          "oklch(83.571% 0.003 271.055)",
+          "oklch(95% 0.001 271.055)"
+        ]
+      },
+      "night-sheet-shade": {
+        "role": "neutral",
+        "displayName": "Night Sheet Shade",
+        "canonical": "oklch(21.018% 0.01 276.557)",
+        "tonalRamp": [
+          "oklch(15% 0.002 276.557)",
+          "oklch(26.429% 0.005 276.557)",
+          "oklch(37.857% 0.008 276.557)",
+          "oklch(49.286% 0.01 276.557)",
+          "oklch(60.714% 0.01 276.557)",
+          "oklch(72.143% 0.008 276.557)",
+          "oklch(83.571% 0.005 276.557)",
+          "oklch(95% 0.002 276.557)"
+        ]
+      },
+      "night-ink": {
+        "role": "neutral",
+        "displayName": "Night Ink",
+        "canonical": "oklch(96.995% 0.003 264.542)",
+        "tonalRamp": [
+          "oklch(15% 0 264.542)",
+          "oklch(26.429% 0.002 264.542)",
+          "oklch(37.857% 0.002 264.542)",
+          "oklch(49.286% 0.003 264.542)",
+          "oklch(60.714% 0.003 264.542)",
+          "oklch(72.143% 0.002 264.542)",
+          "oklch(83.571% 0.002 264.542)",
+          "oklch(95% 0 264.542)"
+        ]
+      },
+      "night-ink-muted": {
+        "role": "neutral",
+        "displayName": "Night Muted Ink",
+        "canonical": "oklch(72.347% 0.016 260.725)",
+        "tonalRamp": [
+          "oklch(15% 0.003 260.725)",
+          "oklch(26.429% 0.009 260.725)",
+          "oklch(37.857% 0.013 260.725)",
+          "oklch(49.286% 0.016 260.725)",
+          "oklch(60.714% 0.016 260.725)",
+          "oklch(72.143% 0.013 260.725)",
+          "oklch(83.571% 0.009 260.725)",
+          "oklch(95% 0.003 260.725)"
+        ]
+      },
+      "night-ink-dim": {
+        "role": "neutral",
+        "displayName": "Night Dim Ink",
+        "canonical": "oklch(63.839% 0.017 260.721)",
+        "tonalRamp": [
+          "oklch(15% 0.003 260.721)",
+          "oklch(26.429% 0.009 260.721)",
+          "oklch(37.857% 0.014 260.721)",
+          "oklch(49.286% 0.016 260.721)",
+          "oklch(60.714% 0.016 260.721)",
+          "oklch(72.143% 0.014 260.721)",
+          "oklch(83.571% 0.009 260.721)",
+          "oklch(95% 0.003 260.721)"
+        ]
+      },
       "sky-top": {
         "role": "tertiary",
         "displayName": "Swallow Sky",
@@ -77,6 +317,36 @@
           "oklch(72.143% 0.036 234.177)",
           "oklch(83.571% 0.024 234.177)",
           "oklch(95% 0.008 234.177)"
+        ]
+      },
+      "sky-mid": {
+        "role": "tertiary",
+        "displayName": "Swallow Sky Midtone",
+        "canonical": "oklch(85.46% 0.025 226.526)",
+        "tonalRamp": [
+          "oklch(15% 0.004 226.526)",
+          "oklch(26.429% 0.014 226.526)",
+          "oklch(37.857% 0.021 226.526)",
+          "oklch(49.286% 0.024 226.526)",
+          "oklch(60.714% 0.024 226.526)",
+          "oklch(72.143% 0.021 226.526)",
+          "oklch(83.571% 0.014 226.526)",
+          "oklch(95% 0.004 226.526)"
+        ]
+      },
+      "sky-bottom": {
+        "role": "tertiary",
+        "displayName": "Swallow Sky Horizon",
+        "canonical": "oklch(92.758% 0.009 161.34)",
+        "tonalRamp": [
+          "oklch(15% 0.002 161.34)",
+          "oklch(26.429% 0.005 161.34)",
+          "oklch(37.857% 0.008 161.34)",
+          "oklch(49.286% 0.009 161.34)",
+          "oklch(60.714% 0.009 161.34)",
+          "oklch(72.143% 0.008 161.34)",
+          "oklch(83.571% 0.005 161.34)",
+          "oklch(95% 0.002 161.34)"
         ]
       },
       "swallow-back": {

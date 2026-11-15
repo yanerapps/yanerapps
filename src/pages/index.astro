@@ -1,7 +1,7 @@
 ---
 import Layout from '../studio/layouts/Layout.astro';
 import SwallowSky from '../studio/components/SwallowSky.astro';
-import { appIds, appPaths, apps, mailto, studio } from '../apps/registry';
+import { appIds, appPaths, apps, appsWithSite, mailto, studio } from '../apps/registry';
 
 const title = 'Yaner Apps — We make quality apps.';
 const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.';
@@ -81,13 +81,13 @@ const showcased = appIds
                 ))}
               </ul>
               <div class="ctas">
-                {app.id === 'gps-go' ? (
+                {appsWithSite.includes(app.id) && (
                   <a class="btn btn-primary" href={appPaths(app.id).home}>Explore {app.name}</a>
+                )}
+                {app.playStoreUrl ? (
+                  <a class="btn btn-quiet" href={app.playStoreUrl} rel="noopener">Get it on Google Play</a>
                 ) : (
                   <span class="status">Coming soon to Google Play</span>
-                )}
-                {app.playStoreUrl && (
-                  <a class="btn btn-quiet" href={app.playStoreUrl} rel="noopener">Get it on Google Play</a>
                 )}
               </div>
             </article>

@@ -45,7 +45,7 @@ A small studio that builds native apps per platform and looks after each one unt
 - The studio is native-first across operating systems (confirmed 2026-10-31). Do not name an iOS or macOS app until one ships.
 - Today's apps are small tools, but the studio may later build medium-size apps or SaaS (2026-10-31). Studio-level copy should not lock it to "small", "tools" or "your phone".
 - GPS-Go is free with ads and daily limits; the Ad-free and Pro monthly subscriptions are live for everyone since the release submitted on 2026-10-25. The site states prices nowhere, since Google Play sets them per region.
-- GPS-Go's product site, including its privacy and support pages, keeps its own look (`src/apps/gps-go/layouts/Base.astro`). Its footer leads back to the studio. PingDeck and Paperdot have no product site yet, so their privacy and support pages use the studio layout.
+- GPS-Go's product site, including its privacy and support pages, keeps its own look (`src/apps/gps-go/layouts/Base.astro`). Its footer leads back to the studio. PingDeck has a one-page product site at `/pingdeck` (`src/apps/pingdeck/`) on the same base with the launcher icon's indigo; its privacy, support and terms pages still use the studio layout. Paperdot has no product site yet.
 - three.js is allowed only lazy-loaded; all content must remain readable without JavaScript.
 - Light and dark themes; a manual choice carries across the studio and app pages.
 
@@ -60,7 +60,8 @@ A small studio that builds native apps per platform and looks after each one unt
 ## Evidence on Hand
 
 - GPS-Go: light/dark app captures in `src/apps/gps-go/assets/screens/` and store-graphic crops in `src/apps/gps-go/assets/showcase/`; Play listing live.
-- PingDeck and Paperdot: icons only (`public/pingdeck/icon.png`, `public/paperdot/icon.svg`); no screenshots yet.
+- PingDeck: light captures from the store screenshot run in `src/apps/pingdeck/assets/screens/` (the latency chart is dark only); no dark pairs yet.
+- Paperdot: icon only (`public/paperdot/icon.svg`); no screenshots yet.
 - Each app's privacy policy is the source for every data claim.
 - No testimonials, reviews, download counts, press or pricing exist. Do not invent them.
 

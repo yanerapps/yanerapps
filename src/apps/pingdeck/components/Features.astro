@@ -1,0 +1,239 @@
+---
+import Screenshot from '../../gps-go/components/Screenshot.astro';
+import attention from '../assets/screens/attention.webp';
+import chart from '../assets/screens/chart.webp';
+import ongoing from '../assets/screens/ongoing.webp';
+import network from '../assets/screens/add-network.webp';
+import summary from '../assets/screens/summary.webp';
+import widget from '../assets/screens/widget-overview.webp';
+
+// Keep full-screen crops on the part of the app described by the card.
+const cards = [
+  {
+    image: attention,
+    crop: { ratio: '12 / 11', position: 'center 33.5%' },
+    alt: 'The Needs attention filter shows three unreachable hosts in Branch offices.',
+    title: 'See what needs attention',
+    body: 'Last, average, minimum and maximum round trip, loss, TTL and consecutive failures, live for every host. Sort by any column, group hosts, and jump to the ones that are down.',
+    wide: true,
+  },
+  {
+    image: chart,
+    alt: 'A five-minute latency chart with the selected range’s p95, jitter, and packet loss.',
+    title: 'Latency over time',
+    body: 'A chart for each host over the last 1, 5 or 15 minutes, with failures marked and p95, jitter and loss for the range. Touch it to inspect a single ping.',
+  },
+  {
+    image: ongoing,
+    alt: 'An ongoing notification shows three unreachable hosts and a Stop button.',
+    title: 'Alerts, not noise',
+    body: 'A notification when a host stops answering and when it comes back. A whole network going down arrives as one alert, and a tap opens the host.',
+  },
+  {
+    image: network,
+    crop: { ratio: '8 / 9', position: 'center 18%' },
+    alt: 'The Network tab previews Wi-Fi scan results with a checkbox beside each device.',
+    title: 'Add hosts your way',
+    body: 'Type one, paste a list, import a text file or enter IP ranges and CIDR blocks, with a preview before anything is added. Or scan your Wi-Fi and pick the devices that answer.',
+    formats: ['192.168.1.1', 'example.com:443', 'https://example.com', '10.0.2.0/24', 'text file'],
+    wide: true,
+  },
+  {
+    image: summary,
+    crop: { ratio: '3 / 4', position: 'center 75%' },
+    alt: 'A completed session shows success rate, average latency, and the hosts with the most packet loss.',
+    title: 'A summary when you stop',
+    body: 'Success rate, average latency, how often hosts went down, the longest outage and the hosts that lost the most pings.',
+    wide: true,
+  },
+  {
+    image: widget,
+    alt: 'A home screen widget shows 13 reachable hosts, 3 unreachable hosts, and a View issues action.',
+    title: 'On your home screen',
+    body: 'Widgets in four styles count reachable and unreachable hosts and open the ones that need attention.',
+  },
+];
+
+const more = [
+  'ICMP over IPv4 and IPv6',
+  'TCP connect on any port',
+  'HTTP and HTTPS checks',
+  'Keeps monitoring in the background',
+  'Lock screen Live Update on Android 16+',
+  'Export as text, TSV, CSV or HTML',
+  'Search and filter',
+  'Standard or compact rows',
+  'Colors from your wallpaper',
+  'List and detail side by side on tablets and foldables',
+];
+---
+
+<section class="section" id="features" aria-labelledby="features-title">
+  <div class="page">
+    <header class="section-head">
+      <h2 class="reveal" id="features-title">One table for every host you care about.</h2>
+      <p class="lede reveal">
+        Add the hosts, press start, and watch. PingDeck keeps pinging when you switch apps, and tells you when something
+        changes.
+      </p>
+    </header>
+
+    <div class="grid">
+      {
+        cards.map((c) => (
+          <article class:list={['card', 'panel', 'reveal', { wide: c.wide }]}>
+            <div class="card-copy">
+              <h3>{c.title}</h3>
+              <p>{c.body}</p>
+              {c.formats && (
+                <ul class="formats" aria-label="Examples of hosts you can add">
+                  {c.formats.map((f) => (
+                    <li>{f}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            <div class="art">
+              <div
+                class="capture"
+                style={{
+                  '--capture-ratio': c.crop?.ratio ?? String(c.image.width / c.image.height),
+                  '--capture-position': c.crop?.position,
+                }}
+              >
+                <Screenshot src={c.image} alt={c.alt} sizes="(min-width: 390px) 272px, calc(100vw - 96px)" />
+              </div>
+            </div>
+          </article>
+        ))
+      }
+      <article class="rest reveal">
+        <h3>More ways to monitor</h3>
+        <ul>
+          {more.map((m) => <li>{m}</li>)}
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: clamp(20px, 3vw, 28px);
+  }
+
+  .card-copy p {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .art {
+    display: grid;
+    place-items: center;
+    flex-grow: 1;
+    min-height: 12rem;
+    padding: 0.75rem;
+    border-radius: 12px;
+    background: var(--panel-2);
+  }
+
+  .capture {
+    position: relative;
+    width: min(100%, 17rem);
+    aspect-ratio: var(--capture-ratio);
+    overflow: hidden;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+  }
+
+  .capture :global(picture) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .capture :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--capture-position, center);
+  }
+
+  .formats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .formats li {
+    padding: 0.2rem 0.45rem;
+    border-radius: 6px;
+    background: var(--panel-2);
+    color: var(--muted);
+    font: 0.75rem/1.5 var(--mono);
+    overflow-wrap: anywhere;
+  }
+
+  .rest {
+    grid-column: 1 / -1;
+    margin-top: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-2);
+  }
+
+  .rest ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 2rem;
+    margin: 0.75rem 0 0;
+    padding-inline-start: 1.125rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .rest li::marker {
+    color: var(--accent);
+  }
+
+  @media (min-width: 64rem) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .wide {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: center;
+      gap: clamp(1.25rem, 2vw, 2rem);
+    }
+
+    .wide .art {
+      align-self: stretch;
+    }
+
+    .rest ul {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .grid,
+    .rest ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

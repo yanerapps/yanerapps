@@ -1,0 +1,116 @@
+---
+import { FREE_HOST_LIMIT } from '../data/site';
+
+const rows = [
+  { what: 'Hosts monitored at once', free: String(FREE_HOST_LIMIT), pro: 'Any number' },
+  { what: 'Fastest ping interval', free: '1 second', pro: '0.1 second' },
+  { what: 'Ads', free: 'Yes', pro: 'None' },
+  { what: 'Webhook alerts', free: 'No', pro: 'Yes' },
+  { what: 'Automatic export and a ping log file', free: 'No', pro: 'Yes' },
+  { what: 'Custom links for hosts', free: 'No', pro: 'Yes' },
+  { what: 'Start monitoring when the app opens or the device boots', free: 'No', pro: 'Yes' },
+  { what: 'Widgets list the hosts that are down', free: 'No', pro: 'Yes' },
+];
+---
+
+<section class="section" id="pro" aria-labelledby="pro-title">
+  <div class="page">
+    <header class="section-head">
+      <h2 class="reveal" id="pro-title">Free to start. Pro once, for good.</h2>
+      <p class="lede reveal">
+        Start with the free version for up to {FREE_HOST_LIMIT} hosts at a time. Buy PingDeck Pro once, or watch a short
+        ad to try it for an hour.
+      </p>
+    </header>
+
+    <div class="compare panel reveal">
+      <table aria-label="PingDeck free compared with PingDeck Pro">
+        <thead>
+          <tr>
+            <th scope="col">Feature</th>
+            <th scope="col">Free</th>
+            <th scope="col">Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((r) => (
+              <tr>
+                <th scope="row">{r.what}</th>
+                <td>{r.free}</td>
+                <td>{r.pro}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .compare {
+    max-width: 54rem;
+    padding: clamp(8px, 2vw, 16px) clamp(16px, 3vw, 24px);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  th,
+  td {
+    padding: 14px 8px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  thead th {
+    border-top: 0;
+    font: 12.5px/20px var(--mono);
+    letter-spacing: 0.5px;
+    color: var(--dim);
+  }
+
+  thead th:last-child {
+    color: var(--accent);
+  }
+
+  th:first-child {
+    padding-left: 0;
+    text-align: left;
+  }
+
+  tbody th {
+    font-weight: 600;
+  }
+
+  td {
+    width: 19%;
+    color: var(--muted);
+  }
+
+  td:last-child {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  @media (max-width: 760px) {
+    .compare {
+      padding-inline: 12px;
+    }
+
+    th,
+    td {
+      padding: 12px 4px;
+    }
+
+    th:not(:first-child),
+    td {
+      width: 23%;
+    }
+  }
+</style>

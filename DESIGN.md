@@ -6,6 +6,8 @@ colors:
   studio-vermilion-dark: '#e8664a'
   gps-go-pin-green: '#3f7a1a'
   gps-go-pin-green-dark: '#8cc152'
+  pingdeck-indigo: '#3949ab'
+  pingdeck-indigo-dark: '#9fa8da'
   bench-grey: '#f6f7f9'
   bench-grey-raised: '#eef0f3'
   sheet-white: '#ffffff'
@@ -183,6 +185,7 @@ A cool, almost colourless workshop with a single signed accent per site.
 
 - **Studio Vermilion** (`studio-vermilion`, dark `studio-vermilion-dark`): the studio's seal red. Kickers, links, highlight bullets, focus rings, text selection, the coloured second line of the home hero, the 燕儿 characters, and the swallow's brick-red face in light mode. Its glow (14–16% alpha) sits beneath the primary button.
 - **GPS-Go Pin Green** (`gps-go-pin-green`, dark `gps-go-pin-green-dark`): replaces vermilion on GPS-Go's product pages only. Darkened in light mode until it passes as text.
+- **PingDeck Indigo** (`pingdeck-indigo`, dark `pingdeck-indigo-dark`): the launcher icon's indigo, on PingDeck's product page only; lightened in dark mode until it reads on the night bench.
 
 ### Neutral
 

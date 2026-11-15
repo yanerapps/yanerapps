@@ -1,0 +1,12 @@
+/* PingDeck's accent: the launcher icon's indigo, lightened in dark mode until it reads on the night bench. */
+:root {
+  --accent: #3949ab;
+  --on-accent: #ffffff;
+  --glow: rgb(57 73 171 / 0.16);
+}
+
+:root[data-theme='dark'] {
+  --accent: #9fa8da;
+  --on-accent: #0d1030;
+  --glow: rgb(159 168 218 / 0.16);
+}

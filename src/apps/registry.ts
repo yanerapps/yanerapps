@@ -71,6 +71,9 @@ export const appPaths = (id: AppId) => ({
   support: `/${id}/support`,
 });
 
+/** Apps with a product site at /<id>; the rest have only privacy, support and terms pages. */
+export const appsWithSite: readonly AppId[] = ['gps-go', 'pingdeck'];
+
 /** Apps that publish a terms page at /<id>/terms. */
 export const appsWithTerms: readonly AppId[] = ['gps-go', 'paperdot', 'pingdeck'];
 

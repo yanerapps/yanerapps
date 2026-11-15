@@ -1,0 +1,22 @@
+---
+import SiteHeader from '../../../lib/ui/SiteHeader.astro';
+import { base, site } from '../data/site';
+
+const links = [
+  { href: `${base}#features`, label: 'Features' },
+  { href: `${base}#pro`, label: 'Pro' },
+  { href: `${base}#honest`, label: 'Honest' },
+  { href: site.privacyUrl, label: 'Privacy' },
+  { href: site.supportUrl, label: 'Support' },
+];
+---
+
+<SiteHeader home={base} name={site.name} links={links}>
+  <img slot="mark" class="mark" src={`${base}/icon.png`} alt="" width="24" height="24" />
+</SiteHeader>
+
+<style>
+  .mark {
+    border-radius: 6px;
+  }
+</style>

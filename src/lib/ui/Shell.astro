@@ -36,7 +36,7 @@ const { title, description, image, imageAlt, siteName, favicon, appleTouchIcon }
       {...imageAlt && { imageAlt }}
       {...siteName && { siteName }}
     />
-    <link rel="icon" href={favicon} type="image/svg+xml" />
+    <link rel="icon" href={favicon} type={favicon.endsWith('.svg') ? 'image/svg+xml' : 'image/png'} />
     {appleTouchIcon && <link rel="apple-touch-icon" href={appleTouchIcon} />}
     <meta name="theme-color" content="#f6f7f9" />
     <script is:inline>
