@@ -1,0 +1,146 @@
+---
+import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
+
+const title = 'Privacy Policy — Trailfile';
+const description = 'Privacy policy for Trailfile (com.yanerapps.trailfile), a GPX, KML and KMZ viewer for Android by Yaner Apps.';
+---
+
+<Layout title={title} description={description}>
+  <div class="prose">
+    <nav aria-label="Trailfile navigation" class="product-nav">
+      <a href="/privacy">Privacy by app</a> <span aria-hidden="true">/</span> Trailfile
+    </nav>
+    <div class="prose-header">
+      <h1>Privacy Policy</h1>
+      <p class="lede">Trailfile for Android (<code>com.yanerapps.trailfile</code>)</p>
+      <div class="meta">
+        <span>Effective: from Trailfile&rsquo;s release on Google Play</span>
+        <span>&middot;</span>
+        <span>Updated: 16 Nov 2026</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p><strong>In short:</strong> Trailfile has no accounts, ads or analytics. Your files, their contents and your location stay on your phone. The app goes online only for map and elevation tiles, for web images you choose to load, and for Google Play.</p>
+    </div>
+
+    <p>
+      Trailfile is a viewer for GPX, KML and KMZ files, made by Yaner Apps. This page says what the app sends over the internet and what stays on your phone.
+    </p>
+    <h2>Your files stay on your device</h2>
+    <p>
+      Files you open are copied into the app's private storage on your phone so they stay available. Their contents, their names, the places in them and your location are never sent to us or to anyone else.
+    </p>
+    <p>
+      There are no accounts, no ads, no analytics and no crash reporting in the app.
+    </p>
+    <h2>What the app connects to</h2>
+    <p>
+      Trailfile connects to the internet only for these:
+    </p>
+    <ul>
+      <li><strong>Map tiles</strong> from OpenFreeMap (<code>tiles.openfreemap.org</code>), for the part of the map on screen and for offline maps you choose to download.</li>
+      <li><strong>Elevation tiles</strong> from Terrain Tiles on AWS (<code>s3.amazonaws.com</code>), for hill shading in the same places.</li>
+      <li><strong>Images on the web</strong> that a file's descriptions point to, only for files where you turn on "Load images from the web". It is off for every file until you turn it on.</li>
+      <li><strong>Google Play</strong>, through the Play Store app, for buying Trailfile Pro and for the occasional rating prompt.</li>
+    </ul>
+    <p>
+      These requests contain which tiles or images are needed and, like any internet request, your IP address. A tile server can tell which area of the map you are looking at from the tiles requested. The operators of these services handle that information under their own policies.
+    </p>
+    <p>
+      Links in a file's descriptions open in your browser only after you tap them and confirm the full address.
+    </p>
+    <h2>Your location</h2>
+    <p>
+      The app asks for your location only when you tap the location button on the map. It uses it to show where you are while the app is on screen, and it does not store it or send it anywhere. You can say no, or give only an approximate location.
+    </p>
+    <h2>Backups</h2>
+    <p>
+      Your settings (theme, units and similar) are included in Android's backup to your Google account. Your files and offline maps are not included in that backup; they move to a new phone only with a phone-to-phone transfer.
+    </p>
+    <h2>Purchases</h2>
+    <p>
+      Trailfile Pro is a one-time purchase through Google Play. Google handles the payment; the app only learns whether you own Pro.
+    </p>
+    <h2>Children</h2>
+    <p>
+      Trailfile is not directed at children and does not knowingly collect information from anyone.
+    </p>
+    <h2>Changes</h2>
+    <p>
+      If this policy changes, the new version will be posted on this page with a new date.
+    </p>
+
+    <h2>Additional information for the EEA, UK and Switzerland</h2>
+    <p>
+      This section gives the information required by the EU and UK General Data Protection Regulation and
+      the Swiss Federal Act on Data Protection.
+    </p>
+
+    <h3>Controller</h3>
+    <p>
+      The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
+      reachable at <a href={mailto()}>{studio.email}</a>. Google acts as an independent
+      controller for the data it receives, under its own policies.
+    </p>
+
+    <h3>Purposes and legal bases</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Data</th>
+            <th>Legal basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Providing Pro you bought</td>
+            <td>Your Google Play purchase status and the order records Google Play provides</td>
+            <td>Necessary to perform the contract you entered into when buying Pro (Art. 6(1)(b) GDPR)</td>
+          </tr>
+          <tr>
+            <td>Answering your emails</td>
+            <td>Your email address and your message</td>
+            <td>Legitimate interests in responding to you (Art. 6(1)(f)); we delete the correspondence once the matter is closed, and within 12 months at the latest</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Data that stays on your device is not processed by us at all. You are not required to
+      provide any personal data. We make no decisions based solely on automated processing.
+    </p>
+
+    <h3>International transfers</h3>
+    <p>
+      Google may process purchase data in the United States and other countries, relying on the EU-U.S. Data
+      Privacy Framework, its UK Extension and the Swiss-U.S. Data Privacy Framework, and on Standard
+      Contractual Clauses where needed (see
+      <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google's data transfer frameworks</a>).
+    </p>
+
+    <h3>Your rights under the GDPR</h3>
+    <p>
+      You have the right to access, rectify and erase your personal data, to restrict or object to its
+      processing, and to data portability. You also have the right to lodge a complaint with a data
+      protection supervisory authority, in particular in the country where you live or work; in the UK this
+      is the Information Commissioner's Office, and in Switzerland the Federal Data Protection and
+      Information Commissioner. The section below explains how to exercise these rights.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>
+      Depending on where you live, you may have rights to access, correct, delete, or port your personal data.
+      Since Trailfile keeps your data on your device, you can exercise these rights directly in the app. If you need
+      help, write to <a href={mailto()}>{studio.email}</a> and we will respond within 30 days.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Yaner Apps &mdash; <a href={mailto()}>{studio.email}</a>
+    </p>
+  </div>
+</Layout>

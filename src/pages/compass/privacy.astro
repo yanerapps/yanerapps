@@ -1,0 +1,133 @@
+---
+import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
+
+const title = 'Privacy Policy — Compass';
+const description = 'Privacy policy for Compass (com.yanerapps.compass), a compass for Android by Yaner Apps.';
+---
+
+<Layout title={title} description={description}>
+  <div class="prose">
+    <nav aria-label="Compass navigation" class="product-nav">
+      <a href="/privacy">Privacy by app</a> <span aria-hidden="true">/</span> Compass
+    </nav>
+    <div class="prose-header">
+      <h1>Privacy Policy</h1>
+      <p class="lede">Compass for Android (<code>com.yanerapps.compass</code>)</p>
+      <div class="meta">
+        <span>Effective: from Compass&rsquo;s release on Google Play</span>
+        <span>&middot;</span>
+        <span>Updated: 16 Nov 2026</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p><strong>In short:</strong> Compass has no ads, no analytics, no crash reporting and no account. The app itself has no network permission, so it cannot send anything to us or to anyone else.</p>
+    </div>
+
+    <p>
+      Compass is made by Yaner Apps. This policy covers the Compass app for Android phones.
+    </p>
+    <h2>What stays on your phone</h2>
+    <ul>
+      <li><strong>Sensor readings.</strong> Compass reads the magnetometer, accelerometer and gyroscope to show your heading. Readings are used on the spot and are not stored, except the last heading, which is kept so the Quick Settings tile can show it.</li>
+      <li><strong>Location.</strong> If you allow it, Compass uses your location to work out true north, show coordinates, elevation and nearby place names, and to save and navigate to waypoints. Your last location is kept on your phone so true north still works when the app opens without a fresh fix. Compass never asks for background location.</li>
+      <li><strong>Waypoints and settings</strong> are stored on your phone.</li>
+    </ul>
+    <h2>Android backup</h2>
+    <p>
+      If you have turned on Android backup, Android copies your waypoints and settings to your own Google account, under Google's terms. Your last location, last heading and purchase status are excluded from backup.
+    </p>
+    <h2>Purchases</h2>
+    <p>
+      Compass Pro is bought through Google Play. Google handles the payment; we never see your card details. Compass asks Google Play whether you own Compass Pro and stores the answer on your phone.
+    </p>
+    <h2>Place name downloads</h2>
+    <p>
+      Compass Pro lets you download extra place names. These are delivered by Google Play, which receives your device information and app version as part of the download, under Google's terms. Compass itself does not send anything.
+    </p>
+    <h2>Sharing</h2>
+    <p>
+      When you export waypoints or tap Send feedback, Compass opens Android's share sheet or your email app with the content filled in. Nothing is sent unless you send it yourself, and it goes wherever you choose.
+    </p>
+    <h2>Children</h2>
+    <p>
+      Compass is not directed at children and collects no personal data from anyone.
+    </p>
+    <h2>Changes</h2>
+    <p>
+      If this policy changes, the new version will be posted at this address with a new date.
+    </p>
+
+    <h2>Additional information for the EEA, UK and Switzerland</h2>
+    <p>
+      This section gives the information required by the EU and UK General Data Protection Regulation and
+      the Swiss Federal Act on Data Protection.
+    </p>
+
+    <h3>Controller</h3>
+    <p>
+      The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
+      reachable at <a href={mailto()}>{studio.email}</a>. Google acts as an independent
+      controller for the data it receives, under its own policies.
+    </p>
+
+    <h3>Purposes and legal bases</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Data</th>
+            <th>Legal basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Providing Pro you bought</td>
+            <td>Your Google Play purchase status and the order records Google Play provides</td>
+            <td>Necessary to perform the contract you entered into when buying Pro (Art. 6(1)(b) GDPR)</td>
+          </tr>
+          <tr>
+            <td>Answering your emails</td>
+            <td>Your email address and your message</td>
+            <td>Legitimate interests in responding to you (Art. 6(1)(f)); we delete the correspondence once the matter is closed, and within 12 months at the latest</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Data that stays on your device is not processed by us at all. You are not required to
+      provide any personal data. We make no decisions based solely on automated processing.
+    </p>
+
+    <h3>International transfers</h3>
+    <p>
+      Google may process purchase data in the United States and other countries, relying on the EU-U.S. Data
+      Privacy Framework, its UK Extension and the Swiss-U.S. Data Privacy Framework, and on Standard
+      Contractual Clauses where needed (see
+      <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google's data transfer frameworks</a>).
+    </p>
+
+    <h3>Your rights under the GDPR</h3>
+    <p>
+      You have the right to access, rectify and erase your personal data, to restrict or object to its
+      processing, and to data portability. You also have the right to lodge a complaint with a data
+      protection supervisory authority, in particular in the country where you live or work; in the UK this
+      is the Information Commissioner's Office, and in Switzerland the Federal Data Protection and
+      Information Commissioner. The section below explains how to exercise these rights.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>
+      Depending on where you live, you may have rights to access, correct, delete, or port your personal data.
+      Since Compass keeps your data on your device, you can exercise these rights directly in the app. If you need
+      help, write to <a href={mailto()}>{studio.email}</a> and we will respond within 30 days.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Yaner Apps &mdash; <a href={mailto()}>{studio.email}</a>
+    </p>
+  </div>
+</Layout>
