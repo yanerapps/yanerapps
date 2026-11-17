@@ -1,0 +1,257 @@
+---
+import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
+
+const title = 'Privacy Policy — Pausebell';
+const description = 'Privacy policy for Pausebell (com.yanerapps.pausebell), a meditation course and timer for Android by Yaner Apps.';
+---
+
+<Layout title={title} description={description}>
+  <div class="prose">
+    <nav aria-label="Pausebell navigation" class="product-nav">
+      <a href="/privacy">Privacy by app</a> <span aria-hidden="true">/</span> Pausebell
+    </nav>
+    <div class="prose-header">
+      <h1>Privacy Policy</h1>
+      <p class="lede">Pausebell for Android (<code>com.yanerapps.pausebell</code>)</p>
+      <div class="meta">
+        <span>Effective: from Pausebell&rsquo;s release on Google Play</span>
+        <span>&middot;</span>
+        <span>Updated: 16 Nov 2026</span>
+      </div>
+    </div>
+
+    <p>
+      This policy explains what Pausebell does with your data. Pausebell is made by Yaner Apps, an independent
+      developer studio ("we", "us"). It applies to the Pausebell Android application and to this website.
+    </p>
+
+    <div class="card">
+      <p><strong>In short:</strong> Pausebell has no user accounts, no servers of our own, and no permission to use
+      the internet. Your sessions, notes and presets stay on your device. There are no ads and no analytics. If you
+      buy Pro, Google Play handles the purchase and payment, and we never see your payment details. We never sell
+      your personal information.</p>
+    </div>
+
+    <h2>1. Data that stays on your device</h2>
+    <p>
+      The following is stored in the app's private storage and is never sent to us &mdash; we operate no server
+      and have no way to read it:
+    </p>
+    <ul>
+      <li>Your history: each saved session's start time, length, source (a lesson, a preset or the timer), whether it was completed, and your optional note</li>
+      <li>Your presets and timer settings</li>
+      <li>Course progress and settings, including the daily reminder's time and days</li>
+      <li>Your Pro status, as a copy signed with a key that stays in your device's secure keystore</li>
+    </ul>
+    <p>
+      You can delete any session in History, delete presets, and reset course progress at any time.
+      Uninstalling Pausebell removes everything stored on the device.
+    </p>
+
+    <h2>2. Permissions</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Permission</th>
+            <th>What Pausebell does with it</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Notifications (optional)</td>
+            <td>Shows the session in progress, with Pause and End, and the daily reminder if you turn it on</td>
+          </tr>
+          <tr>
+            <td>Foreground service (media playback) and keeping the device awake</td>
+            <td>Lets the bells ring on time while the screen is off during a session you started. It stops when the session ends</td>
+          </tr>
+          <tr>
+            <td>Vibration</td>
+            <td>Vibrates for bells you set to vibrate</td>
+          </tr>
+          <tr>
+            <td>Run at startup</td>
+            <td>Puts the daily reminder back after the device restarts. It never starts a session by itself</td>
+          </tr>
+          <tr>
+            <td>Google Play billing</td>
+            <td>Lets Google Play sell Pro and tell the app whether you have it</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Pausebell does not ask for your location, contacts, camera, microphone, calendar or files, and it has no
+      internet permission of its own. The spoken cues in the course are recordings bundled with the app; the
+      voice is computer-generated, and nothing you say or do is processed to make it.
+    </p>
+
+    <h2>3. Data sent to third parties</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Recipient</th>
+            <th>What is sent</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google Play (through the Play Store app)</td>
+            <td>Your purchase of Pro, and requests to show the rating card</td>
+            <td>To sell Pro and confirm that you have it, and to let you rate the app if you choose to</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Your history, notes, presets and settings are never sent to Google or to anyone else. Pausebell shows no
+      ads and contains no advertising, analytics or crash-reporting SDK, so it does not use your advertising ID.
+    </p>
+
+    <h2>4. Buying Pro</h2>
+    <p>
+      Pausebell Pro is a one-time purchase sold and billed entirely by Google Play. Google Play takes the payment,
+      and your payment method and billing details stay with Google. We never receive your card number, billing
+      address or other payment information, and Pausebell has no server that receives your purchases. Google
+      Play gives us order records for our sales in the Play Console, such as the order number, price and date,
+      which we use only for accounting, refunds and support.
+    </p>
+    <p>
+      To unlock Pro, the app asks Google Play whether you have it and keeps a signed copy of the answer in private
+      storage, so Pro keeps working while you are offline. This copy is excluded from Android cloud backup and
+      device-to-device transfer. If Pro is refunded, nothing in your history or presets is changed or deleted.
+      Google's handling of payment data is governed by the
+      <a href="https://payments.google.com/payments/apis-secure/u/0/get_legal_document?ldo=0&amp;ldt=privacynotice" rel="noopener" target="_blank">Google Payments Privacy Notice</a>.
+    </p>
+
+    <h2>5. Exports and backups</h2>
+    <p>
+      Pausebell can export your history as a CSV file when you ask for it, and hands it to the app you pick in
+      Android's share sheet. Once it leaves Pausebell, it is yours to protect.
+    </p>
+    <p>
+      Android's own cloud backup may include your history, presets and settings if you have enabled it on your
+      device; your Pro status, a session in progress and the timing of the rating card are left out. That backup
+      is managed by Google under your Google account, not by us.
+    </p>
+
+    <h2>6. Notifications and the widget</h2>
+    <p>
+      The session notification, the Quick Settings tile and the home screen widget show a preset's name and the
+      time left, so anyone who can see your screen can see them. You can hide notification content on the lock
+      screen in Android's settings.
+    </p>
+
+    <h2>7. What we do not do</h2>
+    <ul>
+      <li>No user accounts, sign-in, or profiles</li>
+      <li>No servers operated by us, and therefore no copy of your history held by us</li>
+      <li>No ads, analytics or crash-reporting SDKs</li>
+      <li>No internet permission in the app itself</li>
+      <li>No location, microphone or health data</li>
+      <li>No sale of personal information</li>
+    </ul>
+
+    <h2>8. Children</h2>
+    <p>
+      Pausebell is meant for adults and is not directed to children under 13. We do not knowingly collect data from
+      children; since the app sends us nothing, a child's history would stay on their device like anyone else's.
+    </p>
+
+    <h2>9. Data retention and deletion</h2>
+    <p>
+      Because your data lives on your device, you control its lifetime: it stays until you delete it or uninstall
+      the app. There is nothing for us to delete on our side, since we hold nothing. Data held by Google as a
+      result of a purchase is subject to Google's own retention practices.
+    </p>
+
+    <h2>10. Security</h2>
+    <p>
+      Your history is kept in the app's private storage, which other apps cannot read on a non-rooted device.
+      Exported CSV files are not encrypted, so keep them somewhere safe.
+    </p>
+
+    <h2>11. Additional information for the EEA, UK and Switzerland</h2>
+    <p>
+      This section gives the information required by the EU and UK General Data Protection Regulation and
+      the Swiss Federal Act on Data Protection.
+    </p>
+
+    <h3>Controller</h3>
+    <p>
+      The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
+      reachable at <a href={mailto()}>{studio.email}</a>. Google acts as an independent
+      controller for the data it receives, under its own policies.
+    </p>
+
+    <h3>Purposes and legal bases</h3>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Purpose</th>
+            <th>Data</th>
+            <th>Legal basis</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Providing Pro you bought</td>
+            <td>Your Google Play purchase status and the order records Google Play provides</td>
+            <td>Necessary to perform the contract you entered into when buying Pro (Art. 6(1)(b) GDPR)</td>
+          </tr>
+          <tr>
+            <td>Answering your emails</td>
+            <td>Your email address and your message</td>
+            <td>Legitimate interests in responding to you (Art. 6(1)(f)); we delete the correspondence once the matter is closed, and within 12 months at the latest</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Data that stays on your device (section 1) is not processed by us at all. You are not required to
+      provide any personal data. We make no decisions based solely on automated processing.
+    </p>
+
+    <h3>International transfers</h3>
+    <p>
+      Google may process purchase data in the United States and other countries, relying on the EU-U.S. Data
+      Privacy Framework, its UK Extension and the Swiss-U.S. Data Privacy Framework, and on Standard
+      Contractual Clauses where needed (see
+      <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google's data transfer frameworks</a>).
+    </p>
+
+    <h3>Your rights under the GDPR</h3>
+    <p>
+      You have the right to access, rectify and erase your personal data, to restrict or object to its
+      processing, and to data portability. You also have the right to lodge a complaint with a data
+      protection supervisory authority, in particular in the country where you live or work; in the UK this
+      is the Information Commissioner's Office, and in Switzerland the Federal Data Protection and
+      Information Commissioner. Section 12 explains how to exercise these rights.
+    </p>
+
+    <h2>12. Your rights</h2>
+    <p>
+      Depending on where you live, you may have rights to access, correct, delete, or port your personal data.
+      Since Pausebell stores your data only on your device, you can exercise these rights directly in the app:
+      delete sessions or presets, and export your history as CSV to take it elsewhere. If you need help, write to
+      <a href={mailto()}>{studio.email}</a> and we will respond within 30 days.
+    </p>
+
+    <h2>13. Changes to this policy</h2>
+    <p>
+      If this policy changes, the updated version is published on this page with a new "updated" date. A later
+      version may offer optional writing of your sessions to Health Connect; this policy will describe it before
+      that feature is released.
+    </p>
+
+    <h2>14. Contact</h2>
+    <p>
+      Yaner Apps &mdash; <a href={mailto()}>{studio.email}</a>
+    </p>
+  </div>
+</Layout>
