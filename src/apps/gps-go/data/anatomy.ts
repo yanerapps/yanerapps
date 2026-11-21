@@ -59,7 +59,7 @@ export const parts: readonly Part[] = [
     fragment: {
       image: overlayStyleLight,
       dark: overlayStyleDark,
-      alt: 'Overlay settings in the joystick window: Joystick or D-pad, opacity, joystick size and Readouts on the left.',
+      alt: 'Overlay settings in the joystick window: Stop automatically after and Wander radius for this session, then Joystick or D-pad, opacity, joystick size and Readouts on the left.',
       caption: 'Right inside the window.',
       panel: true,
     },
@@ -96,7 +96,7 @@ export const parts: readonly Part[] = [
     fragment: {
       image: travelTimeLight,
       dark: travelTimeDark,
-      alt: 'Readouts after a jump from Paris to London: 4.3 km/h, a travel time of 78:49:04 left, and the step count.',
+      alt: 'Readouts after a jump from Paris to London: 4.3 km/h, a travel time of 78:46:46 left, and the step count.',
       caption: 'After a jump from Paris to London.',
     },
   },
