@@ -238,7 +238,7 @@ export const routeChapters: readonly Chapter[] = [
       {
         title: 'Close the loop',
         body: 'Finish near the start and GPS-Go offers to join the ends.',
-        rect: [30, 32, 9, 6],
+        rect: [25, 32.5, 10, 7],
       },
     ],
   },
@@ -249,12 +249,12 @@ export const routeChapters: readonly Chapter[] = [
     body: 'Before you start, choose the pace, and under Advanced settings one-way or round trip, how many laps and what happens at the end. You can change the pace while it runs.',
     image: routeSheetLight,
     dark: routeSheetDark,
-    alt: 'The saved route Champ de Mars loop, tagged Paris: 2.4 km, about 33 minutes at Walk, 4.3 km/h. Walk, Run, Bike and Custom buttons sit above Advanced settings, a Stop automatically after setting and a Start route button.',
+    alt: 'The saved route Champ de Mars loop, tagged Paris: 2.1 km, about 29 minutes at Walk, 4.3 km/h. Walk, Run, Bike and Custom buttons sit above Advanced settings, a Stop automatically after setting and a Start route button.',
     hotspots: [
       {
         title: 'Your route',
         body: 'Saved with a name and tags. GPX files import straight onto the map.',
-        rect: [15, 27, 62, 26],
+        rect: [15, 28, 64, 26],
       },
       {
         title: 'Distance and time',
@@ -278,8 +278,8 @@ export const routeChapters: readonly Chapter[] = [
     dark: routeRunningDark,
     alt: 'The Champ de Mars loop being run at 10.1 km/h. The covered part from the start is a solid line, the rest is dashed.',
     hotspots: [
-      { title: 'Covered', body: 'The part of the route behind you.', rect: [37, 26, 25, 18] },
-      { title: 'Still to go', body: 'The rest of the lap, dashed.', rect: [15, 44, 70, 23] },
+      { title: 'Covered', body: 'The part of the route behind you.', rect: [32, 29, 29, 16] },
+      { title: 'Still to go', body: 'The rest of the lap, dashed.', rect: [15, 42, 69, 23] },
       { title: 'Status', body: 'Running, with the current speed.', rect: [32, 76.2, 37, 4] },
     ],
   },
@@ -300,7 +300,7 @@ export const routeChapters: readonly Chapter[] = [
       {
         title: 'Off the route',
         body: 'The joystick is steering now, not the route.',
-        rect: [86, 55.3, 6.5, 3.5],
+        rect: [87, 56.3, 6.5, 3.8],
       },
       {
         title: 'Back on route',
