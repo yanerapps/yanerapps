@@ -32,25 +32,44 @@ const home = here === homePath;
         }
       </ul>
     </nav>
-    <button class="theme-toggle" data-theme-toggle aria-label="Dark mode" aria-pressed="false" title="Switch to dark mode">
+    <button
+      class="theme-toggle"
+      type="button"
+      data-theme-toggle
+      aria-label="Dark mode"
+      aria-pressed="false"
+      title="Switch to dark mode"
+    >
       <span class="theme-moon"><UiIcon name="moon" size={17} /></span>
       <span class="theme-sun"><UiIcon name="sun" size={17} /></span>
     </button>
-    <details class="mobile-menu" data-mobile-menu>
-      <summary aria-controls="mobile-site-nav">
-        <span class="menu-open-icon"><UiIcon name="menu" size={20} /></span>
-        <span class="menu-close-icon"><UiIcon name="close" size={20} /></span>
-        <span>Menu</span>
-      </summary>
-      <nav id="mobile-site-nav" class="mobile-nav" aria-label="Site">
-        <ul>
-          <li><a href={homePath} aria-current={home ? 'page' : undefined}>Home</a></li>
-          {links.map((l) => (
-            <li><a href={l.href} aria-current={l.href === here ? 'page' : undefined}>{l.label}</a></li>
-          ))}
-        </ul>
-      </nav>
-    </details>
+    <button
+      class="mobile-menu-btn"
+      type="button"
+      data-mobile-trigger
+      popovertarget="mobile-site-nav"
+      popovertargetaction="toggle"
+      aria-controls="mobile-site-nav"
+      aria-expanded="false"
+    >
+      <span class="menu-open-icon"><UiIcon name="menu" size={20} /></span>
+      <span class="menu-close-icon"><UiIcon name="close" size={20} /></span>
+      <span>Menu</span>
+    </button>
+    <nav id="mobile-site-nav" class="mobile-nav" data-mobile-menu aria-label="Mobile site" popover="auto">
+      <ul>
+        <li><a href={homePath} aria-current={home ? 'page' : undefined}>Home</a></li>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} aria-current={l.href === here ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
   </div>
 </header>
 
@@ -61,45 +80,22 @@ const home = here === homePath;
   addEventListener('scroll', update, { passive: true });
   update();
 
-  const menu = document.querySelector('[data-mobile-menu]') as HTMLDetailsElement;
-  const trigger = menu.querySelector('summary') as HTMLElement;
+  const menu = document.querySelector('[data-mobile-menu]') as HTMLElement;
+  const trigger = document.querySelector('[data-mobile-trigger]') as HTMLButtonElement;
   const mobile = matchMedia('(max-width: 860px)');
-  const syncMenu = () => {
-    trigger.setAttribute('aria-expanded', String(menu.open));
-  };
-  const closeMenu = (restoreFocus: boolean) => {
-    menu.open = false;
-    syncMenu();
-    if (restoreFocus) trigger.focus();
-  };
-  menu.addEventListener('toggle', syncMenu);
-  menu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => closeMenu(false));
+  menu.addEventListener('toggle', () => {
+    trigger.setAttribute('aria-expanded', String(menu.matches(':popover-open')));
   });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && menu.open) {
-      event.preventDefault();
-      closeMenu(true);
-    }
-  });
-  document.addEventListener('pointerdown', event => {
-    if (menu.open && event.target instanceof Node && !menu.contains(event.target)) {
-      closeMenu(menu.contains(document.activeElement));
-    }
-  });
-  menu.addEventListener('focusout', event => {
-    if (menu.open && event.relatedTarget instanceof Node && !menu.contains(event.relatedTarget)) {
-      closeMenu(false);
-    }
+  menu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => menu.hidePopover());
   });
   mobile.addEventListener('change', () => {
-    if (!mobile.matches && menu.open) {
+    if (!mobile.matches && menu.matches(':popover-open')) {
       const focusInside = menu.contains(document.activeElement);
-      closeMenu(false);
+      menu.hidePopover();
       if (focusInside) header.querySelector<HTMLAnchorElement>('.brand')?.focus();
     }
   });
-  syncMenu();
 </script>
 
 <style>
@@ -184,12 +180,12 @@ const home = here === homePath;
   :global([data-theme='dark']) .theme-sun { display: block; }
   :global([data-theme='dark']) .theme-moon { display: none; }
   :global(html:not(.js)) .theme-toggle { display: none; }
-  :global(html:not(.js)) .mobile-menu { margin-left: auto; }
+  :global(html:not(.js)) .mobile-menu-btn { margin-inline-start: auto; }
 
 
-  .mobile-menu { display: none; flex: none; }
-  .mobile-menu summary {
-    display: flex;
+  .mobile-menu-btn {
+    display: none;
+    flex: none;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
@@ -197,22 +193,26 @@ const home = here === homePath;
     padding: 0.35rem 0.7rem;
     border: 1px solid var(--line-2);
     border-radius: 9px;
+    background: transparent;
     color: var(--text);
     font-size: 13px;
     line-height: 1.25;
     cursor: pointer;
-    list-style: none;
+    anchor-name: --mobile-menu-btn;
   }
-  .mobile-menu summary::-webkit-details-marker { display: none; }
   .menu-close-icon { display: none; }
-  .mobile-menu[open] .menu-open-icon { display: none; }
-  .mobile-menu[open] .menu-close-icon { display: block; }
-  .mobile-menu[open] summary { background: var(--panel-2); }
+  .header:has(#mobile-site-nav:popover-open) .menu-open-icon { display: none; }
+  .header:has(#mobile-site-nav:popover-open) .menu-close-icon { display: block; }
+  .header:has(#mobile-site-nav:popover-open) .mobile-menu-btn { background: var(--panel-2); }
   .mobile-nav {
-    position: absolute;
-    top: calc(100% + 0.5rem);
+    position: fixed;
+    inset: auto;
+    inset-block-start: calc(var(--header-h) + 0.5rem);
+    inset-block-start: anchor(--mobile-menu-btn bottom);
     inset-inline: var(--gutter);
+    width: auto;
     max-height: calc(100dvh - var(--header-h) - 1.5rem);
+    margin: 0.5rem 0 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: 0.5rem;
@@ -252,6 +252,6 @@ const home = here === homePath;
       display: none;
     }
 
-    .mobile-menu { display: block; }
+    .mobile-menu-btn { display: inline-flex; }
   }
 </style>
