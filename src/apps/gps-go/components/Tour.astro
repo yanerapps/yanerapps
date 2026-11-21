@@ -14,6 +14,7 @@ interface Props {
 }
 
 const { id, kicker, title, lede, chapters } = Astro.props;
+const first = chapters[0]?.image;
 ---
 
 <section class="section" id={id} aria-labelledby={`${id}-title`}>
@@ -81,7 +82,7 @@ const { id, kicker, title, lede, chapters } = Astro.props;
 
       <div class="tour-stage">
         <div class="tour-sticky">
-          <PhoneFrame class="tour-phone">
+          <PhoneFrame class="tour-phone" ratio={first && `${first.width} / ${first.height}`}>
             {
               chapters.map((c, ci) => (
                 <div class="tour-frame" data-frame={ci} data-shown={ci === 0 ? '' : undefined} aria-hidden={ci === 0 ? 'false' : 'true'}>

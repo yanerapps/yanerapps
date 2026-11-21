@@ -11,14 +11,17 @@ interface Props {
   sizes?: string;
   eager?: boolean;
   class?: string;
+  /** The screen's width / height when it is filled through the slot; an image brings its own. */
+  ratio?: string | undefined;
 }
 
-const { image, dark, alt = '', sizes, eager = false, class: className } = Astro.props;
+const { image, dark, alt = '', sizes, eager = false, class: className, ratio } = Astro.props;
+const screenRatio = image ? `${image.width} / ${image.height}` : ratio;
 ---
 
 <div class:list={['phone', className]}>
   <div class="phone-body">
-    <div class="phone-screen">
+    <div class="phone-screen" style={{ '--screen-ratio': screenRatio }}>
       {image && sizes && <Screenshot src={image} dark={dark} alt={alt} sizes={sizes} eager={eager} />}
       <slot />
       <span class="phone-camera" aria-hidden="true"></span>
@@ -66,7 +69,7 @@ const { image, dark, alt = '', sizes, eager = false, class: className } = Astro.
 
   .phone-screen {
     position: relative;
-    aspect-ratio: 1080 / 2424;
+    aspect-ratio: var(--screen-ratio);
     border-radius: 6.5cqi;
     overflow: hidden;
     background: #05060e;
