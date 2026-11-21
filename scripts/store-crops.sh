@@ -18,6 +18,7 @@ images=(
   "gps-go/assets/showcase/joystick-dark|gps-go/captures/phone/feature-joystick-dark|144 800 1640 1403|472x404"
   "pingdeck/assets/screens/list|pingdeck/captures/phone/list|0 0 2160 4680|1080x2340"
   "pingdeck/assets/screens/attention|pingdeck/captures/phone/attention|0 0 2160 4680|1080x2340"
+  "pingdeck/assets/screens/add-network|pingdeck/captures/phone/add-network|0 0 2160 4680|1080x2340"
   "pingdeck/assets/screens/summary|pingdeck/captures/phone/summary|0 0 2160 4680|1080x2340"
   "pingdeck/assets/screens/alerts|pingdeck/captures/phone/alerts-shade|80 2432 2000 532|1000x266"
   "pingdeck/assets/screens/ongoing|pingdeck/captures/phone/alerts-shade|82 1218 2000 1128|1000x564"
