@@ -61,8 +61,24 @@ const cards = [
       {
         cards.map((c) => (
           <div class:list={['card', c.kind]}>
-            <Image src={c.light} alt={c.alt} widths={[c.width, c.width * 2]} sizes={`${c.width}px`} class="shot shot-light" loading="eager" />
-            <Image src={c.dark} alt={c.alt} widths={[c.width, c.width * 2]} sizes={`${c.width}px`} class="shot shot-dark" />
+            <Image
+              src={c.light}
+              alt={c.alt}
+              widths={[c.width, c.width * 2]}
+              sizes={`${c.width}px`}
+              class="shot shot-light"
+              loading="eager"
+              fetchpriority={c.kind === 'map' ? 'high' : undefined}
+            />
+            <Image
+              src={c.dark}
+              alt={c.alt}
+              widths={[c.width, c.width * 2]}
+              sizes={`${c.width}px`}
+              class="shot shot-dark"
+              loading="eager"
+              fetchpriority={c.kind === 'map' ? 'high' : undefined}
+            />
           </div>
         ))
       }

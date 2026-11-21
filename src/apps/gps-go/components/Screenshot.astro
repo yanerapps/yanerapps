@@ -28,7 +28,7 @@ const widths = [...new Set([360, 540, 720, 1080].map((w) => Math.min(w, src.widt
       formats={['avif']}
       fallbackFormat="webp"
       loading={eager ? 'eager' : 'lazy'}
-      fetchpriority={eager ? 'high' : 'auto'}
+      fetchpriority={eager ? 'high' : undefined}
       decoding="async"
       pictureAttributes={{ class: theme }}
       class={className ? `screenshot ${className}` : 'screenshot'}
