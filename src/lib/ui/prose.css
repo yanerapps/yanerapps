@@ -60,19 +60,17 @@
   color: var(--text);
 }
 
-.prose p,
-.prose ul,
-.prose ol {
+.prose :is(p, ul, ol):not(.card p:last-child) {
   margin: 0 0 1rem;
 }
 
 .prose ul,
 .prose ol {
-  padding-left: 1.25rem;
+  padding-inline-start: 1.25rem;
 }
 
 .prose li {
-  margin-bottom: 0.4rem;
+  margin-block-end: 0.4rem;
 }
 
 .prose li::marker {
@@ -112,10 +110,6 @@
   box-shadow: var(--shadow);
 }
 
-.prose .card p:last-child {
-  margin-bottom: 0;
-}
-
 .prose code {
   font-size: 0.88em;
   padding: 0.1em 0.4em;
@@ -138,12 +132,12 @@
   min-width: 36rem;
   border-collapse: collapse;
   font-size: var(--step--1);
-  text-align: left;
+  text-align: start;
 }
 
 .prose thead th {
   padding: 0.75rem 1.1rem;
-  border-bottom: 1px solid var(--line);
+  border-block-end: 1px solid var(--line);
   background: var(--panel-2);
   font: 12px/1.4 var(--mono);
   letter-spacing: 0.04em;
@@ -153,13 +147,12 @@
 
 .prose tbody td {
   padding: 0.8rem 1.1rem;
-  border-bottom: 1px solid var(--line);
   vertical-align: top;
   line-height: 1.5;
 }
 
-.prose tbody tr:last-child td {
-  border-bottom: 0;
+.prose tbody tr:not(:last-child) td {
+  border-block-end: 1px solid var(--line);
 }
 
 /* A sticky contents list in the margin beside long documents, wide screens only (ProseToc.astro builds it). */
@@ -207,11 +200,10 @@
   .toc-rail {
     display: block;
     position: absolute;
-    top: calc(var(--header-h) + clamp(3rem, 8vw, 6rem));
-    bottom: 0;
-    right: 100%;
+    inset-block: calc(var(--header-h) + clamp(3rem, 8vw, 6rem)) 0;
+    inset-inline-end: 100%;
     width: 13rem;
-    margin-right: 2.5rem;
+    margin-inline-end: 2.5rem;
   }
 
   .toc {
@@ -219,8 +211,8 @@
     top: calc(var(--header-h) + 2rem);
     display: grid;
     gap: 0.55rem;
-    padding-left: 1rem;
-    border-left: 1px solid var(--line);
+    padding-inline-start: 1rem;
+    border-inline-start: 1px solid var(--line);
   }
 
   .toc a {

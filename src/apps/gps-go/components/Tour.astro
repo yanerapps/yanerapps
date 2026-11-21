@@ -176,7 +176,8 @@ const first = chapters[0]?.image;
   .chapters {
     position: relative;
     margin: 0;
-    padding: 0 0 0 2.75rem;
+    padding: 0;
+    padding-inline-start: 2.75rem;
     list-style: none;
   }
 
@@ -185,7 +186,7 @@ const first = chapters[0]?.image;
   .chapters::after {
     content: '';
     position: absolute;
-    left: 0.45rem;
+    inset-inline-start: 0.45rem;
     top: 0.6rem;
     bottom: 0;
     width: 3px;
@@ -228,7 +229,7 @@ const first = chapters[0]?.image;
 
   .station {
     position: absolute;
-    left: calc(-2.75rem + 0.45rem - 5px);
+    inset-inline-start: calc(-2.75rem + 0.45rem - 5px);
     top: 0.55rem;
     width: 13px;
     height: 13px;
@@ -253,11 +254,10 @@ const first = chapters[0]?.image;
 
   .chapter {
     position: relative;
-    padding-bottom: clamp(5rem, 22svh, 12rem);
   }
 
-  .chapter:last-child {
-    padding-bottom: 0;
+  .chapter:not(:last-child) {
+    padding-block-end: clamp(5rem, 22svh, 12rem);
   }
 
   .chapter-body {
@@ -436,13 +436,13 @@ const first = chapters[0]?.image;
     }
 
     .chapters {
-      padding-left: 0;
+      padding-inline-start: 0;
       display: grid;
       gap: clamp(4rem, 12vw, 6rem);
     }
 
-    .chapter {
-      padding-bottom: 0;
+    .chapter:not(:last-child) {
+      padding-block-end: 0;
     }
 
     .chapter-shot {
