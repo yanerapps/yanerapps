@@ -79,7 +79,7 @@ body {
   overflow-x: clip;
 }
 
-[hidden] {
+[hidden]:not([hidden='until-found']) {
   display: none !important;
 }
 

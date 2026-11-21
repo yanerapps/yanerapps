@@ -8,10 +8,23 @@ export function initAnatomy() {
   const details = [...root.querySelectorAll<HTMLElement>('[data-detail]')];
   let current = Number(root.dataset.initial);
 
+  const hideClosed = (activeIndex: number) => {
+    details.forEach((detail, index) => {
+      if (index === activeIndex) {
+        detail.setAttribute('data-open', '');
+        detail.removeAttribute('hidden');
+      } else {
+        detail.removeAttribute('data-open');
+        detail.setAttribute('hidden', 'until-found');
+      }
+    });
+  };
+
+  hideClosed(current);
+
   const select = (i: number) => {
     if (i !== current) {
-      at(details, current).removeAttribute('data-open');
-      at(details, i).setAttribute('data-open', '');
+      hideClosed(i);
       current = i;
     }
     spots.markers.forEach((marker, index) =>
@@ -19,6 +32,10 @@ export function initAnatomy() {
     );
     spots.show(i);
   };
+
+  details.forEach((detail, i) => {
+    detail.addEventListener('beforematch', () => select(i));
+  });
 
   spots.markers.forEach((marker, i) => {
     marker.addEventListener('click', () => select(i));

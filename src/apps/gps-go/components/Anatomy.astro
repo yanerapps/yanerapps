@@ -30,18 +30,25 @@ const panelRadius = (w: number, h: number) =>
       <div class="details">
         {
           parts.map((p, i) => (
-            <article class="detail" id={`part-${p.id}`} data-detail={i} data-open={i === initial ? '' : undefined}>
-              <h3>{p.title}</h3>
-              <p>{p.body}</p>
-              {p.fragment && (
-                <figure
-                  class:list={['fragment', `fragment-${p.id}`, { 'fragment-panel': p.fragment.panel }]}
-                  style={p.fragment.panel ? panelRadius(p.fragment.image.width, p.fragment.image.height) : undefined}
-                >
-                  <Screenshot src={p.fragment.image} dark={p.fragment.dark} alt={p.fragment.alt} sizes="20rem" />
-                  <figcaption>{p.fragment.caption}</figcaption>
-                </figure>
-              )}
+            <article
+              class="detail"
+              id={`part-${p.id}`}
+              data-detail={i}
+              data-open={i === initial ? '' : undefined}
+            >
+              <div class="detail-inner">
+                <h3>{p.title}</h3>
+                <p>{p.body}</p>
+                {p.fragment && (
+                  <figure
+                    class:list={['fragment', `fragment-${p.id}`, { 'fragment-panel': p.fragment.panel }]}
+                    style={p.fragment.panel ? panelRadius(p.fragment.image.width, p.fragment.image.height) : undefined}
+                  >
+                    <Screenshot src={p.fragment.image} dark={p.fragment.dark} alt={p.fragment.alt} sizes="20rem" />
+                    <figcaption>{p.fragment.caption}</figcaption>
+                  </figure>
+                )}
+              </div>
             </article>
           ))
         }
@@ -95,7 +102,7 @@ const panelRadius = (w: number, h: number) =>
     display: none;
   }
 
-  .detail {
+  .detail-inner {
     display: grid;
     gap: 0.9rem;
     max-width: 32rem;
@@ -105,12 +112,8 @@ const panelRadius = (w: number, h: number) =>
     color: var(--muted);
   }
 
-  :global(.js) .detail:not([data-open]) {
-    display: none;
-  }
-
   /* The detail drops in from the list above it. */
-  :global(.js) .detail[data-open] {
+  :global(.js) .detail[data-open] .detail-inner {
     animation: detail-in 0.4s var(--ease);
   }
 
