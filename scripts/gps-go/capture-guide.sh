@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Captures the guide's screens on the Pixel_10 AVD, each in the light and the dark system theme.
+# Captures the guide's screens on the Galaxy_S26 AVD (1080 x 2340, 420 dpi), each in the light and the dark system theme.
+# Run store-kit's galaxy-avd-setup.sh on the AVD once first (and again after Wipe Data), so the status bar clears the camera.
 # Usage: scripts/gps-go/capture-guide.sh [scene ...]   (no scene: all of them, in order)
 # Raw PNGs land in scripts/gps-go/captures/ (git-ignored); guide-images.sh turns them into src/apps/gps-go/assets/screens/.
 set -euo pipefail
@@ -11,15 +12,12 @@ mkdir -p "$out"
 
 serial=""
 for candidate in $("$adb" devices | awk '$1 ~ /^emulator-/ && $2 == "device" {print $1}'); do
-  if [ "$("$adb" -s "$candidate" emu avd name | tr -d '\r' | head -n 1)" = "Pixel_10" ]; then serial="$candidate"; fi
+  if [ "$("$adb" -s "$candidate" emu avd name | tr -d '\r' | head -n 1)" = "Galaxy_S26" ]; then serial="$candidate"; fi
 done
-[ -n "$serial" ] || { echo "Pixel_10 is not running. Boot it: \$ANDROID_HOME/emulator/emulator -avd Pixel_10 -no-audio -no-boot-anim -no-snapshot-save"; exit 1; }
+[ -n "$serial" ] || { echo "Galaxy_S26 is not running. Boot it: \$ANDROID_HOME/emulator/emulator -avd Galaxy_S26 -no-audio -no-boot-anim -no-snapshot-save"; exit 1; }
 device() { "$adb" -s "$serial" "$@"; }
-# Keeps the status bar clock clear of the rounded corner on the Pixel 10 skin.
-statusbar_fix="$(cd "$(dirname "$0")/../../../../shared/store-kit" && pwd)/android-statusbar-fix.sh"
 
 demo() { device shell am broadcast -a com.android.systemui.demo "$@" >/dev/null; }
-ADB="$adb" "$statusbar_fix" "$serial" on
 device shell settings put global sysui_demo_allowed 1
 demo -e command enter
 demo -e command clock -e hhmm 0941
@@ -30,7 +28,6 @@ device shell cmd uimode night no >/dev/null
 restore() {
   device shell cmd uimode night no >/dev/null
   demo -e command exit
-  ADB="$adb" "$statusbar_fix" "$serial" off
 }
 trap restore EXIT
 
