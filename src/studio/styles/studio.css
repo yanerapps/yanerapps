@@ -1,9 +1,9 @@
 /* The studio pages on the shared look (src/lib/ui/global.css): a vermilion seal-red accent, the
    swallow's sky and the app lists on the privacy and support overviews. Long documents use prose.css. */
 :root {
-  --accent: #c23b22;
-  --on-accent: #ffffff;
-  --glow: rgb(194 59 34 / 0.14);
+  --accent: light-dark(#c23b22, #e8664a);
+  --on-accent: light-dark(#ffffff, #1a0703);
+  --glow: light-dark(rgb(194 59 34 / 0.14), rgb(232 102 74 / 0.16));
   --serif: 'IBM Plex Serif', ui-serif, Georgia, 'Times New Roman', serif;
   /* Chinese in the system's 黑体: PingFang on Apple devices, Microsoft YaHei on Windows, Noto Sans CJK on Android. */
   --cjk-sans:
@@ -11,9 +11,9 @@
     'Heiti SC', sans-serif;
 
   /* The swallow's sky: a muted daytime wash; dark mode turns it to dusk. swallow.ts reads these. */
-  --sky-top: #9dbdd0;
-  --sky-mid: #bfd3dc;
-  --sky-bottom: #e2e9e5;
+  --sky-top: light-dark(#9dbdd0, #1a2439);
+  --sky-mid: light-dark(#bfd3dc, #37476a);
+  --sky-bottom: light-dark(#e2e9e5, #6e5650);
   --swallow-back: #283b54;
   --swallow-belly: #f5f2e9;
   --swallow-face: #db663b;
@@ -21,16 +21,10 @@
   --swallow-gloss: #6089a3;
   --swallow-sheen: #3a8c9a;
   --sky-wind: rgba(252, 251, 247, 0.6);
-  --sky-ink: #15140f;
+  --sky-ink: light-dark(#15140f, #ede8de);
 }
 
 :root[data-theme='dark'] {
-  --accent: #e8664a;
-  --on-accent: #1a0703;
-  --glow: rgb(232 102 74 / 0.16);
-  --sky-top: #1a2439;
-  --sky-mid: #37476a;
-  --sky-bottom: #6e5650;
   --swallow-back: #405872;
   --swallow-belly: #ece9df;
   --swallow-face: #e18058;
@@ -38,7 +32,6 @@
   --swallow-gloss: #7eabbd;
   --swallow-sheen: #58a8b6;
   --sky-wind: rgba(237, 232, 222, 0.16);
-  --sky-ink: #ede8de;
 }
 
 /* The studio's seal, the favicon, signs the footer before the motto. */
