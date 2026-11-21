@@ -8,7 +8,7 @@ import mapDark from '../assets/showcase/map-dark.webp';
 import joystickLight from '../assets/showcase/joystick-light.webp';
 import joystickDark from '../assets/showcase/joystick-dark.webp';
 
-// The store feature graphic's three crops of real captures (doc/release/store/feature-graphic-variants),
+// The store feature graphic's three crops of real captures (app-assets gps-go/captures/phone/feature-*, cut by scripts/store-crops.sh),
 // laid out as they are there: cards in a 473 × 335 box, light or dark to match the site theme.
 const cards = [
   {
@@ -29,7 +29,7 @@ const cards = [
     kind: 'joystick',
     light: joystickLight,
     dark: joystickDark,
-    alt: 'The floating joystick during the run: 6.3 mph, lap 1 of 1, steps, Details, Run and Pause.',
+    alt: 'The floating joystick during the run: 6.3 mph, timer off, route 1 of 1 at 7%, steps, Details, Run and Pause.',
     width: 236,
   },
 ];
@@ -198,9 +198,9 @@ const cards = [
 
   .joystick {
     left: calc(90 * var(--c));
-    top: calc(147 * var(--c));
+    top: calc(133 * var(--c));
     width: calc(236 * var(--c));
-    height: calc(188.11 * var(--c));
+    height: calc(201.9 * var(--c));
     border-radius: calc(18.18 * var(--c));
   }
 

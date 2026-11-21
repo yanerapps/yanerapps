@@ -60,7 +60,7 @@ A small studio that builds native apps per platform and looks after each one unt
 ## Evidence on Hand
 
 - GPS-Go: light/dark app captures in `src/apps/gps-go/assets/screens/` and store-graphic crops in `src/apps/gps-go/assets/showcase/`; Play listing live.
-- PingDeck: light captures from the store screenshot run in `src/apps/pingdeck/assets/screens/` (the latency chart is dark only); no dark pairs yet.
+- PingDeck: light captures from the Galaxy_S26 store screenshot run in `src/apps/pingdeck/assets/screens/` (the latency chart is dark only), cut by `scripts/store-crops.sh`; no dark pairs yet.
 - Paperdot: icon only (`public/paperdot/icon.svg`); no screenshots yet.
 - Each app's privacy policy is the source for every data claim.
 - No testimonials, reviews, download counts, press or pricing exist. Do not invent them.

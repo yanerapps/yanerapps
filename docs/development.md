@@ -74,7 +74,7 @@ Every page uses `src/apps/gps-go/layouts/Base.astro`, which takes the page's tit
 
 ### Screenshots
 
-`src/apps/gps-go/assets/showcase/` holds the Places, running-map and joystick captures from `doc/release/store/feature-graphic-variants` in the GPS-Go repository (`ui-light-bg-light.html`, `ui-dark-bg-dark.html`), cut to the part each card shows and saved at 2x as WebP. Re-cut them when the store graphic changes.
+`src/apps/gps-go/assets/showcase/` holds the Places, running-map and joystick captures behind the store feature graphic (`gps-go/captures/phone/feature-*` in app-assets, `~/Developer/yanerapps-studio/shared/app-assets`), cut to the part each card shows and saved at 2x as WebP. PingDeck's `src/apps/pingdeck/assets/screens/` come the same way from `pingdeck/captures/phone/`: whole screens at 1080 × 2340, plus crops of the notification shade and the latency chart; the widget shot is an older hand-taken capture, and `add-network` stays the Pixel_10 one because the Galaxy run caught its title mid-collapse. `scripts/store-crops.sh` cuts all of them, with each crop listed at the top; re-run it after store-kit recaptures, and re-measure a crop (and the hero card size in `Hero.astro`) when that screen's layout changed.
 
 Everything in `src/apps/gps-go/assets/screens/` comes as a `-light` / `-dark` pair captured from the app itself on the `Pixel_10` emulator (1080 × 2424, 420 dpi), and `Screenshot` / `PhoneFrame` take the pair as `src` and `dark` and show the one that matches the site theme. Set up as for the store shots (`doc/release/store-listing.md` in the GPS-Go repository): a `DEBUG_TIER=PRO`, `DEBUG_MENU_ENABLED=false` debug build, the store demo backup imported, English, the System theme, the default colour and metric units.
 
