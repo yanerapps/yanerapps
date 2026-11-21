@@ -203,6 +203,29 @@ const first = chapters[0]?.image;
     transform: scaleY(var(--progress));
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    @supports ((animation-timeline: view()) and (animation-range: entry 50% exit 50%)) {
+      .chapters {
+        view-timeline: --chapters-tl block;
+      }
+
+      .chapters::after {
+        animation: tour-rail-grow auto linear both;
+        animation-timeline: --chapters-tl;
+        animation-range: entry 50% exit 50%;
+      }
+
+      @keyframes tour-rail-grow {
+        from {
+          transform: scaleY(0);
+        }
+        to {
+          transform: scaleY(1);
+        }
+      }
+    }
+  }
+
   .station {
     position: absolute;
     left: calc(-2.75rem + 0.45rem - 5px);

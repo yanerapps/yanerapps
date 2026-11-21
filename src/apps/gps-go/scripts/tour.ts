@@ -101,14 +101,16 @@ function initOne(root: HTMLElement) {
   );
 
   // Progress runs from the list's top reaching mid-viewport to its bottom leaving it.
-  const progress = () => {
-    const { top, height } = list.getBoundingClientRect();
-    const p = Math.min(1, Math.max(0, (innerHeight / 2 - top) / height));
-    root.style.setProperty('--progress', p.toFixed(4));
-  };
-  addEventListener('scroll', progress, { passive: true });
-  addEventListener('resize', progress);
-  progress();
+  if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry 50% exit 50%)')) {
+    const progress = () => {
+      const { top, height } = list.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (innerHeight / 2 - top) / height));
+      root.style.setProperty('--progress', p.toFixed(4));
+    };
+    addEventListener('scroll', progress, { passive: true });
+    addEventListener('resize', progress);
+    progress();
+  }
 
   wide.addEventListener('change', () => {
     stage.forEach((s) => s.show(-1));
