@@ -1,0 +1,85 @@
+---
+import Layout from '../../studio/layouts/Layout.astro';
+import { mailto, studio } from '../../apps/registry';
+
+const title = 'Delete your account — Paperdot';
+const description = 'How to delete your Paperdot Sync account and the data stored with it.';
+
+const request =
+  `mailto:${studio.email}?` +
+  new URLSearchParams({
+    subject: 'Paperdot: delete my account',
+    body: [
+      'Please delete my Paperdot Sync account.',
+      '',
+      'The Google account I signed in to Paperdot with: ',
+      '',
+    ].join('\n'),
+  })
+    .toString()
+    .replace(/\+/g, '%20');
+---
+
+<Layout title={title} description={description}>
+  <div class="prose">
+    <nav aria-label="Paperdot navigation" class="product-nav">
+      <a href="/paperdot/privacy">Privacy</a><span aria-hidden="true"> · </span><a href="/paperdot/support">Support</a><span aria-hidden="true"> · </span><a href="/paperdot/terms">Terms</a>
+    </nav>
+    <div class="prose-header">
+      <h1>Delete your Paperdot account</h1>
+      <p class="lede">Paperdot for Android (<code>com.yanerapps.paperdot</code>) by Yaner Apps</p>
+      <div class="meta">
+        <span>Updated: 22 Nov 2026</span>
+      </div>
+    </div>
+
+    <p>
+      Paperdot only has an account if you turned on <strong>Paperdot Sync</strong>. Without Sync, your journal
+      lives on your device and there is nothing on our side to delete: uninstalling the app removes it.
+    </p>
+
+    <h2>In the app (fastest)</h2>
+    <ol>
+      <li>Open Paperdot and go to <strong>Profile &rsaquo; Sync</strong>.</li>
+      <li>Tap <strong>Delete account</strong> and confirm twice.</li>
+      <li>Sign in with Google once more when asked, to prove it's you.</li>
+    </ol>
+    <p>Everything listed below is deleted right away, and the journal on your device stays.</p>
+
+    <h2>Without the app</h2>
+    <p>
+      Send us a request from the Google account you used with Paperdot:
+      <a href={request}>email {studio.email}</a>. We delete the account within 30 days and reply when it's done.
+      We may ask you to confirm the request from that address.
+    </p>
+
+    <h2>What is deleted</h2>
+    <ul>
+      <li>Your account (user ID, name, email and profile picture from Google)</li>
+      <li>Your encrypted synced records and your encrypted key document</li>
+      <li>Your subscription status</li>
+    </ul>
+
+    <h2>What is kept, and for how long</h2>
+    <ul>
+      <li>
+        <strong>Your Paperdot Sync purchase record</strong> (purchase token, product, status and dates): kept while
+        the subscription exists and as Google Play's records require, so a subscription you keep paying for can
+        follow you to a new account. It no longer points to an account once yours is deleted.
+      </li>
+      <li><strong>Server logs</strong>: deleted after 30 days.</li>
+      <li><strong>Database backups</strong>, if any: roll over within 7 days.</li>
+      <li><strong>Order records in Google Play</strong>: kept by Google under its own policies.</li>
+    </ul>
+
+    <div class="card">
+      <p><strong>Deleting your account does not cancel your subscription.</strong> Cancel Paperdot Sync in Google
+      Play &rsaquo; Payments &amp; subscriptions &rsaquo; Subscriptions first, or it keeps renewing.</p>
+    </div>
+
+    <p>
+      More detail is in the <a href="/paperdot/privacy">privacy policy</a>. Questions:
+      <a href={mailto()}>{studio.email}</a>.
+    </p>
+  </div>
+</Layout>

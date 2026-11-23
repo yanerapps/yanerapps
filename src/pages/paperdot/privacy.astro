@@ -18,7 +18,7 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
       <div class="meta">
         <span>Effective: from Paperdot&rsquo;s release on Google Play</span>
         <span>&middot;</span>
-        <span>Updated: 30 Oct 2026</span>
+        <span>Updated: 22 Nov 2026</span>
       </div>
     </div>
 
@@ -28,29 +28,101 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
     </p>
 
     <div class="card">
-      <p><strong>In short:</strong> Paperdot has no user accounts and no servers of our own. Your journal stays
-      on your device. Paperdot reads your calendar only to show events next to your logs, and never saves them.
-      This version shows no ads. If you subscribe to Pro, Google Play processes the purchase and payment, and we
-      never see your payment details. We never sell your personal information.</p>
+      <p><strong>In short:</strong> Paperdot works fully on your device with no account. Your journal stays on
+      your device unless you turn on <strong>Paperdot Sync</strong>, which is optional. With Sync, you sign in
+      with Google and your journal is <strong>end-to-end encrypted</strong> on your device before it is
+      uploaded: we store it but cannot read it. Paperdot reads your calendar only to show events next to your
+      logs, and never saves them. It shows no ads. Google Play processes purchases, and we never see your
+      payment details. We never sell your personal information.</p>
     </div>
 
     <h2>1. Data that stays on your device</h2>
     <p>
-      The following is stored in the app's private storage and is never transmitted to us &mdash; we operate
-      no server and have no way to read it:
+      The following is stored in the app's private storage:
     </p>
     <ul>
       <li>Your journal: entries, logs, collections, trackers and their history</li>
       <li>Reminders you set on entries</li>
       <li>App settings, including app lock, the calendars you chose to show and the backup reminder</li>
       <li>Your Pro status, as a copy signed with a key that stays in your device's secure keystore</li>
+      <li>With Sync on: your sync data key, protected by a key in the device's secure keystore</li>
     </ul>
     <p>
-      You can delete entries, collections and trackers inside the app at any time. Uninstalling Paperdot
-      removes everything stored on the device.
+      Without Sync, none of it is sent to us. You can delete entries, collections and trackers inside the app
+      at any time. Uninstalling Paperdot removes everything stored on the device.
     </p>
 
-    <h2>2. Permissions</h2>
+    <h2>2. Paperdot Sync (optional)</h2>
+    <p>
+      Paperdot Sync keeps your journal the same on your devices. It is off until you turn it on in
+      Profile &rsaquo; Sync, needs a Google sign-in, and needs a Paperdot Sync subscription to upload changes.
+    </p>
+    <h3>What you give us when you sign in</h3>
+    <p>
+      Signing in uses Google Sign-In and Firebase Authentication, a Google service we use to run accounts.
+      Google shares your <strong>name, email address and profile picture</strong> with Paperdot, and Firebase
+      gives your account a random user ID. We use these only to run your account: to tell your devices apart
+      from other people's, to show you which account you are signed in with, and to answer you if you write
+      to us.
+    </p>
+    <h3>What is uploaded, and what we can see</h3>
+    <p>
+      Before anything leaves your device, Paperdot encrypts each entry, collection, tracker and synced setting
+      with a key made on your device (XChaCha20-Poly1305). That key is itself locked with your
+      <strong>sync passphrase</strong> and your <strong>recovery key</strong>, which never leave your devices.
+      We cannot read your journal, and neither can Google. What we store, under your user ID, is:
+    </p>
+    <ul>
+      <li>Your encrypted records, each with a random record ID, its kind (for example "entry"), a timestamp
+      used to merge changes, a deleted flag, a format version and the time it reached the server</li>
+      <li>Your encrypted key document: your data key, locked by your passphrase and by your recovery key</li>
+      <li>Your subscription status: whether Sync is active and when it ends</li>
+    </ul>
+    <p>
+      The kinds, timestamps and counts are visible to us, so we can see roughly how much you write and when,
+      but never what. If you forget your sync passphrase and lose your recovery key, we cannot recover your
+      synced journal; the copy on your devices is not affected.
+    </p>
+    <h3>Where it is stored</h3>
+    <p>
+      Sync runs on Google Firebase (Cloud Firestore and Cloud Functions), in data centers in the United
+      States. Google processes this data for us as a processor under the
+      <a href="https://firebase.google.com/terms/data-processing-terms" rel="noopener" target="_blank">Firebase Data Processing and Security Terms</a>.
+      Our server code keeps logs for up to 30 days to run and fix the service; they may contain your user ID and
+      a shortened, one-way fingerprint of a purchase, never your journal or a full purchase token.
+    </p>
+
+    <h2>3. Subscriptions: Pro and Sync</h2>
+    <p>
+      Paperdot Pro and Paperdot Sync are auto-renewing subscriptions sold and billed entirely by Google Play.
+      Google Play takes the payment, and your payment method and billing details stay with Google. We never
+      receive your card number, billing address or other payment information. Google Play gives us order
+      records for our sales in the Play Console, such as the order number, plan, price and date, which we use
+      only for accounting, refunds and support.
+    </p>
+    <p>
+      <strong>Pro</strong> is checked on your device: the app asks Google Play whether you have it and keeps a
+      signed copy of the answer, so Pro keeps working for up to 7 days offline. This copy is excluded from
+      Android cloud backup and device-to-device transfer.
+    </p>
+    <p>
+      <strong>Sync</strong> is checked by our server, so that it works on every device you sign in to. When you
+      subscribe, the app sends the purchase's token to our server, which asks Google Play for the purchase's
+      status and links the purchase to your user ID. Google Play also notifies our server when a subscription
+      renews, is cancelled, expires or is refunded. We store, for each Sync purchase: the purchase token, the
+      product, its status, when it ends, and the user ID it belongs to. We keep this for as long as the
+      subscription exists and as Google Play's records require, including after you delete your account, so
+      that a subscription you keep paying for can follow you to a new account.
+    </p>
+    <p>
+      You can cancel either subscription at any time in Google Play. When one ends, nothing in your journal is
+      changed or deleted; Sync simply stops uploading, and you can still download and delete your synced data.
+      Refunds and changes of payment method are handled by Google Play. Google's handling of payment data is
+      governed by the
+      <a href="https://payments.google.com/payments/apis-secure/u/0/get_legal_document?ldo=0&amp;ldt=privacynotice" rel="noopener" target="_blank">Google Payments Privacy Notice</a>.
+    </p>
+
+    <h2>4. Permissions</h2>
     <div class="table-scroll">
       <table>
         <thead>
@@ -62,11 +134,11 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
         <tbody>
           <tr>
             <td>Calendar (read only, optional)</td>
-            <td>Shows events from the calendars you choose next to your daily and monthly logs. Events are read when a page is shown and are never stored in your journal, backups, exports or search. Paperdot cannot create or change calendar events</td>
+            <td>Shows events from the calendars you choose next to your daily and monthly logs. Events are read when a page is shown and are never stored in your journal, backups, exports, search or sync. Paperdot cannot create or change calendar events</td>
           </tr>
           <tr>
             <td>Notifications (optional)</td>
-            <td>Shows the reminders you set and the backup reminder</td>
+            <td>Shows the reminders you set, the backup reminder and, with Sync on, a notice when sync needs your attention</td>
           </tr>
           <tr>
             <td>Run at startup</td>
@@ -78,7 +150,7 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
           </tr>
           <tr>
             <td>Network access</td>
-            <td>Used only by Google Play Billing, to show Pro prices and confirm a subscription</td>
+            <td>Used by Google Play Billing, to show prices and confirm subscriptions, and by Sync when you turn it on</td>
           </tr>
         </tbody>
       </table>
@@ -88,7 +160,7 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
       Paperdot from another app becomes a journal entry on your device.
     </p>
 
-    <h2>3. Data sent to third parties</h2>
+    <h2>5. Data sent to third parties</h2>
     <div class="table-scroll">
       <table>
         <thead>
@@ -101,39 +173,24 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
         <tbody>
           <tr>
             <td>Google Play Billing</td>
-            <td>Which Pro plan you chose, your purchase, and an identifier the app derives on your device with a one-way hash</td>
-            <td>To sell Pro, confirm that you have it, and help Google detect fraud</td>
+            <td>The plan you chose, your purchase, and an identifier the app derives on your device with a one-way hash</td>
+            <td>To sell Pro and Sync, confirm that you have them, and help Google detect fraud</td>
+          </tr>
+          <tr>
+            <td>Google Sign-In and Firebase (only with Sync)</td>
+            <td>Your Google account's name, email and profile picture; your encrypted records and key document; your Sync purchase</td>
+            <td>To run your account and store your encrypted journal; Google acts as our processor for Firebase</td>
           </tr>
         </tbody>
       </table>
     </div>
     <p>
-      Your journal, reminders, calendar events and settings are never sent to Google or to anyone else.
-      This version of Paperdot shows no ads and does not start an advertising SDK, so it does not use your
-      advertising ID. If a future version adds ads, this policy will be updated before it ships.
+      Your journal, reminders, calendar events and settings are never sent anywhere in readable form. Paperdot
+      shows no ads, starts no advertising, analytics or crash-reporting SDK, and does not use your advertising
+      ID.
     </p>
 
-    <h2>4. Subscribing to Pro</h2>
-    <p>
-      Paperdot Pro is an auto-renewing subscription sold and billed entirely by Google Play. Google Play takes
-      the payment, and your payment method and billing details stay with Google. We never receive your card
-      number, billing address or other payment information, and Paperdot has no server that receives your
-      purchases. Google Play gives us order records for our sales in the Play Console, such as the order
-      number, plan, price and date, which we use only for accounting, refunds and support.
-    </p>
-    <p>
-      To unlock Pro, the app asks Google Play whether you have it and keeps a signed copy of the answer in
-      private storage, so Pro keeps working for up to 7 days when you are offline. This copy is excluded from
-      Android cloud backup and device-to-device transfer. You can cancel at any time in Google Play. When Pro
-      ends, nothing in your journal is changed or deleted.
-    </p>
-    <p>
-      Refunds and changes of payment method are handled by Google Play under your Google account. Google's
-      handling of payment data is governed by the
-      <a href="https://payments.google.com/payments/apis-secure/u/0/get_legal_document?ldo=0&amp;ldt=privacynotice" rel="noopener" target="_blank">Google Payments Privacy Notice</a>.
-    </p>
-
-    <h2>5. Backups and exports</h2>
+    <h2>6. Backups and exports</h2>
     <p>
       Paperdot can write files to places you choose: a full backup (<code>.paperdot.json</code>), a Markdown
       export and, with Pro, a PDF export. These files contain your journal in plain text. They are created only
@@ -142,11 +199,11 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
     </p>
     <p>
       Android's own cloud backup may include your journal and settings if you have enabled it on your device;
-      app lock, calendar choices and your Pro status are left out of it. That backup is managed by Google under
-      your Google account, not by us.
+      app lock, calendar choices, your Pro status, your sync data key and this device's sync identity are left
+      out of it. That backup is managed by Google under your Google account, not by us.
     </p>
 
-    <h2>6. Notifications and the widget</h2>
+    <h2>7. Notifications and the widget</h2>
     <p>
       Reminders and the home screen widget can show the text of your entries, so anyone who can see your screen
       can see them. App lock hides Paperdot's preview in recent apps but does not hide notifications or the
@@ -154,37 +211,47 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
       settings.
     </p>
 
-    <h2>7. What we do not do</h2>
+    <h2>8. What we do not do</h2>
     <ul>
-      <li>No user accounts, sign-in, or profiles</li>
-      <li>No servers operated by us, and therefore no copy of your journal held by us</li>
-      <li>No ads, analytics or crash-reporting SDKs started by this version</li>
+      <li>No account unless you turn on Sync, and nothing that needs one except Sync</li>
+      <li>No readable copy of your journal on our servers, ever</li>
+      <li>No ads, analytics or crash-reporting SDKs</li>
       <li>No location permission and no use of your location</li>
       <li>No sale of personal information</li>
     </ul>
 
-    <h2>8. Children</h2>
+    <h2>9. Children</h2>
     <p>
       Paperdot is not directed to children under 13, and we do not knowingly collect data from children.
-      Since the app collects nothing, a child's journal stays on their device like anyone else's.
+      Without Sync, a child's journal stays on their device like anyone else's. Sync requires a Google account
+      and is subject to Google's age requirements for it.
     </p>
 
-    <h2>9. Data retention and deletion</h2>
-    <p>
-      Because your data lives on your device, you control its lifetime: it stays until you delete it or
-      uninstall the app. There is nothing for us to delete on our side, since we hold nothing. Data held by
-      Google as a result of a purchase is subject to Google's own retention practices.
-    </p>
+    <h2>10. Data retention and deletion</h2>
+    <ul>
+      <li><strong>On your device:</strong> your journal stays until you delete it or uninstall the app.</li>
+      <li><strong>Synced data:</strong> your encrypted records and key document stay until you delete them or
+      your account. If your Sync subscription has ended, we may delete your synced data 180 days after it
+      ended; we will tell you in the app 30 days and 7 days before. Your journal on your devices is never
+      affected.</li>
+      <li><strong>Deleting your account:</strong> in the app, open Profile &rsaquo; Sync &rsaquo; Delete account.
+      This deletes your encrypted records, your key document, your subscription status and your account right
+      away. If you no longer have the app, see <a href="/paperdot/delete-account">how to delete your Paperdot
+      account</a>. Deleting your account does not cancel a subscription: cancel it in Google Play.</li>
+      <li><strong>Purchase records</strong> are kept as described in section 3. Server logs are deleted after 30
+      days. Backups of our database, if any, roll over within 7 days.</li>
+    </ul>
 
-    <h2>10. Security</h2>
+    <h2>11. Security</h2>
     <p>
       Your journal is kept in the app's private storage, which other apps cannot read on a non-rooted device.
       App lock adds a check with your fingerprint, face or screen lock each time you come back to the app.
-      Backup and export files are not encrypted, so keep them somewhere safe. The billing library talks to
-      Google over HTTPS.
+      Synced data is end-to-end encrypted as described in section 2, and travels over HTTPS; only your own
+      account can read or delete its data on the server. Backup and export files are not encrypted, so keep
+      them somewhere safe.
     </p>
 
-    <h2>11. Additional information for the EEA, UK and Switzerland</h2>
+    <h2>12. Additional information for the EEA, UK and Switzerland</h2>
     <p>
       This section gives the information required by the EU and UK General Data Protection Regulation and
       the Swiss Federal Act on Data Protection.
@@ -193,8 +260,8 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
     <h3>Controller</h3>
     <p>
       The controller for the processing described in this policy is Yaner Yang, publishing as Yaner Apps,
-      reachable at <a href={mailto()}>{studio.email}</a>. Google acts as an independent
-      controller for the data it receives, under its own policies.
+      reachable at <a href={mailto()}>{studio.email}</a>. Google acts as our processor for Firebase, and as an
+      independent controller for Google Play and Google Sign-In, under its own policies.
     </p>
 
     <h3>Purposes and legal bases</h3>
@@ -209,9 +276,19 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
         </thead>
         <tbody>
           <tr>
-            <td>Providing Pro you subscribed to</td>
-            <td>Your Google Play purchase status, the hashed identifier sent with a purchase, and the order records Google Play provides</td>
+            <td>Providing Pro or Sync you subscribed to</td>
+            <td>Your Google Play purchase status and token, the hashed identifier sent with a purchase, and the order records Google Play provides</td>
             <td>Necessary to perform the contract you entered into when subscribing (Art. 6(1)(b) GDPR)</td>
+          </tr>
+          <tr>
+            <td>Running your Sync account and storing your encrypted journal</td>
+            <td>Your name, email, profile picture and user ID; your encrypted records and key document; their timestamps</td>
+            <td>Necessary to perform the contract (Art. 6(1)(b))</td>
+          </tr>
+          <tr>
+            <td>Keeping the service running and secure</td>
+            <td>Server logs with your user ID, kept 30 days</td>
+            <td>Legitimate interests in operating a reliable, secure service (Art. 6(1)(f))</td>
           </tr>
           <tr>
             <td>Answering your emails</td>
@@ -223,13 +300,13 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
     </div>
     <p>
       Data that stays on your device (section 1) is not processed by us at all. You are not required to
-      provide any personal data. We make no decisions based solely on automated processing.
+      provide any personal data; Sync is optional. We make no decisions based solely on automated processing.
     </p>
 
     <h3>International transfers</h3>
     <p>
-      Google may process purchase data in the United States and other countries, relying on the EU-U.S. Data
-      Privacy Framework, its UK Extension and the Swiss-U.S. Data Privacy Framework, and on Standard
+      Synced data and purchase data are processed by Google in the United States. Google relies on the EU-U.S.
+      Data Privacy Framework, its UK Extension and the Swiss-U.S. Data Privacy Framework, and on Standard
       Contractual Clauses where needed (see
       <a href="https://policies.google.com/privacy/frameworks" rel="noopener" target="_blank">Google's data transfer frameworks</a>).
     </p>
@@ -240,26 +317,24 @@ const description = 'Privacy policy for Paperdot (com.yanerapps.paperdot), a dai
       processing, and to data portability. You also have the right to lodge a complaint with a data
       protection supervisory authority, in particular in the country where you live or work; in the UK this
       is the Information Commissioner's Office, and in Switzerland the Federal Data Protection and
-      Information Commissioner. Section 12 explains how to exercise these rights.
+      Information Commissioner. Section 13 explains how to exercise these rights.
     </p>
 
-    <h2>12. Your rights</h2>
+    <h2>13. Your rights</h2>
     <p>
       Depending on where you live, you may have rights to access, correct, delete, or port your personal
-      data. Since Paperdot stores your journal only on your device, you can exercise these rights directly in
-      the app: edit or delete entries, and export a backup or Markdown file to take your data elsewhere. If
-      you need help, write to <a href={mailto()}>{studio.email}</a> and we will respond within 30 days.
+      data. You can exercise most of them in the app: edit or delete entries, export a backup or Markdown
+      file to take your data elsewhere, and delete your Sync account. If you need help, write to
+      <a href={mailto()}>{studio.email}</a> and we will respond within 30 days.
     </p>
 
-    <h2>13. Changes to this policy</h2>
+    <h2>14. Changes to this policy</h2>
     <p>
       If this policy changes, the updated version is published on this page with a new "updated" date.
-      Paperdot may later offer optional end-to-end encrypted sync; this policy will describe it before that
-      feature is released. Material changes affecting how data is shared will also be noted in the app's
-      release notes.
+      Material changes affecting how data is shared will also be noted in the app's release notes.
     </p>
 
-    <h2>14. Contact</h2>
+    <h2>15. Contact</h2>
     <p>
       Yaner Apps &mdash; <a href={mailto()}>{studio.email}</a>
     </p>
