@@ -155,6 +155,15 @@
         ],
         "createdAt": "2026-11-01T01:46:01.501Z",
         "reason": "incumbent document title treatment moved from studio.css; documented in DESIGN.md"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "src/apps/pingdeck/components/Hero.astro"
+        ],
+        "createdAt": "2026-11-24T18:58:40.041Z",
+        "reason": "DESIGN.md sanctions it: headings use the ink-to-60% gradient (lines 223, 296); predates this session"
       }
     ]
   }
