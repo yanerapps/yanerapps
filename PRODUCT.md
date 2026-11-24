@@ -41,7 +41,7 @@ A small studio that builds native apps per platform and looks after each one unt
 
 - Static Astro site with Svelte islands, deployed to Cloudflare Workers static assets. URLs never end in a slash.
 - `src/apps/registry.ts` is the single source for the studio's name, email, URL and each app's name, blurb, Play link and showcase copy.
-- Apps today, all Android: **GPS-Go** (no-root location simulator, live on Google Play), **PingDeck** (pings many hosts at once) and **Paperdot** (a daily journal and planner; store title "Paperdot: Journal & Planner"; never "Bullet Journal" or "BuJo" in names or taglines, both are registered trademarks); the last two are "Coming soon to Google Play".
+- Apps today, all Android: **GPS-Go** (no-root location simulator, live on Google Play), **PingDeck** (pings many hosts at once, live on Google Play since 2026-11-15) and **Paperdot** (a daily journal and planner; store title "Paperdot: Journal & Planner"; never "Bullet Journal" or "BuJo" in names or taglines, both are registered trademarks); Paperdot is "Coming soon to Google Play".
 - The studio is native-first across operating systems (confirmed 2026-10-31). Do not name an iOS or macOS app until one ships.
 - Today's apps are small tools, but the studio may later build medium-size apps or SaaS (2026-10-31). Studio-level copy should not lock it to "small", "tools" or "your phone".
 - GPS-Go is free with ads and daily limits; the Ad-free and Pro monthly subscriptions are live for everyone since the release submitted on 2026-10-25. The site states prices nowhere, since Google Play sets them per region.
@@ -60,7 +60,7 @@ A small studio that builds native apps per platform and looks after each one unt
 ## Evidence on Hand
 
 - GPS-Go: light/dark app captures in `src/apps/gps-go/assets/screens/` and store-graphic crops in `src/apps/gps-go/assets/showcase/`; Play listing live.
-- PingDeck: light captures from the Galaxy_S26 store screenshot run in `src/apps/pingdeck/assets/screens/` (the latency chart is dark only), cut by `scripts/store-crops.sh`; no dark pairs yet.
+- PingDeck: light captures from the Galaxy_S26 store screenshot run in `src/apps/pingdeck/assets/screens/` (the latency chart is dark only), cut by `scripts/store-crops.sh`; no dark pairs yet. Play listing live.
 - Paperdot: icon only (`public/paperdot/icon.svg`); no screenshots yet.
 - Each app's privacy policy is the source for every data claim.
 - No testimonials, reviews, download counts, press or pricing exist. Do not invent them.

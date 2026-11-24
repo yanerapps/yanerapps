@@ -30,7 +30,8 @@ export const apps = {
   pingdeck: {
     name: 'PingDeck',
     blurb: 'pings many hosts at once, for Android',
-    playStoreUrl: null as string | null,
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.yanerapps.pingdeck' as
+      string | null,
     showcase: {
       icon: '/pingdeck/icon.png',
       tagline: 'Know when your connections need attention',
