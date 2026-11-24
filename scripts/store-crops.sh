@@ -24,7 +24,7 @@ images=(
   "pingdeck/assets/screens/ongoing|pingdeck/captures/phone/alerts-shade|82 1218 2000 1128|1000x564"
   "pingdeck/assets/screens/chart|pingdeck/captures/phone/detail-chart-dark|80 2404 2000 1942|1000x971"
   "pingdeck/assets/screens/dashboard|pingdeck/captures/phone/dashboard|40 280 2080 2652|1040x1326"
-  "pingdeck/assets/screens/widget-overview|pingdeck/captures/phone/widget-overview|100 310 1450 1030|1000x710"
+  "pingdeck/assets/screens/widget-overview|pingdeck/captures/phone/widget-overview|132 342 1386 966|1000x697"
 )
 
 tmp="$(mktemp -d)"
