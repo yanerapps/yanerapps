@@ -2,12 +2,14 @@
 import Screenshot from '../../gps-go/components/Screenshot.astro';
 import attention from '../assets/screens/attention.webp';
 import chart from '../assets/screens/chart.webp';
+import dashboard from '../assets/screens/dashboard.webp';
 import ongoing from '../assets/screens/ongoing.webp';
 import network from '../assets/screens/add-network.webp';
 import summary from '../assets/screens/summary.webp';
 import widget from '../assets/screens/widget-overview.webp';
 
 // Keep full-screen crops on the part of the app described by the card.
+// The lead card takes a whole row, so the two wide cards after it never leave a hole in the three-column grid.
 const cards = [
   {
     image: attention,
@@ -16,12 +18,20 @@ const cards = [
     title: 'See what needs attention',
     body: 'Last, average, minimum and maximum round trip, loss, TTL and consecutive failures, live for every host. Sort by any column, group hosts, and jump to the ones that are down.',
     wide: true,
+    lead: true,
+  },
+  {
+    image: dashboard,
+    alt: 'The dashboard over the last 5 minutes: 13 of 16 hosts reachable and 3 unreachable, availability 81.3%, packet loss 10.3%, average latency 21.9 ms and P95 latency 71.1 ms, each with a sparkline.',
+    title: 'The whole network on one page',
+    body: 'Reachable, unreachable and inactive hosts at a glance, then availability, packet loss, average and P95 latency, and jitter on wider screens. Below them, a response time chart, each host’s status history and a ranking of the worst hosts. Pick the last 1, 5, 15 or 60 minutes; the figures cover what PingDeck has recorded since the app started, up to two hours.',
+    wide: true,
   },
   {
     image: chart,
     alt: 'A five-minute latency chart with the selected range’s p95, jitter, and packet loss.',
     title: 'Latency over time',
-    body: 'A chart for each host over the last 1, 5 or 15 minutes, with failures marked and p95, jitter and loss for the range. Touch it to inspect a single ping.',
+    body: 'Each host has its own chart over the last 1, 5 or 15 minutes, with failures marked and p95, jitter and loss for the range. Touch it to inspect a single ping.',
   },
   {
     image: ongoing,
@@ -64,7 +74,7 @@ const more = [
   'Search and filter',
   'Standard or compact rows',
   'Colors from your wallpaper',
-  'List and detail side by side on tablets and foldables',
+  'Dashboard beside the host list on tablets and foldables, with any detail expandable to the full window',
 ];
 ---
 
@@ -81,7 +91,7 @@ const more = [
     <div class="grid">
       {
         cards.map((c) => (
-          <article class:list={['card', 'panel', 'reveal', { wide: c.wide }]}>
+          <article class:list={['card', 'panel', 'reveal', { wide: c.wide, lead: c.lead }]}>
             <div class="card-copy">
               <h3>{c.title}</h3>
               <p>{c.body}</p>
@@ -187,8 +197,12 @@ const more = [
     overflow-wrap: anywhere;
   }
 
+  .lead,
   .rest {
     grid-column: 1 / -1;
+  }
+
+  .rest {
     margin-top: 0.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--line-2);
@@ -223,6 +237,10 @@ const more = [
 
     .wide .art {
       align-self: stretch;
+    }
+
+    .lead {
+      grid-column: 1 / -1;
     }
 
     .rest ul {
