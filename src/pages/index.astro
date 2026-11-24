@@ -207,9 +207,10 @@ const showcased = appIds
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
-    /* A feature (or a lone card) spans the row and spreads into two columns: the app on the left, what it does on the right. */
+    /* A feature (or a card with no pair) spans the row and spreads into two columns: the app on the left, what it does on the right. */
     .app-feature,
-    .app:only-child {
+    .app:only-child,
+    .app-feature + .app:last-child {
       grid-column: 1 / -1;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       grid-template-rows: none;
@@ -219,7 +220,8 @@ const showcased = appIds
     }
 
     .app-feature .app-highlights,
-    .app:only-child .app-highlights {
+    .app:only-child .app-highlights,
+    .app-feature + .app:last-child .app-highlights {
       align-self: center;
     }
   }
