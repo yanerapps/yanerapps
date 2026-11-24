@@ -39,7 +39,7 @@ export const apps = {
         'Keep an eye on your network from your phone and spot connection problems as they happen.',
       highlights: [
         'See which devices and services are reachable at a glance',
-        'Track response times and see how connections change over time',
+        'A dashboard with availability, loss, latency and jitter for every host',
         'Get alerts when a connection goes down or recovers, and check status from your home screen',
       ],
     },
