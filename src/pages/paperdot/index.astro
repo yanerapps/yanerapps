@@ -1,0 +1,542 @@
+---
+import { apps, appPaths, mailto, studio } from '../../apps/registry';
+import PhoneFrame from '../../apps/gps-go/components/PhoneFrame.astro';
+import Screenshot from '../../apps/gps-go/components/Screenshot.astro';
+import today from '../../apps/paperdot/assets/today.webp';
+import desk from '../../apps/paperdot/assets/desk.webp';
+import month from '../../apps/paperdot/assets/month.webp';
+import review from '../../apps/paperdot/assets/review.webp';
+import habits from '../../apps/paperdot/assets/habits.webp';
+import collection from '../../apps/paperdot/assets/collection.webp';
+import Shell from '../../lib/ui/Shell.astro';
+import SiteHeader from '../../lib/ui/SiteHeader.astro';
+import SiteFooter from '../../lib/ui/SiteFooter.astro';
+
+const app = apps.paperdot;
+const paths = appPaths('paperdot');
+const title = 'Paperdot: Journal & Planner';
+const description =
+  'An Android journal and planner that feels like paper. Log tasks, events and notes, plan the month, and review what you want to carry forward.';
+const cards = [
+  {
+    title: 'Log it in a few words',
+    body: 'Type a line and press Enter to add a task. Start with “o” for an event or “-” for a note. On tablets and unfolded foldables, keep your calendar and trackers beside the open journal.',
+    image: desk,
+    alt: 'Paperdot on a tablet, with the daily journal beside a calendar, upcoming events and habit trackers.',
+    lead: true,
+    wide: true,
+  },
+  {
+    title: 'Plan the month',
+    body: 'View your calendar and monthly tasks on the same page. Put plans further out in the future log.',
+    image: month,
+    alt: 'October events and tasks in Paperdot’s month view.',
+    crop: '4 / 5',
+    wide: true,
+  },
+  {
+    title: 'Review unfinished tasks',
+    body: 'At the start of the month, go through open tasks. Move them to a new date or collection, mark them done, or cross them out.',
+    image: review,
+    alt: 'Monthly review with an unfinished task and options to migrate it, mark it done or drop it.',
+    crop: '4 / 5',
+  },
+  {
+    title: 'Track habits and moods',
+    body: 'Mark habits day by day, check your streaks and monthly counts, and keep a mood calendar.',
+    image: habits,
+    alt: 'The Paperdot habit tracker with four habits and their daily progress.',
+    crop: '4 / 5',
+  },
+  {
+    title: 'Keep lists in collections',
+    body: 'Give projects, books and trips their own pages. Find any collection from the index.',
+    image: collection,
+    alt: 'A reading list in a Paperdot collection.',
+    crop: '4 / 5',
+    wide: true,
+  },
+];
+
+const more = [
+  'Search by entry type, status, signifier or date',
+  'Set reminders for tasks and events',
+  'Open today’s log from a home screen widget',
+  'See monthly stats for tasks, habits and moods',
+  'Switch between spiral and hardcover binding',
+  'English and Simplified Chinese',
+];
+
+const plans = [
+  { feature: 'Daily, monthly and future logs', free: 'Included', pro: 'Included' },
+  { feature: 'Collections, backups and Markdown export', free: 'Included', pro: 'Included' },
+  { feature: 'Trackers', free: 'Up to 3', pro: 'Unlimited' },
+  { feature: 'Seven extra notebook styles', free: '—', pro: 'Included' },
+  { feature: 'Cream and gray paper, and handwriting fonts', free: '—', pro: 'Included' },
+  { feature: 'PDF export in A4 or Letter', free: '—', pro: 'Included' },
+];
+
+const commitments = [
+  ['No account required', 'Start writing offline. Google sign-in is only for Sync.'],
+  ['Backups you control', 'Save a journal backup file or export your entries as Markdown.'],
+  ['Encrypted Sync', 'Your journal is encrypted on your device before upload.'],
+  ['No analytics', 'Paperdot has no analytics or crash reporting.'],
+];
+
+const links = [
+  { href: paths.support, label: 'Support' },
+  { href: paths.privacy, label: 'Privacy policy' },
+];
+---
+
+<Shell
+  {title}
+  {description}
+  siteName={app.name}
+  favicon={app.showcase.icon}
+  image="/paperdot/og.jpg"
+  imageAlt="Paperdot’s daily log and month view, shown side by side."
+>
+  <SiteHeader
+    home={paths.home}
+    name={app.name}
+    links={[
+      { href: '#features', label: 'Features' },
+      { href: '#pro', label: 'Pro' },
+      { href: '#privacy', label: 'Your data' },
+      { href: paths.privacy, label: 'Privacy' },
+      { href: paths.support, label: 'Support' },
+    ]}
+  >
+    <img slot="mark" class="app-icon" src={app.showcase.icon} alt="" width="24" height="24" />
+  </SiteHeader>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="page hero-layout">
+        <div>
+          <h1 id="hero-title">A journal that <em>feels like paper.</em></h1>
+          <p class="lede">
+            Paperdot is a daily journal and planner for tasks, events and notes. Log them on today’s page, plan the
+            month, and decide what to carry forward.
+          </p>
+          <div class="ctas">
+            <a class="btn btn-primary" href={app.playStoreUrl}>Get it on Google Play</a>
+            <a class="btn btn-quiet" href="#features">See what it does</a>
+          </div>
+          <p class="meta">Android 8.0 or later · Works offline · No account required</p>
+        </div>
+        <div class="stage">
+          <PhoneFrame
+            image={today}
+            alt="Paperdot’s daily log with tasks, timed events and notes on a dot-grid notebook page."
+            sizes="(min-width: 375px) 256px, 74vw"
+            eager
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features" aria-labelledby="features-title">
+      <div class="page">
+        <header class="section-head">
+          <h2 class="reveal" id="features-title">From today to next month.</h2>
+          <p class="lede reveal">
+            Start with a few lines on today’s page. Use the same notebook to look ahead, review what’s open and keep
+            track of the things you do regularly.
+          </p>
+        </header>
+        <div class="grid">
+          {
+            cards.map((card) => (
+              <article class:list={['card', 'panel', 'reveal', { wide: card.wide, lead: card.lead }]}>
+                <div>
+                  <h3>{card.title}</h3>
+                  <p>{card.body}</p>
+                </div>
+                <div class="art">
+                  <div class="capture" style={{ '--capture-ratio': card.crop ?? `${card.image.width} / ${card.image.height}` }}>
+                    <Screenshot
+                      src={card.image}
+                      alt={card.alt}
+                      sizes={card.lead ? '(min-width: 64rem) 490px, calc(100vw - 100px)' : '(min-width: 375px) 240px, calc(100vw - 100px)'}
+                    />
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+        <div class="rest reveal">
+          <h3>More ways to use your journal</h3>
+          <ul>{more.map((item) => <li>{item}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pro" aria-labelledby="pro-title">
+      <div class="page">
+        <header class="section-head">
+          <h2 class="reveal" id="pro-title">Free to journal. Pro for more.</h2>
+          <p class="lede reveal">
+            Keep a daily journal for free. Paperdot Pro adds customization, PDF export and unlimited trackers.
+            Choose a monthly or yearly subscription, or buy Lifetime Pro once.
+          </p>
+        </header>
+        <div class="compare panel reveal">
+          <table aria-label="Paperdot Free compared with Paperdot Pro">
+            <thead>
+              <tr><th scope="col">Feature</th><th scope="col">Free</th><th scope="col">Pro</th></tr>
+            </thead>
+            <tbody>
+              {
+                plans.map((plan) => (
+                  <tr><th scope="row">{plan.feature}</th><td>{plan.free}</td><td>{plan.pro}</td></tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy" aria-labelledby="privacy-title">
+      <div class="page">
+        <header class="section-head">
+          <h2 class="reveal" id="privacy-title">Your journal is yours.</h2>
+          <p class="lede reveal">
+            Paperdot keeps your journal on your device by default. To carry it across Android devices, you can add
+            end-to-end encrypted Paperdot Sync as a separate yearly subscription.
+          </p>
+        </header>
+        <div class="privacy-layout">
+          <ul class="points reveal">
+            <li>Choose which Android calendars appear beside your journal. Paperdot reads those events when you view the page.</li>
+            <li>Use app lock to protect your journal with your fingerprint, face or device screen lock.</li>
+            <li>Sync encrypts your journal before it leaves your device. Keep your sync passphrase and recovery key somewhere safe.</li>
+            <li>See the <a href={paths.privacy}>privacy policy</a> for details about storage, backup and Sync.</li>
+          </ul>
+          <dl class="commitments panel reveal">
+            {commitments.map(([label, detail]) => <div><dt>{label}</dt><dd>{detail}</dd></div>)}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing" id="get" aria-labelledby="get-title">
+      <div class="page">
+        <div class="band panel reveal">
+          <img class="closing-icon" src={app.showcase.icon} alt="" width="52" height="52" />
+          <div>
+            <h2 id="get-title">Paperdot is on Google Play.</h2>
+            <p>Android 8.0 or later. Questions? See <a href={paths.support}>support</a> or <a href={mailto(app.name)}>email us</a>.</p>
+          </div>
+          <a class="btn btn-primary" href={app.playStoreUrl}>Get it on Google Play</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter links={[...links, { href: `${paths.home}/terms`, label: 'Terms' }, { href: mailto(app.name), label: studio.email }]}>
+    <Fragment slot="studio">
+      <img src="/favicon.svg" alt="" width="20" height="20" />
+      <span>Designed by <a href="/">{studio.name}</a>.</span>
+      <a href="/#apps">More apps →</a>
+    </Fragment>
+  </SiteFooter>
+</Shell>
+
+<style>
+  :global(:root) {
+    --accent: light-dark(#1f2e4a, #b4c7e5);
+    --on-accent: light-dark(#fff, #1f2e4a);
+    --glow: light-dark(rgb(31 46 74 / 0.16), rgb(180 199 229 / 0.16));
+  }
+
+  section[id] {
+    scroll-margin-block-start: var(--header-h);
+  }
+
+  .hero {
+    padding-block: calc(var(--header-h) + clamp(2.5rem, 6vw, 4.5rem)) clamp(1.5rem, 3vw, 3rem);
+  }
+
+  .hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  h1 {
+    padding-block-end: 0.1em;
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    text-wrap: initial;
+    background: linear-gradient(var(--heading-from) 45%, var(--heading-to));
+    background-clip: text;
+    color: transparent;
+  }
+
+  h1 em {
+    display: block;
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .hero .lede,
+  .meta {
+    margin-block-start: 1rem;
+  }
+
+  .meta {
+    color: var(--dim);
+    font-size: var(--step--1);
+  }
+
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-block-start: 1.5rem;
+  }
+
+  .stage {
+    inline-size: min(74%, 16rem);
+    margin-inline: auto;
+  }
+
+  .grid,
+  .rest ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: clamp(20px, 3vw, 28px);
+  }
+
+  .card p,
+  .band p {
+    margin-block-start: 0.5rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .art {
+    display: grid;
+    place-items: center;
+    flex-grow: 1;
+    padding: 0.75rem;
+    border-radius: 12px;
+    background: var(--panel-2);
+  }
+
+  .capture {
+    position: relative;
+    inline-size: min(100%, 15rem);
+    aspect-ratio: var(--capture-ratio);
+    overflow: clip;
+    border: 1px solid var(--line-2);
+    border-radius: 10px;
+  }
+
+  .capture :global(picture) {
+    position: absolute;
+    inset: 0;
+  }
+
+  .capture :global(img) {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .lead {
+    grid-column: 1 / -1;
+  }
+
+  .lead .capture {
+    inline-size: min(100%, 31rem);
+  }
+
+  .rest {
+    margin-block-start: 1.5rem;
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid var(--line-2);
+  }
+
+  .rest ul {
+    gap: 0.5rem 2rem;
+    margin-block: 0.75rem 0;
+    padding-inline-start: 1.125rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  li::marker {
+    color: var(--accent);
+  }
+
+  .compare {
+    max-inline-size: 54rem;
+    padding: clamp(8px, 2vw, 16px) clamp(12px, 3vw, 24px);
+  }
+
+  table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+
+  th,
+  td {
+    padding: 0.75rem 0.25rem;
+    text-align: center;
+  }
+
+  thead th {
+    color: var(--dim);
+    font: 0.8125rem/1.5 var(--mono);
+  }
+
+  thead th:last-child {
+    color: var(--accent);
+  }
+
+  tbody tr {
+    border-block-start: 1px solid var(--line);
+  }
+
+  th:first-child {
+    padding-inline-start: 0;
+    text-align: start;
+  }
+
+  td {
+    inline-size: 21%;
+    color: var(--muted);
+  }
+
+  td:last-child {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .privacy-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+    gap: clamp(28px, 5vw, 64px);
+  }
+
+  .points {
+    display: grid;
+    gap: 0.875rem;
+    margin: 0;
+    padding-inline-start: 1.25rem;
+    color: var(--muted);
+  }
+
+  .commitments {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    overflow: clip;
+    background: var(--line-2);
+  }
+
+  .commitments > div {
+    padding: clamp(1rem, 2.4vw, 1.5rem);
+    background: var(--panel);
+  }
+
+  dt {
+    font-weight: 650;
+  }
+
+  dd {
+    margin: 0.25rem 0 0;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+
+  .closing {
+    padding-block: calc(var(--section-space) / 2) var(--section-space);
+  }
+
+  .band {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px 24px;
+    padding: clamp(20px, 4vw, 32px);
+  }
+
+  .closing-icon {
+    border-radius: 12px;
+  }
+
+  .band h2 {
+    font-size: clamp(1.25rem, 2.6vw, 1.625rem);
+    letter-spacing: -0.02em;
+  }
+
+  @media (min-width: 64rem) {
+    .grid,
+    .rest ul {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .wide {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      align-items: center;
+    }
+
+    .wide .art {
+      align-self: stretch;
+    }
+
+    .lead {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero-layout,
+    .privacy-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .grid,
+    .rest ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .band {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .band > .btn {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 26.25rem) {
+    .commitments {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -4,7 +4,7 @@ import SwallowSky from '../studio/components/SwallowSky.astro';
 import { appIds, appPaths, apps, appsWithSite, mailto, studio } from '../apps/registry';
 
 const title = 'Yaner Apps — We make quality apps.';
-const description = 'Yaner Apps makes quality apps. Maker of GPS-Go, a no-root location simulator.';
+const description = 'Android apps by Yaner Apps, the independent studio behind GPS-Go, PingDeck and Paperdot.';
 // Apps already on Google Play lead, each as a full-width feature; the rest follow in pairs.
 const showcased = appIds
   .flatMap((id) => {
@@ -25,7 +25,7 @@ const showcased = appIds
         </p>
         <div class="ctas">
           <a class="btn btn-primary" href="#apps">See what we built</a>
-          <a class="btn btn-quiet" href="/gps-go">Explore GPS-Go</a>
+          <a class="btn btn-quiet" href={appPaths('paperdot').home}>Explore Paperdot</a>
         </div>
         <p class="meta">Independent · No dark patterns</p>
       </div>

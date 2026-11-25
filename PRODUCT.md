@@ -41,11 +41,11 @@ A small studio that builds native apps per platform and looks after each one unt
 
 - Static Astro site with Svelte islands, deployed to Cloudflare Workers static assets. URLs never end in a slash.
 - `src/apps/registry.ts` is the single source for the studio's name, email, URL and each app's name, blurb, Play link and showcase copy.
-- Apps today, all Android: **GPS-Go** (no-root location simulator, live on Google Play), **PingDeck** (pings many hosts at once, live on Google Play since 2026-11-15) and **Paperdot** (a daily journal and planner; store title "Paperdot: Journal & Planner"; never "Bullet Journal" or "BuJo" in names or taglines, both are registered trademarks); Paperdot is "Coming soon to Google Play".
+- Apps today, all Android: **GPS-Go** (no-root location simulator, live on Google Play), **PingDeck** (pings many hosts at once, live on Google Play since 2026-11-15) and **Paperdot** (a daily journal and planner; store title "Paperdot: Journal & Planner"; never "Bullet Journal" or "BuJo" in names or taglines, both are registered trademarks); all three are live on Google Play.
 - The studio is native-first across operating systems (confirmed 2026-10-31). Do not name an iOS or macOS app until one ships.
 - Today's apps are small tools, but the studio may later build medium-size apps or SaaS (2026-10-31). Studio-level copy should not lock it to "small", "tools" or "your phone".
 - GPS-Go is free with ads and daily limits; the Ad-free and Pro monthly subscriptions are live for everyone since the release submitted on 2026-10-25. The site states prices nowhere, since Google Play sets them per region.
-- GPS-Go's product site, including its privacy and support pages, keeps its own look (`src/apps/gps-go/layouts/Base.astro`). Its footer leads back to the studio. PingDeck has a one-page product site at `/pingdeck` (`src/apps/pingdeck/`) on the same base with the launcher icon's indigo; its privacy, support and terms pages still use the studio layout. Paperdot has no product site yet.
+- GPS-Go's product site, including its privacy and support pages, keeps its own look (`src/apps/gps-go/layouts/Base.astro`). Its footer leads back to the studio. PingDeck has a one-page product site at `/pingdeck` (`src/apps/pingdeck/`) on the same base with the launcher icon's indigo; its privacy, support and terms pages still use the studio layout. Paperdot has a product page at `/paperdot` with the launcher icon’s navy accent, journal screenshots and a Google Play link. Its privacy, support and terms pages use the studio layout.
 - three.js is allowed only lazy-loaded; all content must remain readable without JavaScript.
 - Light and dark themes; a manual choice carries across the studio and app pages.
 
@@ -61,7 +61,7 @@ A small studio that builds native apps per platform and looks after each one unt
 
 - GPS-Go: light/dark app captures in `src/apps/gps-go/assets/screens/` and store-graphic crops in `src/apps/gps-go/assets/showcase/`; Play listing live.
 - PingDeck: light captures from the Galaxy_S26 store screenshot run in `src/apps/pingdeck/assets/screens/` (the latency chart is dark only), cut by `scripts/store-crops.sh`; no dark pairs yet. Play listing live.
-- Paperdot: icon only (`public/paperdot/icon.svg`); no screenshots yet.
+- Paperdot: launcher icon, social preview from the Play feature graphic and phone and tablet captures of the daily log, desk, month view, monthly review, habits and collections in `src/apps/paperdot/assets/`; Play listing live.
 - Each app's privacy policy is the source for every data claim.
 - No testimonials, reviews, download counts, press or pricing exist. Do not invent them.
 

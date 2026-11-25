@@ -47,7 +47,7 @@ export const apps = {
   paperdot: {
     name: 'Paperdot',
     blurb: 'a daily journal and planner for Android',
-    playStoreUrl: null as string | null,
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.yanerapps.paperdot',
     showcase: {
       icon: '/paperdot/icon.svg',
       tagline: 'A daily journal that feels like paper',
@@ -73,7 +73,7 @@ export const appPaths = (id: AppId) => ({
 });
 
 /** Apps with a product site at /<id>; the rest have only privacy, support and terms pages. */
-export const appsWithSite: readonly AppId[] = ['gps-go', 'pingdeck'];
+export const appsWithSite: readonly AppId[] = ['gps-go', 'pingdeck', 'paperdot'];
 
 /** Apps that publish a terms page at /<id>/terms. */
 export const appsWithTerms: readonly AppId[] = ['gps-go', 'paperdot', 'pingdeck'];

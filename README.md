@@ -8,6 +8,6 @@ An independent software studio building small, focused apps with no dark pattern
 
 - **[GPS-Go](https://yanerapps.com/gps-go)** — Simulate locations, follow routes, and test your app from anywhere.
 - **[PingDeck](https://yanerapps.com/pingdeck)** — Monitor hosts, track response times, and get connection alerts.
-- **[Paperdot](https://yanerapps.com/#apps)** — A daily journal and planner for tasks, events, and notes. Coming soon to Google Play.
+- **[Paperdot](https://yanerapps.com/paperdot)** — A daily journal and planner for tasks, events, and notes. [Get it on Google Play](https://play.google.com/store/apps/details?id=com.yanerapps.paperdot).
 
 [Website](https://yanerapps.com) · [Contact](mailto:yanerapps@gmail.com)
